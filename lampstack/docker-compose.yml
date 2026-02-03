@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  apache:
+    build: ./apache
+    container_name: lamp-apache
+    ports:
+      - "127.0.0.1:8080:80" # Lokal debug — ikke eksponert via Traefik
+    env_file:
+      - ./.env
+    volumes:
+      - ./apache/www:/var/www
+      - ./apache/vhosts:/etc/apache2/sites-available
+      - ./apache/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    restart: unless-stopped
+    command: bash -c "a2ensite *.conf && apache2-foreground"
+    networks:
+      - lampnet
+      - web
+    labels:
+      - "traefik.enable=true"
+      # Ingen routere, middlewares eller TLS her — alt håndteres nå i rules.yml
+
+  mysql:
+    image: mysql:8.0
+    container_name: lamp-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Mx#29qvFpR!84tNd
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - lampnet
+
+networks:
+  lampnet:
+    driver: bridge
+  web:
+    external: true

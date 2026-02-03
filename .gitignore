@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+node_modules.root/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database volumes
+pgdata/
+mysql_data/
+**/postgres/
+**/mysql/data/
+lampstack/mysql/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Traefik certificates (contains sensitive data)
+traefik/acme.json
+
+# Observer data (large, regeneratable)
+observer/prometheus_data/
+observer/grafana_data/
+observer/loki_data/
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,52 @@
+RewriteEngine On
+
+# Cache static assets aggressively to reduce bandwidth.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/json "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/otf "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|json|jpg|jpeg|png|gif|svg|webp|avif|woff2?|ttf|otf|eot|ico|mp4|pdf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(php|html?)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Compress text-based responses to cut transfer size.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Block hotlinking of MP4 assets (only allow from this site).
+<IfModule mod_rewrite.c>
+  RewriteCond %{REQUEST_URI} \.mp4$ [NC]
+  RewriteCond %{HTTP_REFERER} !^https?://(www\.)?visithammerfest\.no/ [NC]
+  RewriteRule \.mp4$ - [F,L]
+</IfModule>
+
+# Allow existing files or directories (like assets/video/visithammerfest.mp4) to be served directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/([^/]+)/([^/]+)$ index.php?lang=$1&page=$2&id=$3 [QSA,L]

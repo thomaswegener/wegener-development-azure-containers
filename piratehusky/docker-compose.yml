@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    container_name: piratehusky.no
+    environment:
+      NODE_ENV: production
+      PORT: 4173
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-pirate-lulu}
+      JWT_SECRET: ${JWT_SECRET:-piratehusky-secret}
+    volumes:
+      - ./server/data:/app/server/data
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

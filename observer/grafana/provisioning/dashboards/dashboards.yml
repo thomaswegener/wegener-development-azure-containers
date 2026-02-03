@@ -1,0 +1,10 @@
+apiVersion: 1
+
+providers:
+  - name: Observer
+    orgId: 1
+    folder: Observer
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards
+    editable: true

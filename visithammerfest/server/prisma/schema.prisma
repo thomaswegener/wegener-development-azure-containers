@@ -1,0 +1,337 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleName {
+  ADMIN
+  PARTNER
+}
+
+enum ContentStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PartnerUserRole {
+  OWNER
+  EDITOR
+}
+
+enum MediaProvider {
+  LOCAL
+  AZURE_BLOB
+}
+
+enum MediaLinkType {
+  PARTNER
+  ACTIVITY
+  STORE
+  ARTICLE
+  SITE_INFO
+  CONCEPT
+  LOCATION
+}
+
+enum FaqRegion {
+  HAMMERFEST
+  MASOY
+  PORSANGER
+}
+
+model User {
+  id                 String       @id @default(uuid())
+  email              String       @unique
+  passwordHash       String
+  displayName        String?
+  mustChangePassword Boolean      @default(true)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  roles              UserRole[]
+  partnerLinks       PartnerUser[]
+  sessions           Session[]
+  auditLogs          AuditLog[]
+  uploadedMedia      MediaAsset[]
+}
+
+model Role {
+  id    String     @id @default(uuid())
+  name  RoleName   @unique
+  users UserRole[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User @relation(fields: [userId], references: [id])
+  role   Role @relation(fields: [roleId], references: [id])
+
+  @@id([userId, roleId])
+}
+
+model PartnerUser {
+  userId    String
+  partnerId String
+  role      PartnerUserRole @default(EDITOR)
+  user      User            @relation(fields: [userId], references: [id])
+  partner   Partner         @relation(fields: [partnerId], references: [id])
+
+  @@id([userId, partnerId])
+}
+
+model Partner {
+  id             String        @id @default(uuid())
+  legacyId       Int?          @unique
+  slug           String?       @unique
+  status         ContentStatus @default(PENDING)
+  name           Json
+  short          Json?
+  description    Json?
+  buttonLabel    Json?
+  facebook       String?
+  twitter        String?
+  instagram      String?
+  youtube        String?
+  address        String?
+  email          String?
+  phone          String?
+  website        String?
+  category       String[]      @default([])
+  location       String[]      @default([])
+  conceptIds     String[]      @default([])
+  target         String[]      @default([])
+  mapEmbed       String?
+  logoMediaId    String?
+  heroMediaId    String?
+  publishedAt    DateTime?
+  publishedById  String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  activities     Activity[]
+  stores         Store[]
+  articles       Article[]
+  users          PartnerUser[]
+}
+
+model Activity {
+  id            String        @id @default(uuid())
+  legacyId      Int?          @unique
+  partnerId     String?
+  slug          String?       @unique
+  status        ContentStatus @default(PENDING)
+  name          Json
+  short         Json?
+  description   Json?
+  category      String[]      @default([])
+  season        String[]      @default([])
+  location      String[]      @default([])
+  conceptIds    String[]      @default([])
+  mapEmbed      String?
+  bookingLink   String?
+  capacity      String?
+  heroMediaId   String?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  partner       Partner?      @relation(fields: [partnerId], references: [id])
+}
+
+model Store {
+  id            String        @id @default(uuid())
+  legacyId      Int?          @unique
+  partnerId     String?
+  slug          String?       @unique
+  status        ContentStatus @default(PENDING)
+  name          Json
+  short         Json?
+  description   Json?
+  buttonLabel   Json?
+  facebook      String?
+  twitter       String?
+  instagram     String?
+  youtube       String?
+  address       String?
+  email         String?
+  phone         String?
+  website       String?
+  category      String[]      @default([])
+  location      String[]      @default([])
+  conceptIds    String[]      @default([])
+  target        String[]      @default([])
+  mapEmbed      String?
+  logoMediaId   String?
+  heroMediaId   String?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  partner       Partner?      @relation(fields: [partnerId], references: [id])
+}
+
+model Location {
+  id            String        @id @default(uuid())
+  slug          String        @unique
+  status        ContentStatus @default(PENDING)
+  showOnHome    Boolean       @default(false)
+  showOnMenu    Boolean       @default(true)
+  name          Json
+  summary       Json?
+  heroMediaId   String?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Article {
+  id            String        @id @default(uuid())
+  legacyId      Int?          @unique
+  partnerId     String?
+  slug          String?       @unique
+  type          String?
+  status        ContentStatus @default(PENDING)
+  showOnHome    Boolean       @default(false)
+  title         Json
+  author        String?
+  summary       Json?
+  body          Json?
+  location      String[]      @default([])
+  heroMediaId   String?
+  buttonLabel   Json?
+  buttonLink    String?
+  priority      Int?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  partner       Partner?      @relation(fields: [partnerId], references: [id])
+}
+
+model SiteInfo {
+  id            String        @id @default(uuid())
+  status        ContentStatus @default(PENDING)
+  name          Json
+  short         Json?
+  description   Json?
+  buttonLabel   Json?
+  buttonLink    String?
+  facebook      String?
+  twitter       String?
+  instagram     String?
+  youtube       String?
+  address       String?
+  email         String?
+  website       String?
+  mapEmbed      String?
+  logoMediaId   String?
+  heroMediaId   String?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Concept {
+  id            String        @id @default(uuid())
+  slug          String        @unique
+  status        ContentStatus @default(PENDING)
+  showOnHome    Boolean       @default(true)
+  title         Json
+  summary       Json?
+  body          Json?
+  tag           Json?
+  heroMediaId   String?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Faq {
+  id            String        @id @default(uuid())
+  legacyId      Int?          @unique
+  status        ContentStatus @default(PENDING)
+  region        FaqRegion     @default(HAMMERFEST)
+  category      String?
+  question      Json
+  answer        Json?
+  publishedAt   DateTime?
+  publishedById String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model MediaAsset {
+  id             String        @id @default(uuid())
+  provider       MediaProvider @default(LOCAL)
+  storagePath    String
+  originalName   String
+  contentType    String
+  fileSize       Int
+  width          Int?
+  height         Int?
+  checksum       String?
+  sourceUrl      String?
+  createdAt      DateTime      @default(now())
+  uploadedById   String?
+  uploadedBy     User?         @relation(fields: [uploadedById], references: [id])
+  variants       MediaVariant[]
+  links          MediaLink[]
+}
+
+model MediaVariant {
+  id          String     @id @default(uuid())
+  mediaId     String
+  label       String
+  storagePath String
+  contentType String
+  fileSize    Int
+  width       Int?
+  height      Int?
+  createdAt   DateTime   @default(now())
+  media       MediaAsset @relation(fields: [mediaId], references: [id])
+}
+
+model MediaLink {
+  id         String        @id @default(uuid())
+  mediaId    String
+  targetType MediaLinkType
+  targetId   String
+  label      String?
+  isPublished Boolean      @default(true)
+  createdAt  DateTime      @default(now())
+  media      MediaAsset    @relation(fields: [mediaId], references: [id])
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  userId     String
+  tokenHash  String   @unique
+  csrfToken  String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime?
+  ip         String?
+  userAgent  String?
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  action      String
+  entityType  String
+  entityId    String?
+  metadata    Json?
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+}

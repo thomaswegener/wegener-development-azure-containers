@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Q&A – Visit Hammerfest</title>
+    <style>
+      :root {
+        --bg: #0c1b24;
+        --panel: #112735;
+        --text: #e7eef2;
+        --muted: #93a7b5;
+        --accent: #f0b429;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Manrope", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 32px 18px 64px;
+        max-width: 960px;
+        margin-inline: auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(17, 39, 53, 0.85);
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.9rem;
+        line-height: 1.1;
+      }
+      p {
+        color: var(--muted);
+      }
+      a {
+        color: inherit;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(240, 180, 41, 0.15);
+        color: var(--accent);
+        font-weight: 700;
+        border: 1px solid rgba(240, 180, 41, 0.35);
+      }
+      .section {
+        margin-top: 28px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 22px;
+        background: rgba(17, 39, 53, 0.65);
+      }
+      .qa-list {
+        display: grid;
+        gap: 12px;
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .qa {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .qa strong {
+        display: block;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: linear-gradient(120deg, var(--accent), #ffcf65);
+        color: #1a1200;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      .cta.ghost {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+      .cta-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <p class="badge">Q&A</p>
+        <h1>Praktiske svar fra vertskapet</h1>
+        <p>We are local enthusiasts – welcoming other Arctic enthusiasts to hang out. Her finner du praktiske svar samlet på én underside.</p>
+      </div>
+      <a class="cta ghost" href="/">Til forsiden</a>
+    </header>
+
+    <section class="section">
+      <h2>Vanlige spørsmål</h2>
+      <ul class="qa-list">
+        <li class="qa">
+          <strong>Hvordan kommer jeg hit?</strong>
+          <span>Fly til Hammerfest eller Alta + buss/bil. Se også hurtigbåt fra Tromsø og lokale ferger.</span>
+        </li>
+        <li class="qa">
+          <strong>Hva kan jeg booke på nett?</strong>
+          <span>Aktiviteter, guidede turer, overnatting og transport – de samme kategoriene som i menyen på forsiden.</span>
+        </li>
+        <li class="qa">
+          <strong>Hvordan er været og lyset?</strong>
+          <span>Nordlys fra høst til sen vinter, midnattsol mai–august. Pakk lagvis, vind- og vanntett.</span>
+        </li>
+        <li class="qa">
+          <strong>Hvem møter meg?</strong>
+          <span>Lokale verter fra Urban Hammerfest, Måsøy, Lakselv, Porsangerfjorden og fiskeværene – de samme menneskene du ser på bildene.</span>
+        </li>
+      </ul>
+      <div class="cta-row">
+        <a class="cta" href="mailto:post@visithammerfest.no">Send et spørsmål</a>
+        <a class="cta ghost" href="/">Tilbake til opplevelsene</a>
+      </div>
+    </section>
+  </body>
+</html>

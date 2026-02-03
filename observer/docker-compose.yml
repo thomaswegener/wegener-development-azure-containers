@@ -1,0 +1,113 @@
+version: "3.9"
+
+volumes:
+  grafana-data:
+  prometheus-data:
+  loki-data:
+
+networks:
+  observer:
+  traefik:
+    external: true
+    name: web
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.enable-lifecycle
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - ./prometheus/alertmanager.yml:/etc/prometheus/alertmanager.yml:ro
+      - prometheus-data:/prometheus
+    restart: unless-stopped
+    networks:
+      - observer
+      - traefik
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+    volumes:
+      - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    restart: unless-stopped
+    networks:
+      - observer
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: grafana.observer.wegener.no
+    env_file:
+      - ./.env
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+      - loki
+    restart: unless-stopped
+    networks:
+      - observer
+      - traefik
+
+  loki:
+    image: grafana/loki:2.9.3
+    command: -config.file=/etc/loki/loki-config.yml
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    restart: unless-stopped
+    networks:
+      - observer
+
+  promtail:
+    image: grafana/promtail:2.9.3
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/wegener/containers/traefik/traefik-access.log:/var/log/traefik/traefik-access.log:ro
+      - ./promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+    depends_on:
+      - loki
+    restart: unless-stopped
+    networks:
+      - observer
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.50.0
+    command:
+      - --docker_only=true
+      - --store_container_labels=true
+    privileged: true
+    pid: host
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+    networks:
+      - observer
+
+  node_exporter:
+    image: prom/node-exporter:v1.8.1
+    pid: host
+    command:
+      - --path.rootfs=/host
+    volumes:
+      - /:/host:ro,rslave
+    restart: unless-stopped
+    networks:
+      - observer

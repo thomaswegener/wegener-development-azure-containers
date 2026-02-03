@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-server
+.git
+.gitignore
+Dockerfile
+npm-debug.log
+*.tar
+*.tar.gz
+*.zip

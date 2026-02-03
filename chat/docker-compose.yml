@@ -1,0 +1,96 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: chat
+      POSTGRES_PASSWORD: chat
+      POSTGRES_DB: chat
+    volumes:
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  notes:
+    build:
+      context: ./services/notes
+    container_name: chat-notes
+    environment:
+      VAULT_PATH: /vault
+      NOTES_READONLY: "true"
+      PORT: "8081"
+    volumes:
+      - ${OBSIDIAN_VAULT_PATH:-./vault}:/vault:ro
+    ports:
+      - "18081:8081"
+    networks:
+      - default
+      - web
+
+  api:
+    build:
+      context: ./apps/api
+    container_name: chat-api
+    environment:
+      PORT: "8080"
+      BASE_PATH: "/api"
+      DATABASE_URL: postgres://chat:chat@postgres:5432/chat
+      NOTES_SERVICE_URL: http://notes:8081
+      JOB_SIGNING_SECRET: ${JOB_SIGNING_SECRET:-dev-secret-change-me}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-small}
+    depends_on:
+      - postgres
+      - notes
+    ports:
+      - "18080:8080"
+    networks:
+      - default
+      - web
+
+  safe-runner:
+    build:
+      context: ./services/safe-runner
+    container_name: chat-safe-runner
+    environment:
+      PORT: "8082"
+      BASE_PATH: "/runner"
+      CORE_API_URL: http://api:8080
+      JOB_SIGNING_SECRET: ${JOB_SIGNING_SECRET:-dev-secret-change-me}
+      SAFE_ALLOWLIST: ${SAFE_ALLOWLIST:-codex,rg,cat,ls,node,npm,pnpm,vite,tsc,git}
+      WORKDIR_ROOT: /workspace
+    volumes:
+      - ./:/workspace:ro
+    working_dir: /workspace
+    depends_on:
+      - api
+    ports:
+      - "18082:8082"
+    networks:
+      - default
+      - web
+
+  web:
+    build:
+      context: ./apps/web
+    container_name: chat.wegener.no
+    environment:
+      VITE_API_URL: /api
+      VITE_SAFE_RUNNER_URL: /runner
+      HMR_HOST: ${HMR_HOST:-}
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
+    networks:
+      - default
+      - web
+
+volumes:
+  pgdata:
+
+networks:
+  web:
+    external: true

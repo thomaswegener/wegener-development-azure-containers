@@ -1,0 +1,33 @@
+http:
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+    wwwtohttps:
+      redirectRegex:
+        regex: "^https?://www\\.(.*)"
+        replacement: "https://$1"
+        permanent: true
+
+    sledespesialisten-redirect:
+      redirectRegex:
+        regex: "^https?://(www\.)?sledespesialisten\.no(/.*)?$"
+        replacement: "https://piratehusky.no/sledespesialisten"
+        permanent: true
+
+    grafana-auth:
+      basicauth:
+        users:
+          - "wegener:$apr1$1Ci8y6KX$0lnVS7xDtGXVlrR2rfXN20"
+
+    chat-auth:
+      basicauth:
+        users:
+          - "wegener:$apr1$1Ci8y6KX$0lnVS7xDtGXVlrR2rfXN20"
+
+    traefik-auth:
+      basicauth:
+        users:
+          - "wegener:$apr1$1Ci8y6KX$0lnVS7xDtGXVlrR2rfXN20"

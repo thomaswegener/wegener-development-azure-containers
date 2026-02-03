@@ -1,0 +1,60 @@
+# Optional override to host your Obsidian vault in a Docker volume.
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.vault.yml up --build
+#
+# Populate `vaultdata` by:
+#   - mounting a sync container (syncthing/rclone/git) to /vault, or
+#   - `docker cp`/`rsync` into the volume.
+
+services:
+  notes:
+    volumes:
+      - vaultdata:/vault:ro
+    environment:
+      VAULT_PATH: /vault
+
+  vault-sync:
+    image: alpine/git:2.45.2
+    container_name: chat-vault-sync
+    restart: unless-stopped
+    environment:
+      VAULT_GIT_REPO_URL: ${VAULT_GIT_REPO_URL:-}
+      VAULT_GIT_BRANCH: ${VAULT_GIT_BRANCH:-main}
+      VAULT_GIT_USERNAME: ${VAULT_GIT_USERNAME:-}
+      VAULT_GIT_TOKEN: ${VAULT_GIT_TOKEN:-}
+      VAULT_SYNC_INTERVAL: ${VAULT_SYNC_INTERVAL:-300}
+    volumes:
+      - vaultdata:/vault
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ -z "$$VAULT_GIT_REPO_URL" ]; then
+          echo "VAULT_GIT_REPO_URL not set; sleeping"
+          sleep infinity
+        fi
+        REPO="$$VAULT_GIT_REPO_URL"
+        if [ -n "$$VAULT_GIT_TOKEN" ]; then
+          REPO="$$(echo "$$VAULT_GIT_REPO_URL" | sed -E "s#https://#https://x-access-token:$$VAULT_GIT_TOKEN@#")"
+        fi
+        if [ ! -d /vault/.git ]; then
+          rm -rf /vault/*
+          while true; do
+            echo "Cloning vault repo..."
+            if git clone --depth 1 --branch "$$VAULT_GIT_BRANCH" "$$REPO" /vault; then
+              break
+            fi
+            echo "Clone failed; retrying in 60s"
+            sleep 60
+          done
+        fi
+        cd /vault
+        while true; do
+          git fetch origin "$$VAULT_GIT_BRANCH" || true
+          git reset --hard "origin/$$VAULT_GIT_BRANCH" || true
+          sleep "$$VAULT_SYNC_INTERVAL"
+        done
+
+volumes:
+  vaultdata:

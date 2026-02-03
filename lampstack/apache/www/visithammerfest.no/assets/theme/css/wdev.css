@@ -1,0 +1,253 @@
+/* styles.css */
+.cookie-consent-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.cookie-consent-popup p {
+    margin: 0;
+    padding: 0;
+}
+
+.cookie-consent-popup a {
+    color: #4CAF50;
+    text-decoration: underline;
+}
+
+.cookie-consent-popup .buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.cookie-consent-popup button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cookie-consent-popup button:hover {
+    background-color: #45a049;
+}
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+.wdev-nav .nav-item a {
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0 !important;
+  margin: 0rem .65rem !important;
+  -webkit-align-items: left;
+  -webkit-justify-content: left;
+}
+
+.jobs {
+  border-radius: 5px;
+  box-shadow: 0px 5px 5px rgba(0,0,0,0.2),0px 0px 15px rgba(0,0,0,0.2);
+  padding: 20px; 
+  width: 200px;
+  height: 150px;  
+}
+.maps {
+  border-radius: 5px;
+  border: 2px solid #003333;
+  box-shadow: 2px 3px #888888;
+  padding: 20px; 
+  width: 100%;
+  height: 100%;  
+}
+
+.text-red
+{
+   color: red;
+}
+
+
+/*
+close image
+
+*/
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+.close:before {
+  color: red;
+  content: '✕';
+}
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+
+/*
+risk
+
+*/
+
+
+.riskmatrix  {
+	border-collapse:collapse;
+	border-spacing:0;
+	margin:0px auto;
+	table-layout: fixed;
+	width: 240px;
+}
+.riskmatrix td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.riskmatrix th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.riskmatrix .riskmatrix-white{background-color:#ffffff;border-color:#ffffff;text-align:center;vertical-align:top;width: 40px}
+.riskmatrix .riskmatrix-yellow{background-color:#ffc107;border-color:#ffffff;text-align:center;vertical-align:top;width: 40px}
+.riskmatrix .riskmatrix-green{background-color:#28a745;border-color:#ffffff;text-align:center;vertical-align:top;width: 40px}
+.riskmatrix .riskmatrix-orange{background-color:#fd7e14;border-color:#ffffff;text-align:center;vertical-align:top;width: 40px}
+.riskmatrix .riskmatrix-red{background-color:#dc3545;border-color:#ffffff;text-align:center;vertical-align:top;width: 40px}
+
+.taskstyle
+{
+
+
+}
+.footer
+{
+padding-top: 10px;
+padding-bottom: 10px;
+background-color: #232323;
+position: fixed;
+    bottom: 0%;
+    width: 100%;
+    height: 3%;
+    text-align: center;
+    left: 0;
+    z-index: 100;
+}
+/* padding-bottom and top for image */
+.mfp-no-margins img.mfp-img {
+  padding: 0;
+}
+/* position of shadow behind the image */
+.mfp-no-margins .mfp-figure:after {
+  top: 0;
+  bottom: 0;
+}
+/* padding for main container */
+.mfp-no-margins .mfp-container {
+  padding: 0;
+}
+
+
+/* 
+
+for zoom animation 
+uncomment this part if you haven't added this code anywhere else
+
+*/
+.flag-img
+{
+  width: auto !important;
+}
+
+.image-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* for 16:9 aspect ratio */
+    position: relative;
+    overflow: hidden;
+}
+
+.image-container img.slider-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.mfp-with-zoom .mfp-container,
+.mfp-with-zoom.mfp-bg {
+  opacity: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: all 0.3s ease-out; 
+  -moz-transition: all 0.3s ease-out; 
+  -o-transition: all 0.3s ease-out; 
+  transition: all 0.3s ease-out;
+}
+
+.mfp-with-zoom.mfp-ready .mfp-container {
+    opacity: 1;
+}
+.mfp-with-zoom.mfp-ready.mfp-bg {
+    opacity: 0.8;
+}
+
+.mfp-with-zoom.mfp-removing .mfp-container, 
+.mfp-with-zoom.mfp-removing.mfp-bg {
+  opacity: 0;
+}
+
+
+#editor1 .ql-editor {
+  min-height: 300px; /* Set the desired height */
+}
+
+#editor2 .ql-editor {
+  min-height: 300px; /* Set the desired height */
+}
+#editor3 .ql-editor {
+  min-height: 300px; /* Set the desired height */
+}
+
+#editor4 .ql-editor {
+  min-height: 300px; /* Set the desired height */
+}

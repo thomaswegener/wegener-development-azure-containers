@@ -1,0 +1,576 @@
+{
+  "dogs": [
+    {
+      "id": "ahpi-1",
+      "name": "Áhpi",
+      "birth": "12/13/2023",
+      "image": "ahpi",
+      "descriptions": {
+        "en": "A determined and energetic girl from Sweden, she’s full of ambition — and probably has plans to climb to the top one day! She loves people and cuddles, and she’s a fantastic worker on the team, running with strength and elegance. Sometimes she’s a bit more interested in exploring her surroundings and sniffing everything than focusing on the job, but she’s learning fast and well on her way to becoming a great lead dog in the future.",
+        "no": "En bestemt og energisk jente fra Sverige, full av ambisjoner – og sikkert med planer om å nå toppen en dag. Hun elsker mennesker og kos, og jobber fantastisk i spannet med styrke og eleganse. Av og til er hun mer interessert i å utforske og snuse enn å fokusere på jobben, men hun lærer raskt og er godt på vei til å bli en dyktig ledehund.",
+        "de": "Eine entschlossene und energiegeladene Hündin aus Schweden, voller Ambitionen – vermutlich plant sie schon, einmal ganz nach oben zu kommen. Sie liebt Menschen und Kuscheleinheiten und arbeitet großartig im Team, mit viel Kraft und Eleganz. Manchmal ist sie mehr am Erkunden und Schnuppern interessiert als an der Arbeit, aber sie lernt schnell und ist auf bestem Weg, eine tolle Leithündin zu werden.",
+        "fr": "Une chienne déterminée et pleine d’énergie venue de Suède, bourrée d’ambition — et qui a sans doute déjà prévu de grimper au sommet un jour ! Elle adore les gens et les câlins, et travaille très bien dans l’attelage, avec force et élégance. Parfois, elle préfère explorer et tout renifler plutôt que se concentrer sur le travail, mais elle apprend vite et est en bonne voie pour devenir une excellente chienne de tête.",
+        "es": "Una perrita decidida y llena de energía llegada de Suecia, con mucha ambición — ¡seguro que planea llegar a lo más alto algún día! Le encantan las personas y los mimos, y trabaja de maravilla en el equipo, corriendo con fuerza y elegancia. A veces está más interesada en explorar y olerlo todo que en la tarea, pero aprende rápido y va camino de ser una gran líder."
+      }
+    },
+    {
+      "id": "aja-2",
+      "name": "Ája",
+      "birth": "12/23/2023",
+      "image": "aja",
+      "descriptions": {
+        "en": "Originally from Sweden, a nice addition to the herd from exciting lines, she loves people, cuddling and attention, especially when you try to give it to someone else. We hope it is a future leading star.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "alva-3",
+      "name": "Alva",
+      "birth": "9/29/2021",
+      "image": "alva",
+      "descriptions": {
+        "en": "Alva is Janne's dog, and was to be sold from here due to a congenital overbite. But now it turned out that Janne first bought Alva, and then moved in with us, so she stayed here. ",
+        "no": "Alva er Jannes hund, og skulle egentlig selges videre på grunn av et medfødt overbitt. Men Janne kjøpte henne, flyttet inn hos oss – og da ble Alva selvsagt værende.",
+        "de": "Alva gehört Janne und sollte wegen eines angeborenen Überbisses eigentlich verkauft werden. Aber Janne kaufte sie, zog bei uns ein – und so blieb Alva natürlich hier.",
+        "fr": "Alva est la chienne de Janne et devait au départ être vendue à cause d’un prognathisme congénital. Mais Janne l’a achetée, a emménagé chez nous – et Alva est tout naturellement restée.",
+        "es": "Alva es la perra de Janne y en principio iba a venderse por un prognatismo congénito. Pero Janne la compró, se mudó con nosotros y, por supuesto, Alva se quedó."
+      }
+    },
+    {
+      "id": "buossi-5",
+      "name": "Buošši",
+      "birth": "12/16/2022",
+      "image": "buossi",
+      "descriptions": {
+        "en": "Maddin's daughter has proven to be a good leader dog, but it was not what we had thought when she was younger, not even that she should stay here, because this young lady wanted to get up and go, and was not slow to yell at the other girls. Fortunately, it looks like she has settled down a bit and found her place and became a very good lead dog. Love to greet new people and get lots of treats.",
+        "no": "Máddins datter har vist seg å bli en god ledehund, selv om det ikke var planen da hun var yngre – vi trodde ikke engang hun skulle bli her, så reiselysten og kranglete som hun var. Heldigvis har hun roet seg, funnet plassen sin og blitt en skikkelig god leder. Hun elsker å hilse på nye folk og få masse godbiter.",
+        "de": "Máddins Tochter hat sich als gute Leithündin erwiesen, auch wenn wir das früher nicht gedacht hätten – wir waren uns nicht einmal sicher, ob sie bleiben würde, so sehr wollte sie losziehen und die anderen Mädels anmeckern. Zum Glück hat sie sich beruhigt, ihren Platz gefunden und ist eine richtig gute Führerin geworden. Sie begrüßt gern neue Menschen und liebt Leckerlis.",
+        "fr": "La fille de Máddin s’est révélée être une bonne chienne de tête, même si on ne l’aurait pas cru quand elle était plus jeune — on n’était même pas sûrs qu’elle resterait ici, tant elle était remuante et râlait après les autres filles. Heureusement, elle s’est posée, a trouvé sa place et est devenue une très bonne leader. Elle adore saluer les visiteurs et recevoir plein de friandises.",
+        "es": "La hija de Máddin ha demostrado ser una buena perra líder, aunque de joven no lo esperábamos — ni siquiera pensábamos que se quedaría aquí, con lo inquieta que era y lo rápido que reñía a las otras chicas. Por suerte se ha asentado, ha encontrado su sitio y se ha convertido en una muy buena guía. Le encanta saludar a la gente nueva y recibir muchas chucherías."
+      }
+    },
+    {
+      "id": "cahkki-6",
+      "name": "Čahkki",
+      "birth": "11/18/2020",
+      "image": "cahkki",
+      "descriptions": {
+        "en": "Čahkki is Máddin's daughter, and is a bomb shell of energy! Fantastic girl with a lot of mood, taking off in all directions when going out with the dog team. She is also an expert in escaping from the dog yard, and therefore lives together with Čeaskat, where there is a roof both inside and out. She is Nele's dog.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "ceaskat-7",
+      "name": "Čeaskat",
+      "birth": "04/05/2019",
+      "image": "ceaskat",
+      "descriptions": {
+        "en": "Čeaskat might be small, but there is a lot of dog in that small body. She is also from Hamar and Vikerkollen Kennel, and is our expert in breaking away from the kennel, and we have roof on our dog yard because of her. She is really hard working on the team, and a command lead dog. With her loads of energy, she always gives a 100%. We are hoping to breed her sometime soon.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "dreki-8",
+      "name": "Dreki",
+      "birth": "5/22/2019",
+      "image": "dreki",
+      "descriptions": {
+        "en": "Dreki comes from Seven Mountains Husky in Bergen, and is a very social and pleasant leader dog, who loves cuddles more than anything else. She doesn't need canine friends as long as there are people there to cuddle her. Definitely someone you want to cuddle a little extra with when you visit.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "gabba-10",
+      "name": "Gabba",
+      "birth": "08/31/2019",
+      "image": "gabba",
+      "descriptions": {
+        "en": "Gabba is the daughter of Vanilla and Koda, and is an amazing kind and cuddly missy. She is also a good lead dog, as long as she does not see anyone she wants to receive some cuddles from. She has had one puppy litter, and two of her sons live here with us.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "gasta-11",
+      "name": "Gàsta",
+      "birth": "6/23/2023",
+      "image": "gasta",
+      "descriptions": {
+        "en": "Gastá would cuddle all day if she could, but she’s a little shy at first. Once you earn her trust, though, she’ll never leave your side. She’ll gently reach out to you every 30 seconds, a soft reminder to keep the cuddles going. Gastá often joins Talvi in Hammerfest and helps her to guide the tours and shares her treats and toys.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "lavlla-12",
+      "name": "Lávlla",
+      "birth": "03/23/2022",
+      "image": "lavlla",
+      "descriptions": {
+        "en": "Calmer than her sister, but just as fond of cuddles and attention. She is named after her brother \"Lávllu\" that lived with us for year and a half, we actually traded back him, for this little cutie. Really happy with our trade and she has become an amazing lead dog.",
+        "no": "Roligere enn søsteren, men like glad i kos og oppmerksomhet. Hun er oppkalt etter broren «Lávllu» som bodde hos oss i halvannet år – vi byttet ham faktisk tilbake for denne sjarmøren. Vi er veldig fornøyde med byttet, og hun har blitt en fantastisk ledehund.",
+        "de": "Ruhiger als ihre Schwester, aber genauso verschmust und aufmerksamkeitsliebend. Sie ist nach ihrem Bruder „Lávllu“ benannt, der anderthalb Jahre bei uns lebte – wir haben ihn tatsächlich zurückgetauscht für diese kleine Süße. Wir sind sehr froh über diesen Tausch, denn sie ist eine großartige Leithündin geworden.",
+        "fr": "Plus calme que sa sœur, mais tout aussi friande de câlins et d’attention. Elle porte le nom de son frère « Lávllu », qui a vécu chez nous pendant un an et demi — nous l’avons même échangé pour récupérer cette petite chienne. Nous sommes ravis de cet échange : elle est devenue une superbe chienne de tête.",
+        "es": "Más tranquila que su hermana, pero igual de amante de los mimos y la atención. Lleva el nombre de su hermano «Lávllu», que vivió con nosotros año y medio; de hecho lo intercambiamos para quedarnos con esta pequeña. Estamos encantados con el cambio y se ha convertido en una magnífica líder."
+      }
+    },
+    {
+      "id": "lulli-13",
+      "name": "Lulli",
+      "birth": "23.03.2022",
+      "image": "lulli",
+      "descriptions": {
+        "en": "You’ll hear Lulli long before you see her — and what you’ll hear is her dramatic cry for *more*: more attention, more cuddles, and definitely more food (even though she already gets plenty of all three!).\nShe comes from Trysil — hence the name “South” — and is a sibling to Lávlla, Siellu, and Árktalas (from another litter). With many great lead dogs in their bloodline, Lulli and her sister made it clear from a young age that they were born to run at the front of the team.\nIn 2025, Lulli had her first litter of puppies and turned out to be a wonderful, devoted mother.",
+        "no": "Du hører Lulli lenge før du ser henne – det du hører er hennes dramatiske rop om mer: mer oppmerksomhet, mer kos og helt klart mer mat (selv om hun får nok av alle tre!).\nHun kommer fra Trysil – derav navnet «Sør» – og er søster til Lávlla, Siellu og Árktalas (fra et annet kull). Med mange gode ledehunder i blodslinja viste Lulli og søsteren tidlig at de var født til å løpe fremst i spannet.\nI 2025 fikk Lulli sitt første valpekull og viste seg å være en fantastisk og hengiven mamma.",
+        "de": "Du hörst Lulli lange, bevor du sie siehst – und zwar ihr dramatisches Rufen nach mehr: mehr Aufmerksamkeit, mehr Kuscheln und auf jeden Fall mehr Futter (obwohl sie von allem reichlich bekommt!).\nSie kommt aus Trysil – daher der Name „Süd“ – und ist Schwester von Lávlla, Siellu und Árktalas (aus einem anderen Wurf). Mit vielen starken Leithunden im Stammbaum war früh klar, dass Lulli und ihre Schwester an die Spitze des Teams gehören.\n2025 hatte Lulli ihren ersten Wurf und entpuppte sich als wunderbare, hingebungsvolle Mutter.",
+        "fr": "On entend Lulli bien avant de la voir — et ce qu’on entend, ce sont ses appels dramatiques pour en avoir toujours plus : plus d’attention, plus de câlins et surtout plus de nourriture (même si elle a déjà tout ça en abondance !).\nElle vient de Trysil — d’où son nom « Sud » — et est la sœur de Lávlla, Siellu et Árktalas (d’une autre portée). Avec autant de chiens de tête dans leur lignée, Lulli et sa sœur ont très tôt montré qu’elles étaient faites pour courir en première ligne.\nEn 2025, Lulli a eu sa première portée et s’est révélée être une maman merveilleuse et dévouée.",
+        "es": "Oirás a Lulli mucho antes de verla: es su grito dramático pidiendo más, más atención, más mimos y, desde luego, más comida (aunque ya recibe de sobra de las tres cosas).\nViene de Trysil — de ahí el nombre «Sur» — y es hermana de Lávlla, Siellu y Árktalas (de otra camada). Con tantas buenas líderes en su línea, Lulli y su hermana dejaron claro desde pequeñas que habían nacido para ir delante del tiro.\nEn 2025 tuvo su primera camada y resultó ser una madre maravillosa y entregada."
+      }
+    },
+    {
+      "id": "talvi-15",
+      "name": "Talvi",
+      "birth": "12/16/2022",
+      "image": "talvi",
+      "descriptions": {
+        "en": "Talvi, Jakob’s and Laila’s dog, is someone you’re almost certain to meet if you visit Hammerfest. She’s been ‘guiding’ tours since she was just 3 months old and has become quite the expert! Her favorite activity is joining guests on husky hikes, mostly because of all the treats she gets along the way.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "albmi-16",
+      "name": "Albmi",
+      "birth": "2/5/2024",
+      "image": "albmi",
+      "descriptions": {
+        "en": "We tried a 'fit' combination with Chakki and Siellu, two of our 'breakaways', and Albmi is the one from the litter who most resembles both his mother and father. Long-legged, hard-working, and contact-seeking, would prefer to be the center of everything all the time.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "arktalas-17",
+      "name": "árktalaš",
+      "birth": "31.12.2020",
+      "image": "arktalas",
+      "descriptions": {
+        "en": "When we got the boys from Trysil from Arctic Song's Kennel, we had to name one of them 'arctic'. He is noisy, but runs like the wind, effordless and as he has never done anything else his whole life. And if you scratch him behind his ears, you have a friend for life.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "bassit-18",
+      "name": "Bassit",
+      "birth": "6/23/2023",
+      "image": "bassit",
+      "descriptions": {
+        "en": "As a puppy, he looked more like a malamute, but at some point, he stopped growing. Very similar to his brother Gumpe in terms of appearance, but is a little more anonymous on the team, does the job, and stays out of trouble.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "buolas-19",
+      "name": "Buolaš",
+      "birth": "9/29/2021",
+      "image": "buolas",
+      "descriptions": {
+        "en": "Buolas was sold when he was 10 months old, but after a year as an house dog, he came back to us. We were excited about the transition to a life as a sled dog again, in a large pack, and at the dog kennel, but Buolas himself felt like coming home, and is very happy to be back.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "charlie-20",
+      "name": "Charlie",
+      "birth": "31.08.2019",
+      "image": "charlie",
+      "descriptions": {
+        "en": "Charlie is also Ruth's dog, and he is all about the fun. He is a really good sled dog, can og anywhere on the dog team, good lead dog and hoping to train him as a command leader. A lot of energy, and always happy.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "cuovgat-21",
+      "name": "čuovgat",
+      "birth": "2/5/2024",
+      "image": "cuovgat",
+      "descriptions": {
+        "en": "For a long time we thought it wouldn't work with Cuovgat, who was sick as a puppy, but with a little extra love, lots of time in, and a round of sleeping in Nele's bed, he not only managed, but became a spoiled little sled dog who will be offended if you do not say hello when you visit. He is a born sled dog and knew what he was going to do long before he started on the team. We have hope for him to become a good lead dog.",
+        "no": "Lenge trodde vi det ikke skulle gå med Cuovgat, som var syk som valp. Men med litt ekstra kjærlighet, mye tid inne og en runde med å sove i sengen til Nele, klarte han seg – og ble en bortskjemt liten sledehund som blir fornærmet hvis du ikke hilser når du kommer. Han er en født sledehund og visste hva han skulle gjøre lenge før han startet i spannet. Vi håper han blir en god ledehund.",
+        "de": "Lange dachten wir, es würde mit Cuovgat nicht klappen, weil er als Welpe krank war. Doch mit viel Liebe, viel Zeit im Haus und einer Runde Schlafen in Neles Bett hat er es geschafft – und wurde ein verwöhnter kleiner Schlittenhund, der beleidigt ist, wenn man ihn nicht begrüßt. Er ist ein geborener Schlittenhund und wusste schon vor seinem ersten Einsatz, was er tun sollte. Wir hoffen, dass er ein guter Leithund wird.",
+        "fr": "Pendant longtemps, on a cru que ça ne marcherait pas avec Cuovgat, malade quand il était chiot. Mais avec un supplément d’amour, beaucoup de temps au chaud et quelques nuits dans le lit de Nele, il s’en est sorti — et est devenu un petit chien de traîneau gâté qui se vexe si vous n’allez pas lui dire bonjour. C’est un chien de traîneau né, il savait déjà quoi faire bien avant d’intégrer l’attelage. Nous espérons qu’il deviendra un bon chien de tête.",
+        "es": "Durante mucho tiempo pensamos que no funcionaría con Cuovgat, que estuvo enfermo de cachorro, pero con cariño extra, mucho tiempo dentro y alguna noche durmiendo en la cama de Nele lo consiguió y se convirtió en un pequeño perro de trineo mimado que se ofende si no le saludas cuando vienes. Es un perro de trineo nato y sabía lo que tenía que hacer mucho antes de empezar en el equipo. Confiamos en que llegue a ser un buen líder."
+      }
+    },
+    {
+      "id": "daas-22",
+      "name": "Daŋas",
+      "birth": "16.10.2018",
+      "image": "daas",
+      "descriptions": {
+        "en": "From the \"Pirate-litter\", we have Daŋas, only beaten by his mother and brother when it comes to being the calmest dogs in the pack. He is a big \"allarounder\", that can run in all positions on the team, hard worker, friendly and very cuddely.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "doalli-24",
+      "name": "Doalli",
+      "birth": "16.10.2018",
+      "image": "doalli",
+      "descriptions": {
+        "en": "The king himself, or at least, the king in the kennel. Doalli is a calm guy, as long as no one tries to mess with him. He loves relaxing on the ceiling of his house, and watching over the pack. He can run anywhere on the dog team, and with his size and strength you will notice him on the team. He also loves people, kids, and cuddles.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "dragen-25",
+      "name": "Dragen",
+      "birth": "5/22/2019",
+      "image": "dragen",
+      "descriptions": {
+        "en": "Dragen is Dreki's sister, and if he doesn't react to his name, it's because he's been called \"fat\" all his life. In other words, love food! He is also very fond of treats, and likes to sing to us when we bring him food. Can go in lead, but is mostly used at the back of the team for pulling the weight.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "gassku-26",
+      "name": "Gassku",
+      "birth": "6/23/2023",
+      "image": "gassku",
+      "descriptions": {
+        "en": "When Gassku was a small (and fluffy) puppy, he lay on Sigrid's lap, and we were sternly told that it was her puppy! And so it was, the two grew up to rule each other. He is a big and hairy teddy bear who wants to be involved in everything that happens.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "geassi-27",
+      "name": "Geassi",
+      "birth": "6/23/2023",
+      "image": "geassi",
+      "descriptions": {
+        "en": "After Gabba and Navdi's second litter, brother to Gassku, Bassit and Mihca, but smaller in size. Good and social boy, but I think he has forgotten to grow up..",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "gumpe-28",
+      "name": "Gumpe",
+      "birth": "10.11.2021",
+      "image": "gumpe",
+      "descriptions": {
+        "en": "Gumpe, or \"wolf\", is named after his father Návdi, and is Ronja's first dog. He is curious and social, and we are hoping he will be as an amazing dog as his father is with time. He is very much like his father was, both inside and out.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "jiehkki-29",
+      "name": "Jiehkki",
+      "birth": "12/20/2022",
+      "image": "jiehkki",
+      "descriptions": {
+        "en": "Jiehkki is Mannu's brother but has been a bit more skeptical than his brother, and had to be worked with for a long time before he thought it was OK to wear the harness. He loves pulling to join the team, but would probably like to be able to do it without wearing the harness. Very fond of food.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "kraft-30",
+      "name": "Kraft",
+      "birth": "4/22/2017",
+      "image": "kraft",
+      "descriptions": {
+        "en": "The oldest dog in the kennel, Kraft is a calm and confident leader from Bergen — a truly good boy who absolutely loves cuddles. Once you start cuddling him, he’ll make sure you don’t leave by holding your leg close! Although retired, Kraft still joins for short dog sledding trips because he loves being out on the trail. At home, he’s Emilie’s beloved family dog and even gets the special privilege of snuggling in bed with her for more morning cuddles.",
+        "no": "Kraft er den eldste hunden i kennelen, en rolig og trygg leder fra Bergen – en skikkelig god gutt som elsker kos. Når du først begynner å klappe ham, holder han fast i benet ditt så du ikke slipper unna. Selv om han er pensjonert, blir han med på korte sledeturer fordi han elsker å være ute i løypa. Hjemme er han Emilies kjære familiemedlem og får til og med privilegiet å krype opp i sengen for ekstra morgenkos.",
+        "de": "Kraft ist der älteste Hund im Kennel, ein ruhiger und souveräner Leader aus Bergen – ein wirklich braver Junge, der Kuscheln über alles liebt. Wenn du einmal damit anfängst, hält er dein Bein fest, damit du nicht weggehst. Obwohl er pensioniert ist, kommt Kraft noch auf kurze Schlittenfahrten mit, weil er so gern auf dem Trail ist. Zu Hause ist er Emilies geliebter Familienhund und darf sogar im Bett kuscheln, um morgens noch mehr Streicheleinheiten zu bekommen.",
+        "fr": "Kraft est le doyen du chenil, un leader calme et sûr de lui venu de Bergen — un vrai bon chien qui adore les câlins. Une fois que vous commencez à le caresser, il agrippe votre jambe pour s’assurer que vous restiez ! Même à la retraite, Kraft participe encore à de petites sorties en traîneau car il aime être sur la piste. À la maison, c’est le chien de famille chéri d’Emilie, avec le privilège de se blottir dans son lit pour encore plus de câlins au réveil.",
+        "es": "Kraft es el perro más veterano del criadero, un líder tranquilo y seguro de sí mismo de Bergen, un auténtico buen chico al que le encantan los mimos. Cuando empiezas a acariciarlo, te sujeta la pierna para que no te vayas. Aunque está retirado, sigue saliendo en trineo en rutas cortas porque le encanta estar en el sendero. En casa es el perro de familia adorado de Emilie y hasta tiene el privilegio de acurrucarse en la cama para recibir más mimos matutinos."
+      }
+    },
+    {
+      "id": "mannu-31",
+      "name": "Mannu",
+      "birth": "12/20/2022",
+      "image": "mannu",
+      "descriptions": {
+        "en": "Mannu is Ruth's dog and can be described as having \"high paws\". He dances around the doghouse when someone comes and offers cuddles and attention. Excellent sled dog, he is after Charlie and Ceaskat.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "miehta-32",
+      "name": "Miehta",
+      "birth": "22.06.2020",
+      "image": "miehta",
+      "descriptions": {
+        "en": "The kennel charmer is little Mietha. He’s from Kennel Huskyville and is named after his mother “Honning” (Honey) — and the name couldn’t be more fitting, because he’s definitely as sweet as honey! If you come to meet Mietha, expect your clothes to be covered in dog hair — he loves being close and will happily rub up against you for cuddles.\nMietha is a lead dog, often working with Navdi, although he might perform even better when paired with a lady. He’s also a proud dad — he’s had a litter of puppies, and his daughter Duoattar lives here with us.",
+        "no": "Kennelens sjarmør er lille Mietha. Han kommer fra Kennel Huskyville og er oppkalt etter moren «Honning» – helt treffende, for han er definitivt like søt som honning. Møter du Mietha, kan du regne med hundehår på klærne; han elsker nærhet og gnir seg gjerne inntil deg for kos.\nMietha er en ledehund som ofte går sammen med Návdi, men kanskje trives aller best med en dame ved siden av. Han er også en stolt pappa – han har hatt et valpekull, og datteren Duoattar bor her hos oss.",
+        "de": "Der Charmeur des Kennels ist der kleine Mietha. Er stammt von Kennel Huskyville und trägt den Namen seiner Mutter „Honning“ (Honig) – passender geht es nicht, denn er ist wirklich honigsüß. Wenn du Mietha triffst, kannst du mit Hundehaaren auf der Kleidung rechnen; er liebt Nähe und reibt sich gern für Streicheleinheiten an dir.\nMietha ist ein Leithund, oft zusammen mit Návdi, vielleicht sogar noch besser mit einer Dame an seiner Seite. Er ist auch ein stolzer Papa – er hat einen Wurf und seine Tochter Duoattar lebt hier bei uns.",
+        "fr": "Le charmeur du chenil, c’est le petit Mietha. Il vient du Kennel Huskyville et porte le nom de sa mère « Honning » (Miel) — un nom parfaitement choisi, car il est aussi doux que le miel. Si vous rencontrez Mietha, attendez-vous à repartir couvert de poils : il adore le contact et se frotte volontiers pour avoir des câlins.\nMietha est un chien de tête, souvent en duo avec Návdi, et peut-être encore meilleur avec une demoiselle à ses côtés. Il est aussi un papa fier : il a eu une portée, et sa fille Duoattar vit ici avec nous.",
+        "es": "El seductor del criadero es el pequeño Mietha. Viene de Kennel Huskyville y lleva el nombre de su madre «Honning» (Miel), y no podría ser más acertado: es tan dulce como la miel. Si vienes a conocerlo, cuenta con que tu ropa acabará llena de pelo; le encanta el contacto y se frota contra ti para pedir mimos.\nMietha es un perro guía, a menudo trabajando con Návdi, aunque quizá rinda aún mejor con una hembra a su lado. También es un padre orgulloso: ya tuvo una camada y su hija Duoattar vive aquí con nosotros."
+      }
+    },
+    {
+      "id": "movttet-34",
+      "name": "Movttet",
+      "birth": "12/16/2022",
+      "image": "movttet",
+      "descriptions": {
+        "en": "Njaigu's brother is a bit calmer, a very kind and nvery good sled dog who does his job and tries to stay out of trouble.",
+        "no": "Broren til Njaigu er litt roligere, en veldig snill og dyktig sledehund som gjør jobben sin og prøver å holde seg unna trøbbel.",
+        "de": "Der Bruder von Njaigu ist etwas ruhiger, ein sehr lieber und sehr guter Schlittenhund, der seine Arbeit macht und versucht, Ärger zu vermeiden.",
+        "fr": "Le frère de Njaigu est un peu plus calme, un chien de traîneau très gentil et compétent, qui fait son travail et essaie de rester loin des ennuis.",
+        "es": "El hermano de Njaigu es algo más tranquilo, un perro de trineo muy cariñoso y muy bueno que hace su trabajo e intenta mantenerse lejos de los problemas."
+      }
+    },
+    {
+      "id": "navdi-35",
+      "name": "Návdi",
+      "birth": "20.03.2019",
+      "image": "navdi",
+      "descriptions": {
+        "en": "Our little wolf is actually named \"Bark\", and comes from Vikerkollen Kennel in Hamar. He is our best command leader amongst the boys, and an amazing sled dog. He would love to keep running, and not go home after a sled run. He has two puppie litters, and if he keeps shining, it might be more.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "nitro-36",
+      "name": "Nitro",
+      "birth": "9/2/2022",
+      "image": "nitro",
+      "descriptions": {
+        "en": "Nitro is a social and affectionate boy who loves cuddles and pats in every possible way. He’s a hard worker on the team and comes from Bergen’s Seven Mountains Husky. Judging by his energy and leaps, it’s easy to imagine that Nitro might have been a kangaroo in a past life!",
+        "no": "Nitro er en sosial og kjærlig gutt som elsker kos og klapp på alle tenkelige måter. Han jobber hardt i spannet og kommer fra Seven Mountains Husky i Bergen. Med den energien og de hoppene er det lett å tro at Nitro var en kenguru i et tidligere liv!",
+        "de": "Nitro ist ein sozialer, verschmuster Junge, der jede Art von Streicheleinheiten liebt. Er arbeitet hart im Team und kommt von Seven Mountains Husky in Bergen. Bei seiner Energie und seinen Sprüngen könnte man meinen, er war früher mal ein Känguru!",
+        "fr": "Nitro est un chien sociable et très affectueux qui adore les câlins et les caresses sous toutes leurs formes. C’est un travailleur acharné dans l’attelage et vient de Seven Mountains Husky à Bergen. Vu son énergie et ses bonds, on pourrait croire qu’il a été kangourou dans une vie antérieure !",
+        "es": "Nitro es un perro sociable y muy cariñoso que adora los mimos y las caricias de cualquier tipo. Trabaja duro en el equipo y viene de Seven Mountains Husky en Bergen. Por su energía y sus saltos es fácil imaginar que en otra vida Nitro fue un canguro."
+      }
+    },
+    {
+      "id": "njaigu-37",
+      "name": "Njaigu",
+      "birth": "12/16/2022",
+      "image": "njaigu",
+      "descriptions": {
+        "en": "Food waste number one, always in a hurry to gobble down his food so he can share the rest of his brother's bowl. Energetic and lovely dog ​​that can go anywhere on the team. ",
+        "no": "Matsluk nummer én, alltid i full fart for å sluke maten sin så han kan «dele» resten av brorens skål. Energisk og herlig hund som kan gå hvor som helst i spannet.",
+        "de": "Futterstaubsauger Nummer eins – er schlingt sein Futter herunter, um dann den Rest im Napf seines Bruders mitzunaschen. Ein energiegeladener, lieber Hund, der überall im Team laufen kann.",
+        "fr": "Aspirateur à croquettes numéro un : il avale sa ration à toute vitesse pour pouvoir « partager » le reste de la gamelle de son frère. Chien énergique et adorable qui peut courir à n’importe quelle position de l’attelage.",
+        "es": "El tragaldabas número uno: se come su ración a toda velocidad para «compartir» lo que queda en el cuenco de su hermano. Perro enérgico y encantador que puede ir en cualquier posición del tiro."
+      }
+    },
+    {
+      "id": "nohkkat-38",
+      "name": "Nohkkat",
+      "birth": "2/5/2024",
+      "image": "nohkkat",
+      "descriptions": {
+        "en": "Nohkkat earned his name by sleeping through nearly his entire puppyhood. He’s come a long way since then and now does a great job on the team. His name isn’t quite as fitting anymore, though — he’s grown into a lively, energetic, and sometimes noisy sled dog!",
+        "no": "Nohkkat fikk navnet sitt fordi han sov gjennom nesten hele valpetiden. Siden den gang har han kommet langt og gjør en kjempejobb i spannet. Navnet passer ikke like godt lenger – han har blitt en livlig, energisk og til tider ganske høylytt sledehund!",
+        "de": "Nohkkat bekam seinen Namen, weil er fast seine gesamte Welpenzeit verschlafen hat. Seitdem hat er sich enorm entwickelt und arbeitet jetzt richtig gut im Team. Sein Name passt nicht mehr so recht – er ist zu einem lebhaften, energiegeladenen und manchmal recht lauten Schlittenhund geworden!",
+        "fr": "Nohkkat doit son nom au fait qu’il a dormi pendant presque toute son enfance. Depuis, il a fait beaucoup de progrès et fait un excellent travail dans l’attelage. Son nom est moins justifié aujourd’hui — il est devenu un chien de traîneau vif, énergique et parfois bruyant !",
+        "es": "Nohkkat se ganó el nombre porque durmió casi toda su etapa de cachorro. Desde entonces ha avanzado mucho y trabaja muy bien en el equipo. Su nombre ya no le pega tanto: ahora es un perro de trineo vivo, enérgico y a veces bastante ruidoso."
+      }
+    },
+    {
+      "id": "pus-39",
+      "name": "Pus",
+      "birth": "21.03.2019",
+      "image": "pus",
+      "descriptions": {
+        "en": "Pus (Cat) got his name from Linus, when Linus was only 2 years old, and ask to name the dog. He is originally from Vikerkollen Kennel, but grew up in Svalbard, before he moved to Børselv summer 2021. He is a bit shy with strangers, but as a kittycat for the once he knows. Good sled dog, and can go anywhere in the dog team.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "sarvvis-40",
+      "name": "Sarvvis",
+      "birth": "10.11.2021",
+      "image": "sarvvis",
+      "descriptions": {
+        "en": "Sarvvis is calmer then his brother Gumpe, but still good, social and eager, and just looooooves food.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "siellu-41",
+      "name": "Siellu",
+      "birth": "23.03.2022",
+      "image": "siellu",
+      "descriptions": {
+        "en": "With his ice blue eyes, Siellu got his name 'cus you can see into his soul. Kindness is what you see. He is a lot calmer than his big brother Árktalas, untill the girls comes in heat, then he goes ballistic, especially after he got to make babypuppies with Chakki. He is a really good boy, runs effortlessly, and can go in all positions in the dog team.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "vieljas-42",
+      "name": "Vieljaš",
+      "birth": "31.08.2019",
+      "image": "vieljas",
+      "descriptions": {
+        "en": "Vieljaš is mamas good boy! He is such a good heart dog, he loves cuddles, and loves working on the dog team. He can also go in front, and with his big size, we defently know when he is on the team. We tried mating him, but he does not seem to get how that works.. We really belive in this \"littlebrother\", who for mum is a through copy of his dad, Koda.",
+        "no": "",
+        "de": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    {
+      "id": "everest",
+      "name": "Everest",
+      "birth": "16.07.2025",
+      "image": "everest",
+      "descriptions": {
+        "en": "A puppy with a big personality who reminds us of her big sisters Chakki and Buossi — maybe a mix of those two energetic girls. She was first out of the puppy house, first on solid food, first in the play yard, and we would not be surprised if she is first in lead on the dog team too.",
+        "no": "En valp med stor personlighet som minner oss om storesøstrene Čahkki og Buošši – kanskje en miks av disse to energiske jentene. Hun var først ut av valpehuset, først på fast føde, først ute i luftegården, og vi blir ikke overrasket om hun også blir først i led når den tid kommer.",
+        "de": "Ein Welpe mit großer Persönlichkeit, der uns an die großen Schwestern Čahkki und Buošši erinnert – vielleicht eine Mischung aus diesen energiegeladenen Mädchen. Sie war als Erste aus der Wurfkiste, die Erste beim Festfutter, die Erste im Auslauf, und es würde uns nicht wundern, wenn sie auch als Erste in der Führung läuft.",
+        "fr": "Une petite avec une grande personnalité qui nous rappelle beaucoup ses grandes sœurs Čahkki et Buošši – peut-être un mélange de ces deux chiennes pleines d’énergie. Elle a été la première à sortir de la niche, la première à passer aux aliments solides, la première dans le parc de jeux, et on ne serait pas surpris qu’elle soit aussi la première en tête de l’attelage.",
+        "es": "Una cachorra con una gran personalidad que nos recuerda a sus hermanas mayores Čahkki y Buošši, quizá una mezcla de esas dos chicas llenas de energía. Fue la primera en salir de la caseta, la primera en comer pienso, la primera en el patio, y no nos sorprendería que también sea la primera en ir en cabeza del tiro."
+      }
+    },
+    {
+      "id": "sky",
+      "name": "Sky",
+      "birth": "16.07.2025",
+      "image": "sky",
+      "descriptions": {
+        "en": "The puppy that reminds us most of mom Maddin. No one gets to poke her nose, and she prefers to have all the attention for herself. We are looking forward to seeing if she becomes as majestic as her mom when she grows up.",
+        "no": "Valpen som kanskje minner oss mest om mamma Máddin. Ingen får plukke henne på nesen, og hun vil helst ha all oppmerksomhet for seg selv. Vi gleder oss til å se om hun blir like majestetisk som mamma når hun vokser opp.",
+        "de": "Vielleicht der Welpe, der uns am meisten an Mama Máddin erinnert. An der Nase lässt sie sich nicht herumstupsen und sie hätte die Aufmerksamkeit am liebsten ganz für sich. Wir sind gespannt, ob sie so majestätisch wird wie ihre Mutter, wenn sie erwachsen ist.",
+        "fr": "La chienne qui nous rappelle le plus maman Máddin. Personne ne lui chipote le museau et elle préfère garder toute l’attention pour elle. Nous avons hâte de voir si elle deviendra aussi majestueuse que sa maman en grandissant.",
+        "es": "La cachorra que más nos recuerda a mamá Máddin. No deja que le toquen el hocico y prefiere tener toda la atención para ella sola. Tenemos ganas de ver si será tan majestuosa como su madre al crecer."
+      }
+    },
+    {
+      "id": "marshall",
+      "name": "Marshall",
+      "birth": "16.07.2025",
+      "image": "marshall",
+      "descriptions": {
+        "en": "A big boy who was last out of the dog house and slow to start eating, and for a while did not seem to care much about the world. Then he shot up, much bigger than the other puppies, and turned into a big teddy bear. He will love spending time on your lap for cuddles and a massage after a trip.",
+        "no": "En stor gutt som var sist ut av valpehuset og tregest til å begynne å spise, og som lenge virket lite interessert i verden rundt seg. Så skjøt han fart, ble mye større enn de andre valpene, og ble en skikkelig teddybjørn. Han elsker å ligge i fanget for kos og massasje etter en tur.",
+        "de": "Ein großer Junge, der als Letzter aus der Hütte kam und nur langsam mit dem Fressen anfing, und der sich eine Weile kaum für die Welt interessierte. Dann legte er plötzlich richtig zu, wurde viel größer als die anderen Welpen und verwandelte sich in einen riesigen Teddybären. Er liebt es, nach einer Tour auf deinem Schoß zu liegen und sich kraulen und massieren zu lassen.",
+        "fr": "Un grand gaillard qui a été le dernier à sortir de la niche et à commencer à manger, et qui semblait d’abord peu intéressé par le monde. Puis il a eu une poussée de croissance, est devenu bien plus grand que les autres chiots, et s’est transformé en gros ours en peluche. Il adore se blottir sur vos genoux pour recevoir des câlins et un massage après une sortie.",
+        "es": "Un chico grande que fue el último en salir de la caseta y tardó en empezar a comer; durante un tiempo pareció poco interesado en el mundo. Luego pegó un estirón, se hizo mucho más grande que los otros cachorros y se convirtió en un gran oso de peluche. Le encanta tumbarse en tu regazo para recibir mimos y un masaje después de una salida."
+      }
+    },
+    {
+      "id": "raksha",
+      "name": "Raksha",
+      "birth": "17.07.2025",
+      "image": "raksha",
+      "descriptions": {
+        "en": "Cute little Raksha is the most attentive and cuddly of all the puppies. She climbs into your lap for attention and cuddles from both kids and adults, and is a sweet and innocent girl. With her mom being one of our best lead dogs, we hope she will be a valuable leader in the future.",
+        "no": "Lille Raksha er den mest oppmerksomme og koseglade av alle valpene. Hun klatrer opp i fanget for å få oppmerksomhet og kos, både fra barn og voksne, og er en snill og uskyldig jente. Med mamma som en av våre beste ledehunder håper vi hun blir en verdifull leder i fremtiden.",
+        "de": "Die kleine Raksha ist die aufmerksamste und verschmusteste der ganzen Welpenschar. Sie klettert auf den Schoß, um sich Streicheleinheiten von Kindern wie Erwachsenen abzuholen, und ist ein liebes, unschuldiges Mädchen. Ihre Mama ist eine unserer besten Leithündinnen, daher hoffen wir, dass auch sie eine starke Führerin wird.",
+        "fr": "La petite Raksha est la plus attentive et la plus câline de tous les chiots. Elle grimpe sur vos genoux pour recevoir de l’attention et des câlins des enfants comme des adultes, et c’est une petite chienne douce et innocente. Sa maman est l’une de nos meilleures leaders, et nous espérons qu’elle deviendra, elle aussi, une meneuse précieuse.",
+        "es": "La pequeña Raksha es la más atenta y cariñosa de todos los cachorros. Se sube a tu regazo para recibir atención y mimos de niños y adultos, y es una perrita dulce e inocente. Con su madre como una de nuestras mejores líderes, esperamos que ella también sea una gran guía en el futuro."
+      }
+    },
+    {
+      "id": "bagheera",
+      "name": "Bagheera",
+      "birth": "17.07.2025",
+      "image": "bagheera",
+      "descriptions": {
+        "en": "The biggest brother in the Jungle Book litter and the one that takes after his dad. Those long legs will come in handy in the dog team, and his loving soul will melt many visitors' hearts in the years to come.",
+        "no": "Den største broren i Jungelboken-kullet og den som ligner mest på pappa. De lange bena blir nyttige i spannet, og det kjærlige vesenet hans vil smelte mange gjestehjerter i årene som kommer.",
+        "de": "Der größte Bruder im Dschungelbuch-Wurf und derjenige, der seinem Vater am ähnlichsten ist. Seine langen Beine werden im Team sicher nützlich sein, und sein liebevolles Wesen wird in den kommenden Jahren viele Besucherherzen schmelzen lassen.",
+        "fr": "Le plus grand frère de la portée « Livre de la Jungle » et celui qui ressemble le plus à son père. Ses longues pattes seront utiles dans l’attelage, et son âme pleine de douceur fera fondre le cœur de nombreux visiteurs.",
+        "es": "El hermano mayor de la camada del Libro de la selva y el que más se parece a su padre. Sus largas patas serán muy útiles en el equipo, y su alma llena de cariño derretirá muchos corazones de visitantes en los próximos años."
+      }
+    },
+    {
+      "id": "mowgli",
+      "name": "Mowgli",
+      "birth": "17.07.2025",
+      "image": "mowgli",
+      "descriptions": {
+        "en": "The independent one in this litter and maybe the one that reminds us most of his mother Lulli. Can he be a future super leader?",
+        "no": "Den selvstendige i kullet, og kanskje den som minner oss mest om mamma Lulli. Kanskje en fremtidig superleder?",
+        "de": "Der Unabhängige in diesem Wurf und vielleicht der, der uns am meisten an seine Mutter Lulli erinnert. Vielleicht ein zukünftiger Super-Leithund?",
+        "fr": "Le plus indépendant de la portée et peut-être celui qui nous rappelle le plus sa maman Lulli. Deviendra-t-il un futur super leader ?",
+        "es": "El más independiente de la camada y quizá el que más nos recuerda a su madre Lulli. ¿Será un futuro superlíder?"
+      }
+    },
+    {
+      "id": "baloo",
+      "name": "Baloo",
+      "birth": "17.07.2025",
+      "image": "baloo",
+      "descriptions": {
+        "en": "Our clown lives up to his name and tends to sit down on his butt, just like the bear in the Jungle Book he is named after. He is also very cuddly and attention seeking, and you will definitely come to love him when you visit.",
+        "no": "Klovnen vår lever opp til navnet sitt og har en tendens til å sette seg ned på baken, akkurat som bjørnen i Jungelboken han er oppkalt etter. Han er også veldig koseglad og oppmerksomhetssøkende, og du kommer garantert til å bli glad i ham når du besøker oss.",
+        "de": "Unser Clown macht seinem Namen alle Ehre und setzt sich gerne auf den Hintern, genau wie der Bär aus dem Dschungelbuch, nach dem er benannt ist. Er ist sehr verschmust und sucht ständig Aufmerksamkeit, und du wirst ihn bei deinem Besuch garantiert ins Herz schließen.",
+        "fr": "Notre clown porte bien son nom et a tendance à s’asseoir sur son derrière, comme l’ours du Livre de la Jungle dont il porte le nom. Il est aussi très câlin et en quête d’attention, et vous allez forcément l’adorer quand vous viendrez.",
+        "es": "Nuestro payaso hace honor a su nombre y tiende a sentarse sobre el trasero, igual que el oso del Libro de la selva que le da nombre. También es muy mimoso y busca atención; seguro que lo querrás mucho cuando nos visites."
+      }
+    }
+  ]
+}

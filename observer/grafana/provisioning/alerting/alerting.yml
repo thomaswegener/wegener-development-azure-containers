@@ -1,0 +1,18 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: DiscordSlack
+    receivers:
+      - uid: discord_slack
+        type: slack
+        settings:
+          url: https://discord.com/api/webhooks/1434519484458074165/YpW07SjEvZHylDGqGX8NDeZ0Y6E4YTFk4_Kf8iU5Wphgpdgylb5qJfdR_Sre72sbZlky/slack
+        disableResolveMessage: false
+
+policies:
+  - orgId: 1
+    receiver: DiscordSlack
+    group_by:
+      - alertname
+    continue: false

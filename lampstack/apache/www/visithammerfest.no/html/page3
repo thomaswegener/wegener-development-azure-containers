@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html  >
+<head>
+  
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/logo-96x96.png" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title>Page 3</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="assets/FontAwesome/css/font-awesome.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/parallax/jarallax.css">
+  <link rel="stylesheet" href="assets/popup-overlay-plugin/style.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+
+  
+  
+  
+
+</head>
+<body>
+  
+  <section data-bs-version="5.1" class="menu menu3 cid-tHBrXZiEaj" once="menu" id="menu3-19">
+    
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                    <a href="#">
+                        <img src="assets/images/logo-96x96.png" alt="" style="height: 3rem;">
+                    </a>
+                </span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-black display-7" href="#">Visit Hammerfest</a></span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-black display-4" href="#">Aktiviteter</a></li>
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="#">Aktører</a></li>
+                    <li class="nav-item"><a class="nav-link link text-black display-4" href="#">Inspirasjon</a>
+                    </li><li class="nav-item"><a class="nav-link link text-black display-4" href="#">Informasjon</a></li><li class="nav-item"><a class="nav-link link text-black display-4" href="#">Bestilling</a></li></ul>
+                <div class="icons-menu">
+                    <a class="iconfont-wrapper" href="https://www.instagram.com/visithammerfest/" target="_blank">
+                        <span class="p-2 mbr-iconfont socicon-facebook socicon"></span>
+                    </a>
+                    <a class="iconfont-wrapper" href="https://www.instagram.com/visithammerfest/" target="_blank">
+                        <span class="p-2 mbr-iconfont socicon-instagram socicon"></span>
+                    </a>
+                    
+                    
+                </div>
+                
+            </div>
+        </div>
+    </nav>
+</section>
+
+<section data-bs-version="5.1" class="header19 cid-tKOMxMjRcr mbr-fullscreen mbr-parallax-background" id="header19-1b">
+
+    
+
+    
+    <div class="mbr-overlay" style="opacity: 0.5; background-color: rgb(35, 35, 35);">
+    </div>
+
+    <div class="container">
+        <div class="media-container">
+            <div class="col-md-12 align-center">
+                <h1 class="mbr-section-title mbr-white mbr-bold mbr-fonts-style mb-3 display-1">Visit Hammerfest</h1>
+                <p class="mbr-text mbr-white mbr-fonts-style display-7">
+                    Experience the Arctic magic <br>- where the midnight sun and the mesmerizing northern lights illuminate your journey into the heart of Arctic wonder.
+                </p>
+                
+
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card-wrapper">
+                            <div class="card-box align-center">
+                                <span class="mbr-iconfont mobi-mbri-clock mobi-mbri"></span>
+                                <h4 class="card-title align-center mbr-black mbr-fonts-style display-7">
+                                    <strong>Opening Hours<br>Monday - Friday<br>10:00 - 17:00</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card-wrapper">
+                            <div class="card-box align-center">
+                                <span class="mbr-iconfont mobi-mbri-phone mobi-mbri"></span>
+                                <h4 class="card-title align-center mbr-black mbr-fonts-style display-7"><strong>Call us<br>Phone number<br>+ 47 78 41 21 85</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card-wrapper">
+                            <div class="card-box align-center">
+                                <span class="mbr-iconfont mobi-mbri-letter mobi-mbri"></span>
+                                <h4 class="card-title align-center mbr-black mbr-fonts-style display-7">
+                                    <strong>Send us<br>Email adress<br>post@visithammerfest.no</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card-wrapper">
+                            <div class="card-box align-center">
+                                <span class="mbr-iconfont mobi-mbri-map-pin mobi-mbri"></span>
+                                <h4 class="card-title align-center mbr-black mbr-fonts-style display-7">
+                                    <strong>Drop by</strong><br><strong>Our office<br>Strandgata 29, Hammerfest</strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="map2 cid-tKP9tIZr0w" id="map2-1c">
+    
+
+    
+    
+    <div>
+        
+        <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCZI5F_k6S1k46ujh0SNrapM89f7mJxd30&amp;q=350 5th Ave, New York, NY 10118" allowfullscreen=""></iframe></div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="tabs content18 cid-tKPb7BBuPB" id="tabs1-1g">
+
+    
+
+    
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <h3 class="mbr-section-title mb-0 mbr-fonts-style display-2">
+                    <strong>Information</strong></h3>
+                
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-8">
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item first mbr-fonts-style"><a class="nav-link mbr-fonts-style show active display-7" role="tab" data-toggle="tab" data-bs-toggle="tab" href="#tabs1-1g_tab0" aria-selected="true">
+                            <strong>Privacy</strong></a></li>
+                    <li class="nav-item"><a class="nav-link mbr-fonts-style active display-7" role="tab" data-toggle="tab" data-bs-toggle="tab" href="#tabs1-1g_tab1" aria-selected="true"><strong>Booking terms</strong></a></li>
+                    <li class="nav-item"><a class="nav-link mbr-fonts-style active display-7" role="tab" data-toggle="tab" data-bs-toggle="tab" href="#tabs1-1g_tab2" aria-selected="true"><strong>Price guarantee</strong></a></li>
+                    
+                    
+                    
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane in active" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="mbr-text mbr-fonts-style display-7"><strong>Last updated: 03.05.2021
+<br></strong><br>"The website" refers to all of the information on this domain. "We" refers to the owner of this domain.
+<br>
+<br>The website uses log files. These files retrieve information such as IP addresses, browser type, reference pages, ISP, time stamp, etc. None of this information may be used to identify you personally. The website also uses cookies.<br>
+<br><strong>Personal privacy policy
+<br></strong>What personal information we may retrieve, process and store is determined by the Norwegian Personal Data Act and the Europen GDPR. This applies to the entire company including the website.
+<br>
+<br>The Norwegian Personal Data Act states that we are obliged to provide information about how personal data we receive is used. Personal data received is processed pursuant to Chapter II, Section 8 of the Norwegian Personal Data Act.
+<br>
+<br><strong>Responsibility for processing personal data
+<br></strong>The main responsibility for processing personal data lies with us as a registered organisation.
+<br>
+<br><strong>Accessing, correcting or deleting personal information
+<br></strong>For queries about accessing, correcting or deleting of personal information please send us an email via our contact information.
+<br>
+<br>Due to system backups, personal data may remain in the backup for 60 days after deletion.
+<br>
+<br><strong>Information processed and purpose of processing
+<br></strong>On the website we collect personal data through various forms that the user can fill out, for example, to complete a booking, sign up for an event, participate in a competition or order a service. In such instances we request the information we need in order to deliver the service and/or contact the person. Occasionally, we ask for other information that is used for statistical purposes, such as age or postal address. It is optional for the website user to register personal information in our forms.
+<br>
+<br><strong>External providers/data processors
+<br></strong>Visit Group Tech. is responsible for the development and maintenance of and processing personal data at www.nordkapp.no. We are responsible for running this domain. We are responsible for the development, operation and maintenance of and processing personal data at our website
+<br>
+<br><strong>Storage and sharing of personal data
+<br></strong>Personal information registered in forms on our website is not accessible to other site visitors. The information is stored by us and is not used for any other purpose than that to which the form applies. Information is not shared with third parties unless this is necessary in order to deliver the service that is ordered or if you have consented to this upon completing the form. We do not sell personal information to others.
+<br>
+<br>Information registered in connection with bookings in our booking service is stored at Visit TG in the Citybreak booking system. If you have ordered a service provided by a third party (e.g. hotel accommodation or a sightseeing tour), the information will be shared with the supplier. The information is not used for any other purpose than the booking. Personal information is not shared with third parties beyond this, unless you have given your consent upon completing the form.
+<br>
+<br><strong>Searching on the website
+<br></strong>Search words used on the website are collected and stored by Google Analytics, as well as by the search tool operated by Inmeta. The purpose of this is to be able to use data about what it is being searched for, to customise the content of the pages and improve the search function. Search words cannot be linked to other information about the user who made the search.
+<br>
+<br><strong>SSL encryption
+<br></strong>Our websites are secured with SSL certification, which means that the pages are encrypted. This is shown by the pages having an https address. You may check this by clicking the padlock icon that appears next to the page’s address in your browser.
+<br>
+<br><strong>Facebook login
+<br></strong>On some pages you can also post comments via a Facebook comment field. These comments are linked to your Facebook profile, which is displayed with your profile picture and name, as well as occupation/workplace (if you choose to write something in the Facebook comment field). Your comment and the said information from your profile will appear on the page where you wrote it to all visitors to the page. This information is Facebook's property and is not stored at Visit Nordkapp. Visit Nordkapp does not use your comments or profile information beyond it appearing in the comment field on the page.
+<br>
+<br>If you are logged in to your Facebook account you may also "like" pages on the website. When you “like” a page on our website, your Facebook friends will see that you have liked that particular page. Other users that are not Facebook friends only see the number of “likes” clicked.
+<br>
+<br>In these instances, it is Facebook’s privacy statement which applies. See Facebook's privacy statement at facebook.com.
+<br>
+<br><strong>Booking on this website
+<br></strong>All personal data is entered on an encrypted page where it is safe to provide information about yourself and your credit card.
+<br>
+<br>Our payment gateway has implemented a number of security measures to protect your personal information and credit card information. Your e-mail address will not be used for any purpose other than sending you your booking confirmation or send you practical information regarding your booking with us.
+<br>
+<br><strong>Order buttons and external links
+<br></strong>On some pages on the website, there are order buttons that lead to other websites, such as purchase buttons in an event calendar or in the presentation of a hotel or booking a table at a restaurant.
+<br>
+<br>If the link leads to a website other than ours, we are not responsible for gathering of personal information on the external site. In such instances, it is the external website's privacy statement which applies.
+<br>
+<br><strong>Integrated elements from external websites
+<br></strong>The website contains integrated elements from external websites (such as Tripadvisor, Facebook, Twitter, Youtube, Flickr and Instagram) in the form of widgets or other integrated elements. These elements place cookies in your browser, which they use for statistical and marketing purposes (see information about cookies). We do not store information about your use of these elements. This information is only collected and stored by the external organization (Tripadvisor, Facebook, Twitter, Youtube, Flickr, Instagram, etc.).
+<br>
+<br><strong>Payment
+</strong><br>Information regarding payment is sent to payment provider and data processor NETS.
+<br>
+<br><strong>Processing of personal information
+<br></strong>We do only process information that is necessary to complete the purchase and the agreement with the customer, such as name, contact information, address and credit card details.
+<br>
+<br>Your e-mail may be used in our newsletter if you willingly consent to such use. This may be used for the purpose of sending information about your chosen tour or accommodation. We may also contact you to get your review of your chosen activity. The e-mail is only used when you have voluntarily given us your consent by submitting your e-mail to us. You have the opportunity at all times to unsubscribe from the newsletters by following the unsubscribe link in the newsletter.
+<br>
+<br><strong>Rights and legislation
+<br></strong>You are entitled to request access, correction and deletion of your own personal information. Please contact us through our contact page.
+<br>
+<br>This domain and web site are subject to Norwegian law and legislation.
+<br>
+<br></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab2" class="tab-pane" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="mbr-text mbr-fonts-style display-7">Book Finnmark AS is responsible for forwarding your booking to the relevant supplier. It is the supplier’s responsibility to provide the activity, rental equipment or accommodation in line with your booking. We will ensure you receive relevant information before your arrival / tour, and will contact you in the event of any major changes or cancellation of your booking. The agreement may apply to an activity, accommodation, product, service or a combination of these.
+<br>
+<br>Your booking is confirmed when you receive a confirmation e-mail with a booking reference number. We recommend our guests to print this confirmation and bring it along on your journey. You may also show the confirmation electronically on your tablet or mobile. A minimum age of 18 applies to make a booking through Book Finnmark. It is also possible to book by phone or e-mail, but a service charge per booking applies. If you need to contact your supplier before, during or after your arrival date you will find contact information on the booking confirmation or on the suppliers's website. You can also contact Book Finnmark by e-mail: booking@bookfinnmark.com
+<br>Payment and security
+<br>The payment is processed at the time of booking. Book Finnmark is responsible for the actual transaction, and for ensuring that the correct amount is charged to your card. We will contact you in the event of problems with your credit card. If we are unable to make contact, your booking will be cancelled. All personal data and credit card information is handled on an encrypted site, so all information provided is secure. Only Book Finnmark and the supplier of the relevant product will have access to your name and contact details. This information will be used to process your booking.
+<br>
+<br><strong>Cancellation / changes by the guest 
+<br></strong>To cancel or change your booking, please contact Book Finnmark. All cancellations must be sent by e-mail to booking@bookfinnmark.com
+<br>For cancellations less than 7 days prior to arrival, please contact both the supplier and Book Finnmark.
+<br>
+<br>Book Finnmark has no control over the exchange rate that will be calculated for refunds to credit cards and is not responsible for any loss incurred due to fluctuations in currency. Please note that booking fees and credit card fees are non-refundable. Cancellation of an existing booking may be subject to an administration fee charged by us or a supplier. Some of our suppliers and partners operate with different cancellation terms in addition to ours, such as airlines and rental companies. You will be informed of regulations when ordering from these suppliers. Please note that Book Finnmark does not pay any bank fees incurred for international transfers. This fee will be deducted from the refund.
+<br>
+<br>The following cancellation fees / deadlines apply:
+<br>
+<br>A full refund is provided for cancellations made more than 7 days prior to the arrival date / tour date
+<br>No refund is provided for cancellations made less than 7 days prior to the arrival date / tour date
+<br>Any changes made by the guest are regarded as a cancellation.
+<br>
+<br>Some suppliers and partners have other terms of cancellation than those mentioned above. This applies particularly to the booking of airline tickets, accommodation and rental cars. In such cases, the terms and conditions will be displayed on the checkout page or in the product description at the time of booking.
+<br>
+<br><strong>Special conditions for booking of accommodation: 
+<br></strong>Check-in and check-out: The check-in time is 15.00 (3pm) on the arrival date. The room must be vacated by 12.00 on the departure date. The room is reserved until 18.00 (6pm) on the arrival date. If you plan to arrive later, you must notify the accommodation provider in advance.
+<br>Liability for damages: The guest, or the guarantor for the room/apartment/cabin, is liable for any damages resulting from negligent or reckless behaviour by the guests.
+<br>Insurance/cancellation protection
+<br>We recommend all our guests to ensure they have good insurance before commencing their trip in case of illness, lost luggage, accident, liability, etc.
+<br>
+<br><strong>Our suppliers
+<br></strong>We are responsible for our suppliers getting paid for what you have ordered through us. Our suppliers are responsible for carrying out your booking in accordance with applicable laws and regulations that apply to the supplier, including that the supplier has the necessary insurance, permits, equipment, staffing, etc.
+<br>
+<br>Cancellations/major changes from our side
+<br>Cancellations or major changes may occur due to:
+<br>
+<br>Conditions that are beyond our or our supplier’s control, e.g. weather, accidents/breakdowns, strikes etc.
+<br>Conditions for the booking not being met, e.g. minimum number of participants. A minimum of two full-priced participants applies for most trips, but this may increase to a minimum of six full-priced participants for certain tours including boat or transportation.
+<br>
+<br>If such cancellation or major change occurs, and you do not accept the alternative provided, we will give a full refund. However, in order to give you the best possible experience, we reserve the right to make minor adjustments in the arrangements from the supplier. Such adjustments may occur due to closed roads, weather, snow or other conditions of nature. Please note that Book Finnmark has no control over the exchange rate calculated by refund to credit cards and is not responsible for any loss due to currency conversions. Also note that Book Finnmark does not pay any bank fees incurred for international transfers, and that such fees are deducted from the amount to be refunded. Credit card fees are non-refundable. Book Finnmark is not responsible for delays in reimbursement due to payment providers or external circumstances.
+<br> 
+<br><strong>Groups
+</strong><br>Please contact Book Finnmark by e-mail for group bookings.
+<br>
+<br><strong>Price categories
+<br></strong>The supplier determines the price level and the age limits applicable for children’s and youth discounts. Student discount: a valid student card must be presented. Senior discount: applicable for guests aged 67 and over with valid ID. Relevant documentation must be presented on arrival.
+<br>
+<br><strong>Claims and complaints
+<br></strong>Claims or complaints related to specific activities or products must be directed to the supplier concerned. Book Finnmark has no liability related to the individual product. Book Finnmark is responsible for forwarding your booking to your chosen supplier, who in turn is responsible for providing the activity, accommodation or rental equipment in accordance with your booking. It is the supplier’s responsibility to ensure that safety and provision of the product is in line with the product description. Book Finnmark is not responsible for the outcome on tours that depend on weather and nature. This includes whale watching, northern lights tours or any other wildlife sightseeing tour. We encourage travelers to take their time and to visit the chosen tour supplier several times if necessary. Nature rewards the traveller.
+<br><br>Welcome to Arctic adventures in Finnmark!
+<br>
+<br>BOOK FINNMARK</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab3" class="tab-pane" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="mbr-text mbr-fonts-style display-7">Price Guarantee
+<br>If you book through our website you can be assured of receiving the best price with our suppliers. Please compare the prices at our local providers of accommodation and activities - if you find the same service at a lower price, we would like to hear from you. Contact us for more information about our price policy.
+<br>
+<br>Disclaimer
+<br>The price guarantee does not include price increases due to changes in taxes , customs fees and services, as well as price increases for transport connection which is beyond our control. For further information, check the terms of your current booking.
+<br>
+<br>The price guarantee does not apply to contract awards or other non-public rates, including group rates, package rates, promotional prices and subscription prices. The price guarantee does not apply to discontinued prices, including prices stored in your browser (stored information) prices with other payment arrangements - such as prepayment.
+<br>
+<br>This price guarantee applies only bookable products on this site.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section data-bs-version="5.1" class="footer3 cid-tIZqwq8rIA mbr-reveal" once="footers" id="footer3-1a">
+
+    
+
+    
+
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="row row-links">
+                <ul class="foot-menu">
+                    
+                    
+                    
+                    
+                    
+                <li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-primary" href="#" target="_blank">Admin</a></li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-primary" href="#" target="_blank">Services</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-primary" href="#" target="_blank">Contact Us</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-primary" href="#" target="_blank">Careers</a>
+                    </li></ul>
+            </div>
+            <div class="row social-row">
+                <div class="social-list align-right pb-2">
+                    
+                    
+                    
+                    
+                    
+                    
+                <div class="soc-item">
+                        <a href="https://twitter.com/mobirise" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social fa-facebook-square fa" style="color: rgb(180, 59, 7); fill: rgb(180, 59, 7);"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.facebook.com/pages/Mobirise/1616226671953247" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social fa-instagram fa" style="color: rgb(180, 59, 7); fill: rgb(180, 59, 7);"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.youtube.com/c/mobirise" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social fa-youtube fa" style="color: rgb(180, 59, 7); fill: rgb(180, 59, 7);"></span>
+                        </a>
+                    </div></div>
+            </div>
+            <div class="row row-copirayt">
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">
+                    © Copyright 2023-2026 Visit Hammerfest. All Rights Reserved. Code and design by Wegener Development</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/parallax/jarallax.js"></script>
+  <script src="assets/smoothscroll/smooth-scroll.js"></script>
+  <script src="assets/ytplayer/index.js"></script>
+  <script src="assets/dropdown/js/navbar-dropdown.js"></script>
+  <script src="assets/vimeoplayer/player.js"></script>
+  <script src="assets/mbr-tabs/mbr-tabs.js"></script>
+  <script src="assets/theme/js/script.js"></script>
+  
+  
+  
+
+</body>
+</html>

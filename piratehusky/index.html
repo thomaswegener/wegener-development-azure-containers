@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" sizes="300x300" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0B0911" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pirate Husky</title>
+    <meta
+      name="description"
+      content="Family-run husky kennel offering dog sledding, husky hikes, kayaking, and Arctic stays in Finnmark, Norway."
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+  var APP_ID = "be2fe3c25c47b2840d1b6615f60c2f0ad77e3074e0480632ef2b8d67350c41b3";
+  var WIDGET_ID = "rAmxnqK3jlhQF2Y";
+
+  if (typeof window.outventuresSettings === "undefined") {
+    window.outventuresSettings = [];
+  }
+
+  window.outventuresSettings.push({
+    base_url: "https://app.outventures.se/widget/",
+    app_id: APP_ID,
+    widget_id: WIDGET_ID,
+    floating: true,
+    btn_text: { "en": "Book Now" },
+    btn_style: { "size": "large", "bg": "#0B0911", "color": "#ffffff" },
+    list_view: "calendar",
+    product_types: ["products", "vouchers"],
+  });
+</script>
+
+<script id="ovbs-scriptrAmxnqK3jlhQF2Y">
+  var w = window;
+  var d = document;
+  var l = function () {
+    var s = d.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://app.outventures.se/widget/widget.js";
+    if (document.querySelectorAll('[src="' + s.src + '"]').length == 0) {
+      var x = d.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+    }
+  };
+  if (w.attachEvent) {
+    w.attachEvent("onload", l);
+  } else {
+    w.addEventListener("load", l, false);
+  }
+</script>
+  </body>
+</html>

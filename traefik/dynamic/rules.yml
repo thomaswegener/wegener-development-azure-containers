@@ -1,0 +1,208 @@
+http:
+  routers:
+    visithammerfest:
+      rule: "Host(`visithammerfest.no`) || Host(`www.visithammerfest.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: lamp
+      tls:
+        certResolver: letsencrypt
+
+    porsangerfjordenlodge:
+      rule: "Host(`porsangerfjordenlodge.no`) || Host(`www.porsangerfjordenlodge.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: lamp
+      tls:
+        certResolver: letsencrypt
+
+    ingvildogthomas:
+      rule: "Host(`ingvildogthomas.no`) || Host(`www.ingvildogthomas.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: lamp
+      tls:
+        certResolver: letsencrypt
+
+    wegener:
+      rule: "Host(`wegener.no`) || Host(`www.wegener.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: wegener
+      tls:
+        certResolver: letsencrypt
+
+    go-north:
+      rule: "Host(`go-north.no`) || Host(`www.go-north.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: go-north
+      tls:
+        certResolver: letsencrypt
+
+    piratehusky:
+      rule: "Host(`piratehusky.no`) || Host(`www.piratehusky.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: piratehusky
+      tls:
+        certResolver: letsencrypt
+
+    sledespesialisten:
+      rule: "Host(`sledespesialisten.no`) || Host(`www.sledespesialisten.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [sledespesialisten-redirect]
+      service: piratehusky
+      tls:
+        certResolver: letsencrypt
+
+    grafana-observer:
+      rule: "Host(`grafana.observer.wegener.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [grafana-auth]
+      service: grafana-observer
+      tls:
+        certResolver: letsencrypt
+
+    traefik-dashboard:
+      rule: "Host(`traefik.observer.wegener.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [traefik-auth]
+      service: api@internal
+      tls:
+        certResolver: letsencrypt
+
+    kongsbergvitensenter:
+      rule: "Host(`kongsbergvitensenter.no`) || Host(`www.kongsbergvitensenter.no`) || HostRegexp(`{subdomain:.+}.kongsbergvitensenter.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      service: kongsbergvitensenter
+      tls:
+        certResolver: letsencrypt
+
+    n8n-external:
+      rule: "Host(`n8n.wegenerdevelopment.no`)"
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      service: n8n-remote
+
+    chat-web:
+      rule: "Host(`chat.wegener.no`)"
+      entryPoints: [web, websecure]
+      middlewares: [chat-auth]
+      priority: 1
+      service: chat-web
+      tls:
+        certResolver: letsencrypt
+
+    chat-api:
+      rule: "Host(`chat.wegener.no`) && PathPrefix(`/api`)"
+      entryPoints: [web, websecure]
+      middlewares: [chat-auth]
+      priority: 100
+      service: chat-api
+      tls:
+        certResolver: letsencrypt
+
+    chat-runner:
+      rule: "Host(`chat.wegener.no`) && PathPrefix(`/runner`)"
+      entryPoints: [web, websecure]
+      middlewares: [chat-auth]
+      priority: 100
+      service: chat-runner
+      tls:
+        certResolver: letsencrypt
+
+
+    visithammerfest-web:
+      rule: "Host(`visithammerfest.wegener.no`)"
+      entryPoints: [web, websecure]
+      service: visithammerfest-web
+      tls:
+        certResolver: letsencrypt
+
+    visithammerfest-api:
+      rule: "Host(`visithammerfest.wegener.no`) && PathPrefix(`/api`)"
+      entryPoints: [web, websecure]
+      priority: 100
+      service: visithammerfest-api
+      tls:
+        certResolver: letsencrypt
+
+    visithammerfest-uploads:
+      rule: "Host(`visithammerfest.wegener.no`) && PathPrefix(`/uploads`)"
+      entryPoints: [web, websecure]
+      priority: 90
+      service: visithammerfest-api
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    lamp:
+      loadBalancer:
+        servers:
+          - url: "http://lamp-apache:80"
+
+    go-north:
+      loadBalancer:
+        servers:
+          - url: "http://go-north.no:80"
+
+    piratehusky:
+      loadBalancer:
+        servers:
+          - url: "http://piratehusky.no:4173"
+
+    grafana-observer:
+      loadBalancer:
+        servers:
+          - url: "http://grafana.observer.wegener.no:3000"
+
+    kongsbergvitensenter:
+      loadBalancer:
+        servers:
+          - url: "http://kongsbergvitensenter.no:4173"
+
+    wegener:
+      loadBalancer:
+        servers:
+          - url: "http://wegener.no:80"
+
+    n8n-remote:
+      loadBalancer:
+        servers:
+          - url: "http://n8n.tortilla.local"
+        passHostHeader: true
+        serversTransport: n8n-insecure
+
+    chat-web:
+      loadBalancer:
+        servers:
+          - url: "http://chat.wegener.no:5173"
+
+    chat-api:
+      loadBalancer:
+        servers:
+          - url: "http://chat-api:8080"
+
+    chat-runner:
+      loadBalancer:
+        servers:
+          - url: "http://chat-safe-runner:8082"
+
+
+    visithammerfest-web:
+      loadBalancer:
+        servers:
+          - url: "http://visithammerfest-web:4179"
+
+    visithammerfest-api:
+      loadBalancer:
+        servers:
+          - url: "http://visithammerfest-api:5170"
+
+  serversTransports:
+    n8n-insecure:
+      insecureSkipVerify: true

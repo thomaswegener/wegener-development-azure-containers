@@ -1,0 +1,16 @@
+{
+  "name": "Pirate Husky",
+  "short_name": "Pirate Husky",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "300x300",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0B0911",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
+

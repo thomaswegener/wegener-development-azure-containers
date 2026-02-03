@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: mattebok-back
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+    networks:
+      - db_net
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: mattebok-front
+    ports:
+      - "5174:80"
+    networks:
+      - db_net
+    restart: unless-stopped
+
+networks:
+  db_net:
+    external: true
+    name: infra_db_net

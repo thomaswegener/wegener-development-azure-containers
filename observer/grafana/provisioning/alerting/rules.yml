@@ -1,0 +1,73 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: System health
+    folder: System
+    interval: 1m
+    rules:
+      - uid: node-up
+        title: Node up (node_exporter)
+        condition: A
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 120
+              to: 0
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: up{job="node_exporter"} == 0
+              interval: ""
+              legendFormat: "{{instance}}"
+              refId: A
+            queryType: instant
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+
+      - uid: disk-free-low
+        title: Disk almost full (<10% free)
+        condition: A
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 120
+              to: 0
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.10
+              interval: ""
+              legendFormat: "{{instance}} {{device}}"
+              refId: A
+            queryType: instant
+        noDataState: OK
+        execErrState: Error
+        for: 2m
+
+      - uid: high-load
+        title: Høy belastning (>1.5 per kjerne)
+        condition: A
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            relativeTimeRange:
+              from: 120
+              to: 0
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: (node_load1 / count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1.5
+              interval: ""
+              legendFormat: "{{instance}}"
+              refId: A
+            queryType: instant
+        noDataState: OK
+        execErrState: Error
+        for: 2m

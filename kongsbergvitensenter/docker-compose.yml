@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: kongsbergvitensenter.no
+    env_file:
+      - .env
+    expose:
+      - "4173"
+    networks:
+      - web
+    restart: unless-stopped
+
+networks:
+  web:
+    external: true
+    name: web

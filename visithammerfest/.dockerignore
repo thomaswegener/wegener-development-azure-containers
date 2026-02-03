@@ -1,0 +1,9 @@
+node_modules
+dist
+server/dist
+server/uploads
+server/data
+.env
+*.log
+*.tsbuildinfo
+new images

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  twingate-birria-one:
+    image: twingate/connector:1
+    container_name: twingate-birria-one
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      TWINGATE_NETWORK: ${TWINGATE_NETWORK}
+      TWINGATE_ACCESS_TOKEN: ${TG1_ACCESS}
+      TWINGATE_REFRESH_TOKEN: ${TG1_REFRESH}
+      TWINGATE_LABEL_HOSTNAME: "birria"
+      TWINGATE_LABEL_DEPLOYED_BY: "docker"
+    sysctls:
+      net.ipv4.ping_group_range: "0 2147483647"
+
+  twingate-birria-two:
+    image: twingate/connector:1
+    container_name: twingate-birria-two
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      TWINGATE_NETWORK: ${TWINGATE_NETWORK}
+      TWINGATE_ACCESS_TOKEN: ${TG2_ACCESS}
+      TWINGATE_REFRESH_TOKEN: ${TG2_REFRESH}
+      TWINGATE_LABEL_HOSTNAME: "birria" 
+      TWINGATE_LABEL_DEPLOYED_BY: "docker"
+    sysctls:
+      net.ipv4.ping_group_range: "0 2147483647"

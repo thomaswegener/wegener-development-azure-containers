@@ -1,0 +1,58 @@
+groups:
+  - name: system
+    rules:
+      - alert: NodeDown
+        expr: up{job="node_exporter"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node exporter down on {{ $labels.instance }}"
+          description: "Prometheus cannot scrape node_exporter for {{ $labels.instance }}."
+
+      - alert: HostDiskFreeLow
+        expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Less than 10% disk free on {{ $labels.device }} mounted at {{ $labels.mountpoint }}."
+
+      - alert: HostMemoryPressure
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory pressure on {{ $labels.instance }}"
+          description: "Memory available is under 10% on {{ $labels.instance }}."
+
+      - alert: HostHighLoad
+        expr: (node_load1 / count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) > 1.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High load on {{ $labels.instance }}"
+          description: "Load average is higher than 1.5 per core."
+
+  - name: traefik
+    rules:
+      - alert: TraefikHigh5xx
+        expr: sum by (router) (rate(traefik_router_requests_total{code=~"5.."}[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Traefik 5xx for router {{ $labels.router }}"
+          description: "5xx rate above 0.1 rps over 5m. Check upstream health."
+
+      - alert: TraefikHighLatency
+        expr: histogram_quantile(0.95, sum by (router, le) (rate(traefik_service_request_duration_seconds_bucket[5m]))) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Traefik high latency for router {{ $labels.router }}"
+          description: "P95 latency exceeds 0.5s over 10m."
