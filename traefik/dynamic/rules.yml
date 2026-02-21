@@ -3,7 +3,7 @@ http:
     visithammerfest:
       rule: "Host(`visithammerfest.no`) || Host(`www.visithammerfest.no`)"
       entryPoints: [web, websecure]
-      middlewares: [wwwtohttps]
+      middlewares: [block-empty-ua, wwwtohttps]
       service: lamp
       tls:
         certResolver: letsencrypt
@@ -139,6 +139,20 @@ http:
       tls:
         certResolver: letsencrypt
 
+    n8n:
+      rule: "Host(`n8n.wegener.no`)"
+      entryPoints: [web, websecure]
+      service: n8n
+      tls:
+        certResolver: letsencrypt
+
+    homeassistant:
+      rule: "Host(`homeassistant.wegener.no`)"
+      entryPoints: [web, websecure]
+      service: homeassistant
+      tls:
+        certResolver: letsencrypt
+
   services:
     lamp:
       loadBalancer:
@@ -202,6 +216,16 @@ http:
       loadBalancer:
         servers:
           - url: "http://visithammerfest-api:5170"
+
+    n8n:
+      loadBalancer:
+        servers:
+          - url: "http://n8n.wegener.no:5678"
+
+    homeassistant:
+      loadBalancer:
+        servers:
+          - url: "http://tortilla.local:8123"
 
   serversTransports:
     n8n-insecure:

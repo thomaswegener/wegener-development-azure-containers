@@ -127,6 +127,12 @@ type SiteInfo = {
   mapEmbed?: string | null;
   heroMediaUrl?: string | null;
   logoMediaUrl?: string | null;
+  openingHours?: LocalizedText | null;
+  heroSpringMediaUrl?: string | null;
+  heroSummerMediaUrl?: string | null;
+  heroAutumnMediaUrl?: string | null;
+  heroWinterMediaUrl?: string | null;
+  footerLinks?: Array<{ label: string; url: string }> | null;
 };
 
 type Faq = {
@@ -387,6 +393,14 @@ const locationLabelFor = (
 
 const useAppData = () => useOutletContext<AppContext>();
 
+const currentSeasonUrl = (info: SiteInfo | null): string => {
+  const m = new Date().getMonth() + 1; // 1–12
+  if (m <= 2 || m === 12) return info?.heroWinterMediaUrl ?? info?.heroMediaUrl ?? "/media/hero.jpg";
+  if (m <= 5) return info?.heroSpringMediaUrl ?? info?.heroMediaUrl ?? "/media/hero.jpg";
+  if (m <= 8) return info?.heroSummerMediaUrl ?? info?.heroMediaUrl ?? "/media/hero.jpg";
+  return info?.heroAutumnMediaUrl ?? info?.heroMediaUrl ?? "/media/hero.jpg";
+};
+
 const useGallery = (targetType: string, targetId?: string) => {
   const apiBase = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
   const [items, setItems] = useState<MediaLink[]>([]);
@@ -441,6 +455,28 @@ const SocialIcon = ({ name }: { name: SocialIconName }) => {
         fill="currentColor"
       />
     </svg>
+  );
+};
+
+const Footer = ({ siteInfo }: { siteInfo: SiteInfo | null }) => {
+  const year = new Date().getFullYear();
+  const links = siteInfo?.footerLinks?.filter((l) => l.label && l.url) ?? [];
+  return (
+    <footer className="site-footer">
+      <div className="footer-links">
+        {links.map((link) => (
+          <a key={link.label} href={link.url} target="_blank" rel="noreferrer" className="footer-link">
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <p className="footer-copy">
+        &copy; {year} Visit Hammerfest &mdash; Developed by{" "}
+        <a href="https://wegener.no" target="_blank" rel="noreferrer">
+          Wegener Development
+        </a>
+      </p>
+    </footer>
   );
 };
 
@@ -707,13 +743,15 @@ const AppShell = () => {
       )}
 
       <Outlet context={context} />
+      <Footer siteInfo={siteInfo} />
     </div>
   );
 };
 
 const HomePage = () => {
-  const { filteredInspiration, informationArticles, concepts, locations, localeKey, language } = useAppData();
+  const { filteredInspiration, informationArticles, concepts, locations, siteInfo, localeKey, language } = useAppData();
   const t = (no: string, en: string) => (language === "NO" ? no : en);
+  const heroUrl = currentSeasonUrl(siteInfo);
   const bookableMenu = buildBookableMenu(t);
   const regionHighlights = buildRegionHighlights(t);
   const homeInspiration = filteredInspiration.filter((article) => article.showOnHome);
@@ -764,18 +802,16 @@ const HomePage = () => {
   return (
     <main>
       <section className="hero" id="booking">
-        <div className="hero-media">
-          <div className="hero-img" />
-        </div>
+        <div className="hero-img" style={{ backgroundImage: `url(${heroUrl})` }} />
         <div className="hero-text">
           <p className="kicker">Hammerfest</p>
-          <h1>{t("Arktiske døgn der vertskapet møter deg", "Arctic days where hosts meet you")}</h1>
+          <h1>{siteInfo?.name ? pickText(siteInfo.name, localeKey, t("Arktiske døgn der vertskapet møter deg", "Arctic days where hosts meet you")) : t("Arktiske døgn der vertskapet møter deg", "Arctic days where hosts meet you")}</h1>
           <p className="lead">
-            {t(
-              "Vi er lokale entusiaster som inviterer andre arktiske entusiaster til å henge med oss. Opplev byen, fjellene og Barentshavet i ett strekk - med en meny fylt med kategorier og alternativer.",
-              "We are local enthusiasts, welcoming other Arctic enthusiasts to hang out. Experience the city, the mountains and the Barents Sea in one stretch - with a menu full of categories and options."
-            )}
+            {siteInfo?.short ? pickText(siteInfo.short, localeKey, "") || t("Vi er lokale entusiaster som inviterer andre arktiske entusiaster til å henge med oss.", "We are local enthusiasts, welcoming other Arctic enthusiasts to hang out.") : t("Vi er lokale entusiaster som inviterer andre arktiske entusiaster til å henge med oss.", "We are local enthusiasts, welcoming other Arctic enthusiasts to hang out.")}
           </p>
+          {siteInfo?.openingHours && pickText(siteInfo.openingHours, localeKey, "") && (
+            <p className="hero-hours">{pickText(siteInfo.openingHours, localeKey, "")}</p>
+          )}
           <div className="hero-actions">
             <a className="cta" href="#konsepter">
               {t("Utforsk opplevelser", "Explore experiences")}
@@ -863,6 +899,7 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Booking menu hidden for now
       <section className="booking" id="booking-menu">
         <div className="booking-panel">
           <p className="kicker">{t("Bookingmeny", "Booking menu")}</p>
@@ -885,6 +922,7 @@ const HomePage = () => {
           ))}
         </div>
       </section>
+      */}
 
       {homeInspiration.length > 0 && (
         <section className="story" id="inspiration">
@@ -979,7 +1017,12 @@ const ActivitiesPage = () => {
                   </span>
                   <h3>{title}</h3>
                   <p>{stripHtml(pickText(activity.short, localeKey, t("Lokalt vertskap med opplevelser i sesong.", "Local hosts with seasonal experiences.")))}</p>
-                  <Link to={`/activities/${slug}`} className="text-link">
+                  {activity.bookingLink && (
+                    <a href={activity.bookingLink} target="_blank" rel="noreferrer" className="text-link">
+                      {t("Booking →", "Booking →")}
+                    </a>
+                  )}
+                  <Link to={`/activities/${slug}`} className="text-link" style={activity.bookingLink ? { color: 'var(--muted)', fontWeight: 500 } : undefined}>
                     {t("Se aktivitet →", "See activity →")}
                   </Link>
                 </div>

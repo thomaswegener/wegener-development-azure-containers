@@ -40,6 +40,8 @@ PRs should include:
 - A short description, risk notes (especially around runners/Traefik), and how to verify.
 - Screenshots for UI changes and example curl/requests for API changes.
 
+**Monorepo note:** This project lives inside the `containers` monorepo. Always commit and push from the monorepo root (`/home/wegener/containers`), not from within this subdirectory.
+
 ## Security & Configuration Tips
 
 - Never commit `.env` or secrets; rotate any key pasted into chat.

@@ -14,31 +14,131 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineInterpolation": "smooth",
-            "spanNulls": true
+          "unit": "reqps",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null }
+            ]
           }
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 0 },
+      "id": 20,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total[5m]))",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total RPS",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 1 },
+              { "color": "red", "value": 5 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 0 },
+      "id": 21,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total{code=~\"5..\"}[5m])) / sum(rate(traefik_router_requests_total[5m])) * 100",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "5xx error rate",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 0.3 },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 0 },
+      "id": 22,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.95, sum(rate(traefik_service_request_duration_seconds_bucket[5m])) by (le))",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "P95 latency",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
       "id": 1,
       "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "right", "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
@@ -48,29 +148,54 @@
           "refId": "A"
         }
       ],
-      "title": "Traefik request rate (rps)",
+      "title": "Request rate by router (rps)",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineInterpolation": "smooth",
-            "spanNulls": true
-          }
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 },
+          "unit": "s"
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "id": 3,
+      "options": {
+        "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "right", "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.95, sum by (router, le) (rate(traefik_service_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "p95 {{router}}",
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.50, sum by (router, le) (rate(traefik_service_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "p50 {{router}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Request latency (p50 / p95)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
       "id": 2,
       "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "right", "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
@@ -80,59 +205,119 @@
           "refId": "A"
         }
       ],
-      "title": "Traefik 5xx rate (rps)",
+      "title": "5xx rate by router (rps)",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineInterpolation": "smooth",
-            "spanNulls": true
-          },
-          "unit": "s"
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 }
         },
         "overrides": []
       },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
-      "id": 3,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "id": 9,
       "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "right", "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "histogram_quantile(0.95, sum by (router, le) (rate(traefik_service_request_duration_seconds_bucket[5m])))",
-          "legendFormat": "p95 {{router}}",
+          "expr": "sum by (router) (rate(traefik_router_requests_total{code=~\"4..\"}[5m]))",
+          "legendFormat": "{{router}}",
           "refId": "A"
         }
       ],
-      "title": "Request latency p95",
+      "title": "4xx rate by router (rps)",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 0,
+            "fillOpacity": 80,
+            "stacking": { "mode": "normal" },
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "2xx" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "3xx" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "blue", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "4xx" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "5xx" },
+            "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
+          }
+        ]
       },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 18 },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 20 },
+      "id": 10,
+      "options": {
+        "legend": { "calcs": ["sum"], "displayMode": "table", "placement": "right" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total{code=~\"2..\"}[5m]))",
+          "legendFormat": "2xx",
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total{code=~\"3..\"}[5m]))",
+          "legendFormat": "3xx",
+          "refId": "B"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total{code=~\"4..\"}[5m]))",
+          "legendFormat": "4xx",
+          "refId": "C"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(traefik_router_requests_total{code=~\"5..\"}[5m]))",
+          "legendFormat": "5xx",
+          "refId": "D"
+        }
+      ],
+      "title": "Response codes distribution",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 0,
+            "fillOpacity": 75,
+            "stacking": { "mode": "normal" },
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
       "id": 5,
       "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "single", "sort": "none" },
-        "barAlignment": 0,
-        "drawStyle": "bars",
-        "lineWidth": 0,
-        "fillOpacity": 75,
-        "gradientMode": "none",
-        "showPoints": "never",
-        "stacking": "normal"
+        "legend": { "calcs": ["sum"], "displayMode": "table", "placement": "right", "sortBy": "Total", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
@@ -142,55 +327,28 @@
           "refId": "A"
         }
       ],
-      "title": "Daily requests per domain (metrics)",
+      "title": "Daily requests per domain",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 0,
+            "fillOpacity": 75,
+            "stacking": { "mode": "normal" },
+            "spanNulls": true
+          }
+        },
+        "overrides": []
       },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 27 },
-      "id": 8,
-      "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "single", "sort": "none" },
-        "barAlignment": 0,
-        "drawStyle": "bars",
-        "lineWidth": 0,
-        "fillOpacity": 75,
-        "gradientMode": "none",
-        "showPoints": "never",
-        "stacking": "none"
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (router) (increase(traefik_router_requests_total[24h]))",
-          "legendFormat": "{{router}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Daily requests per router (raw)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "loki"
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 27 },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
       "id": 6,
       "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "right" },
-        "tooltip": { "mode": "single", "sort": "none" },
-        "barAlignment": 0,
-        "drawStyle": "bars",
-        "lineWidth": 0,
-        "fillOpacity": 75,
-        "gradientMode": "none",
-        "showPoints": "never",
-        "stacking": "normal"
+        "legend": { "calcs": ["sum"], "displayMode": "table", "placement": "right", "sortBy": "Total", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
@@ -204,11 +362,8 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "loki"
-      },
-      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 18 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 36 },
       "id": 4,
       "options": {
         "dedupStrategy": "none",
@@ -226,44 +381,6 @@
       ],
       "title": "Traefik access logs",
       "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "lineInterpolation": "linear",
-            "barAlignment": 0,
-            "lineWidth": 0,
-            "fillOpacity": 75,
-            "spanNulls": true
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 36 },
-      "id": 7,
-      "options": {
-        "legend": { "displayMode": "list", "placement": "right", "calcs": [] },
-        "tooltip": { "mode": "single", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (domain) (label_replace(increase(traefik_router_requests_total{router=~\"${domain:regex}(@.*)?\"}[24h]), \"domain\", \"$1\", \"router\", \"([^@]+)@.*\"))",
-          "legendFormat": "{{domain}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Daily requests - $domain",
-      "type": "timeseries",
-      "repeat": "domain",
-      "repeatDirection": "v",
-      "maxPerRow": 1
     }
   ],
   "refresh": "30s",
@@ -290,6 +407,6 @@
   "timezone": "browser",
   "title": "Observer - Traefik",
   "uid": "observer-traefik",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

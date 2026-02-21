@@ -32,3 +32,5 @@
 - Before opening a PR: ensure `npm run build` and any added tests pass; include screenshots or GIFs for UI changes.
 - PR description should summarize intent, list key changes, and note any follow-ups or known gaps; link issues when applicable.
 - Keep diffs small and self-contained; prefer multiple focused PRs over a single broad one.
+
+**Monorepo note:** This project lives inside the `containers` monorepo. Always commit and push from the monorepo root (`/home/wegener/containers`), not from within this subdirectory.

@@ -1,4 +1,4 @@
-import type { ChangeEvent, KeyboardEvent, LegacyRef, RefObject } from "react";
+import type { ChangeEvent, DragEvent, KeyboardEvent, LegacyRef, ReactNode, RefObject } from "react";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -161,6 +161,16 @@ type SiteInfo = {
   heroMediaId?: string | null;
   logoMediaUrl?: string | null;
   heroMediaUrl?: string | null;
+  openingHours?: LocalizedText | null;
+  heroSpringMediaId?: string | null;
+  heroSummerMediaId?: string | null;
+  heroAutumnMediaId?: string | null;
+  heroWinterMediaId?: string | null;
+  heroSpringMediaUrl?: string | null;
+  heroSummerMediaUrl?: string | null;
+  heroAutumnMediaUrl?: string | null;
+  heroWinterMediaUrl?: string | null;
+  footerLinks?: Array<{ label: string; url: string }> | null;
 };
 
 type Faq = {
@@ -493,10 +503,10 @@ const AdminApp = () => {
 
   const uploadMedia = async (file: File, targetType: string, targetId: string, label?: string) => {
     const formData = new FormData();
-    formData.append("file", file);
     formData.append("targetType", targetType);
     formData.append("targetId", targetId);
     if (label) formData.append("label", label);
+    formData.append("file", file);
 
     return await apiFetch<{ id: string; url: string }>("/api/media/upload", {
       method: "POST",
@@ -722,6 +732,12 @@ const AdminApp = () => {
       mapEmbed: draft.mapEmbed ?? null,
       heroMediaId: draft.heroMediaId ?? undefined,
       logoMediaId: draft.logoMediaId ?? undefined,
+      openingHours: draft.openingHours ?? undefined,
+      heroSpringMediaId: draft.heroSpringMediaId ?? undefined,
+      heroSummerMediaId: draft.heroSummerMediaId ?? undefined,
+      heroAutumnMediaId: draft.heroAutumnMediaId ?? undefined,
+      heroWinterMediaId: draft.heroWinterMediaId ?? undefined,
+      footerLinks: draft.footerLinks ?? undefined,
       status: draft.status
     };
 
@@ -788,17 +804,17 @@ const AdminApp = () => {
     );
   }
 
-  const adminSections: Array<{ key: AdminSection; label: string }> = [
+  const adminSections: Array<{ key: AdminSection; label: string; indent?: boolean }> = [
     { key: "overview", label: "Oversikt" },
-    { key: "site", label: "Site info" },
-    { key: "locations", label: "Steder" },
+    { key: "site", label: "Home" },
+    { key: "locations", label: "Steder", indent: true },
+    { key: "concepts", label: "Konsepter", indent: true },
     { key: "activities", label: "Aktiviteter" },
     { key: "partners", label: "Partnere" },
     { key: "stores", label: "Shopping" },
-    { key: "concepts", label: "Konsepter" },
     { key: "inspiration", label: "Inspirasjon" },
     { key: "information", label: "Informasjon" },
-    { key: "faqs", label: "FAQ" },
+    { key: "faqs", label: "FAQ", indent: true },
     { key: "users", label: "Brukere" }
   ];
 
@@ -837,7 +853,7 @@ const AdminApp = () => {
             {adminSections.map((item) => (
               <button
                 key={item.key}
-                className={`admin-nav-item ${section === item.key ? "active" : ""}`}
+                className={`admin-nav-item ${section === item.key ? "active" : ""}${item.indent ? " admin-nav-item-indent" : ""}`}
                 onClick={() => setSection(item.key)}
               >
                 {item.label}
@@ -1065,6 +1081,7 @@ const SiteInfoSection = ({
           short: ensureLocalized(value.short),
           description: ensureLocalized(value.description),
           buttonLabel: ensureLocalized(value.buttonLabel),
+          openingHours: ensureLocalized(value.openingHours ?? undefined),
           mapEmbed: value.mapEmbed ?? "",
           status: value.status ?? "DRAFT"
         }
@@ -1075,6 +1092,7 @@ const SiteInfoSection = ({
           short: emptyLocalized(),
           description: emptyLocalized(),
           buttonLabel: emptyLocalized(),
+          openingHours: emptyLocalized(),
           buttonLink: "",
           facebook: "",
           twitter: "",
@@ -1085,20 +1103,38 @@ const SiteInfoSection = ({
           website: "",
           mapEmbed: "",
           heroMediaId: null,
-          logoMediaId: null
+          logoMediaId: null,
+          heroSpringMediaId: null,
+          heroSummerMediaId: null,
+          heroAutumnMediaId: null,
+          heroWinterMediaId: null,
+          footerLinks: [
+            { label: "", url: "" },
+            { label: "", url: "" },
+            { label: "", url: "" },
+            { label: "", url: "" },
+            { label: "", url: "" }
+          ]
         }
   );
 
   useEffect(() => {
     if (value) {
+      const existingLinks = Array.isArray(value.footerLinks) ? value.footerLinks : [];
+      const paddedLinks: Array<{ label: string; url: string }> = Array.from({ length: 5 }, (_, i) => ({
+        label: existingLinks[i]?.label ?? "",
+        url: existingLinks[i]?.url ?? ""
+      }));
       setDraft({
         ...clone(value),
         name: ensureLocalized(value.name),
         short: ensureLocalized(value.short),
         description: ensureLocalized(value.description),
         buttonLabel: ensureLocalized(value.buttonLabel),
+        openingHours: ensureLocalized(value.openingHours ?? undefined),
         mapEmbed: value.mapEmbed ?? "",
-        status: value.status ?? "DRAFT"
+        status: value.status ?? "DRAFT",
+        footerLinks: paddedLinks
       });
     }
   }, [value]);
@@ -1112,7 +1148,8 @@ const SiteInfoSection = ({
         name: cleanLocalizedValue(draft.name, cleanPlainText),
         short: cleanLocalizedValue(draft.short, cleanRichText),
         description: cleanLocalizedValue(draft.description, cleanRichText),
-        buttonLabel: cleanLocalizedValue(draft.buttonLabel, cleanPlainText)
+        buttonLabel: cleanLocalizedValue(draft.buttonLabel, cleanPlainText),
+        openingHours: cleanLocalizedValue(draft.openingHours ?? emptyLocalized(), cleanPlainText)
       };
       await onSave(cleaned);
       setSaveStatus("Lagret.");
@@ -1123,10 +1160,20 @@ const SiteInfoSection = ({
     }
   };
 
-  const handleUpload = (field: "heroMediaId" | "logoMediaId") => async (file: File) => {
+  const seasonalUrlField: Record<string, keyof SiteInfo> = {
+    heroSpringMediaId: "heroSpringMediaUrl",
+    heroSummerMediaId: "heroSummerMediaUrl",
+    heroAutumnMediaId: "heroAutumnMediaUrl",
+    heroWinterMediaId: "heroWinterMediaUrl",
+    heroMediaId: "heroMediaUrl",
+    logoMediaId: "logoMediaUrl"
+  };
+
+  const handleUpload = (field: "heroMediaId" | "logoMediaId" | "heroSpringMediaId" | "heroSummerMediaId" | "heroAutumnMediaId" | "heroWinterMediaId") => async (file: File) => {
     if (!draft.id) return;
     const asset = await onUpload(file, "SITE_INFO", draft.id);
-    setDraft((current) => ({ ...current, [field]: asset.id, ...(field === "heroMediaId" ? { heroMediaUrl: asset.url } : { logoMediaUrl: asset.url }) }));
+    const urlField = seasonalUrlField[field];
+    setDraft((current) => ({ ...current, [field]: asset.id, [urlField]: asset.url }));
   };
 
   const previewTitle = pickLocalized(draft.name, localeMode);
@@ -1136,68 +1183,145 @@ const SiteInfoSection = ({
 
   return (
     <section className="admin-card">
-      <SectionHeader title="Site info" onSave={handleSave} saving={saving} />
+      <SectionHeader title="Hjemside" onSave={handleSave} saving={saving} />
       {saveStatus && <p className="admin-hint">{saveStatus}</p>}
-      <RichTextToolbar hint="Marker tekst og velg fet skrift eller lenke." />
-      <div className="admin-preview-panel">
-        <div className="admin-preview">
-          <p className="kicker">Forhåndsvisning</p>
-          <section className="page-header admin-preview-header">
-            <p className="kicker">Informasjon</p>
-            <EditableContent
-              as="h1"
-              value={previewTitle}
-              onChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
-              placeholder="Navn"
-              allowNewLines={false}
-            />
-            <EditableContent
-              as="p"
-              value={previewShort}
-              onChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
-              placeholder="Kort tekst"
-              mode="rich"
-            />
-          </section>
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Hero-bilder (1920×1080 px)</p>
+        <div className="admin-seasonal-grid">
+          {(["heroSpringMediaId", "heroSummerMediaId", "heroAutumnMediaId", "heroWinterMediaId"] as const).map((field) => {
+            const labels: Record<string, string> = {
+              heroSpringMediaId: "Vår",
+              heroSummerMediaId: "Sommer",
+              heroAutumnMediaId: "Høst",
+              heroWinterMediaId: "Vinter"
+            };
+            const urlField = seasonalUrlField[field] as keyof SiteInfo;
+            const imageUrl = (draft[urlField] as string | null | undefined) ?? "";
+            return (
+              <div key={field} className="admin-seasonal-item">
+                <ImageUploadZone
+                  imageUrl={imageUrl}
+                  onUpload={handleUpload(field)}
+                  disabled={!draft.id}
+                  hint="1920×1080 px"
+                />
+                <span className="admin-hint">{labels[field]}</span>
+              </div>
+            );
+          })}
         </div>
-        <DetailPreview
-          label="Informasjon"
-          title={previewTitle}
-          description={previewDescription}
-          imageUrl={draft.heroMediaUrl ?? ""}
-          actionLabel={previewButton}
-          onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
-          onDescriptionChange={(next) => setDraft({ ...draft, description: updateLocalizedValue(draft.description, localeMode, next) })}
-          onActionLabelChange={(next) => setDraft({ ...draft, buttonLabel: updateLocalizedValue(draft.buttonLabel, localeMode, next) })}
-        />
       </div>
-      <div className="admin-grid">
-        <InputField label="Knappelenke" value={draft.buttonLink ?? ""} onChange={(value) => setDraft({ ...draft, buttonLink: value })} />
-        <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
-        <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
-        <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
+      <hr className="admin-form-divider" />
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Hjemside-tekst</p>
+        <RichTextToolbar hint="Marker tekst og velg fet skrift eller lenke." />
+        <div className="admin-preview-panel">
+          <div className="admin-preview">
+            <p className="kicker">Forhåndsvisning</p>
+            <section className="page-header admin-preview-header">
+              <p className="kicker">Informasjon</p>
+              <EditableContent
+                as="h1"
+                value={previewTitle}
+                onChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
+                placeholder="Navn"
+                allowNewLines={false}
+              />
+              <EditableContent
+                as="p"
+                value={previewShort}
+                onChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
+                placeholder="Kort tekst"
+                mode="rich"
+              />
+            </section>
+          </div>
+          <DetailPreview
+            label="Informasjon"
+            title={previewTitle}
+            description={previewDescription}
+            imageUrl={draft.heroMediaUrl ?? ""}
+            actionLabel={previewButton}
+            onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
+            onDescriptionChange={(next) => setDraft({ ...draft, description: updateLocalizedValue(draft.description, localeMode, next) })}
+            onActionLabelChange={(next) => setDraft({ ...draft, buttonLabel: updateLocalizedValue(draft.buttonLabel, localeMode, next) })}
+            onImageUpload={handleUpload("heroMediaId")}
+            uploadDisabled={!draft.id}
+          />
+        </div>
       </div>
-      <div className="admin-grid">
-        <InputField label="Facebook" value={draft.facebook ?? ""} onChange={(value) => setDraft({ ...draft, facebook: value })} />
-        <InputField label="Instagram" value={draft.instagram ?? ""} onChange={(value) => setDraft({ ...draft, instagram: value })} />
-        <InputField label="YouTube" value={draft.youtube ?? ""} onChange={(value) => setDraft({ ...draft, youtube: value })} />
+      <hr className="admin-form-divider" />
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Åpningstider</p>
+        <div className="admin-locale-grid">
+          <InputField
+            label="Norsk"
+            value={draft.openingHours?.no ?? ""}
+            onChange={(value) => setDraft({ ...draft, openingHours: updateLocalizedValue(draft.openingHours ?? emptyLocalized(), "no", value) })}
+            multiline
+          />
+          <InputField
+            label="Engelsk"
+            value={draft.openingHours?.en ?? ""}
+            onChange={(value) => setDraft({ ...draft, openingHours: updateLocalizedValue(draft.openingHours ?? emptyLocalized(), "en", value) })}
+            multiline
+          />
+        </div>
+      </div>
+      <hr className="admin-form-divider" />
+      <MediaField
+        label="Logo"
+        currentUrl={draft.logoMediaUrl ?? ""}
+        onUpload={handleUpload("logoMediaId")}
+        disabled={!draft.id}
+        hint="Forslag: 800x800 px (PNG med transparent bakgrunn)."
+      />
+      <hr className="admin-form-divider" />
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Kontakt</p>
+        <div className="admin-grid">
+          <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
+          <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
+          <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
+          <InputField label="Knappelenke" value={draft.buttonLink ?? ""} onChange={(value) => setDraft({ ...draft, buttonLink: value })} />
+        </div>
+      </div>
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Sosiale medier</p>
+        <div className="admin-grid">
+          <InputField label="Facebook" value={draft.facebook ?? ""} onChange={(value) => setDraft({ ...draft, facebook: value })} />
+          <InputField label="Instagram" value={draft.instagram ?? ""} onChange={(value) => setDraft({ ...draft, instagram: value })} />
+          <InputField label="YouTube" value={draft.youtube ?? ""} onChange={(value) => setDraft({ ...draft, youtube: value })} />
+        </div>
       </div>
       <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
-      <div className="admin-grid">
-        <MediaField
-          label="Hero-bilde"
-          currentUrl={draft.heroMediaUrl ?? ""}
-          onUpload={handleUpload("heroMediaId")}
-          disabled={!draft.id}
-          hint="Forslag: 1600x1000 px (JPG/WEBP)."
-        />
-        <MediaField
-          label="Logo"
-          currentUrl={draft.logoMediaUrl ?? ""}
-          onUpload={handleUpload("logoMediaId")}
-          disabled={!draft.id}
-          hint="Forslag: 800x800 px (PNG med transparent bakgrunn)."
-        />
+      <hr className="admin-form-divider" />
+      <div className="admin-fieldset">
+        <p className="admin-fieldset-label">Footer-lenker (maks 5)</p>
+        <div className="admin-footer-links">
+          {(draft.footerLinks ?? [{ label: "", url: "" }, { label: "", url: "" }, { label: "", url: "" }, { label: "", url: "" }, { label: "", url: "" }]).map((link, i) => (
+            <div key={i} className="admin-footer-link-row">
+              <InputField
+                label={`Lenke ${i + 1} — Tekst`}
+                value={link.label}
+                onChange={(val) => {
+                  const next = [...(draft.footerLinks ?? [])];
+                  next[i] = { ...next[i], label: val };
+                  setDraft({ ...draft, footerLinks: next });
+                }}
+              />
+              <InputField
+                label="URL"
+                value={link.url}
+                onChange={(val) => {
+                  const next = [...(draft.footerLinks ?? [])];
+                  next[i] = { ...next[i], url: val };
+                  setDraft({ ...draft, footerLinks: next });
+                }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
       <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
     </section>
@@ -1336,6 +1460,8 @@ const LocationsSection = ({
               imageUrl={draft.heroMediaUrl ?? ""}
               onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
               onDescriptionChange={(next) => setDraft({ ...draft, summary: updateLocalizedValue(draft.summary, localeMode, next) })}
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
             <PreviewCard
               title={previewTitle}
@@ -1344,18 +1470,10 @@ const LocationsSection = ({
               badge={previewBadge}
               onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
               onDescriptionChange={(next) => setDraft({ ...draft, summary: updateLocalizedValue(draft.summary, localeMode, next) })}
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
           </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
-          </div>
-          <MediaField
-            label="Hero-bilde"
-            currentUrl={draft.heroMediaUrl ?? ""}
-            onUpload={handleUpload}
-            disabled={!draft.id}
-            hint="Forslag: 1600x1000 px (JPG/WEBP)."
-          />
           <GalleryField
             label="Galleri"
             targetType="LOCATION"
@@ -1365,23 +1483,35 @@ const LocationsSection = ({
             excludeMediaIds={draft.heroMediaId ? [draft.heroMediaId] : []}
             hint="Forslag: 1600x1000 px. Flere bilder kan brukes senere."
           />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Vis</p>
+            <div className="admin-checks-row">
+              <label className="admin-field">
+                Vis på forsiden
+                <input
+                  type="checkbox"
+                  checked={draft.showOnHome ?? false}
+                  onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
+                />
+              </label>
+              <label className="admin-field">
+                Vis i meny
+                <input
+                  type="checkbox"
+                  checked={draft.showOnMenu ?? true}
+                  onChange={(event) => setDraft({ ...draft, showOnMenu: event.target.checked })}
+                />
+              </label>
+            </div>
+          </div>
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
-          <label className="admin-field">
-            Vis på forsiden
-            <input
-              type="checkbox"
-              checked={draft.showOnHome ?? false}
-              onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
-            />
-          </label>
-          <label className="admin-field">
-            Vis i meny
-            <input
-              type="checkbox"
-              checked={draft.showOnMenu ?? true}
-              onChange={(event) => setDraft({ ...draft, showOnMenu: event.target.checked })}
-            />
-          </label>
         </div>
       </div>
     </section>
@@ -1538,6 +1668,8 @@ const ActivitiesSection = ({
               onDescriptionChange={(next) =>
                 setDraft({ ...draft, description: updateLocalizedValue(draft.description, localeMode, next) })
               }
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
             <PreviewCard
               title={previewTitle}
@@ -1546,47 +1678,10 @@ const ActivitiesSection = ({
               badge={previewBadge}
               onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
               onDescriptionChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
           </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
-            <SelectField
-              label="Partner"
-              value={draft.partnerId ?? ""}
-              options={[{ value: "", label: "Ingen partner" }, ...partners.map((partner) => ({ value: partner.id, label: displayName(partner.name) }))]}
-              onChange={(value) => setDraft({ ...draft, partnerId: value || null })}
-            />
-          </div>
-          <div className="admin-grid">
-            <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
-            <ArrayField label="Sesong" value={draft.season ?? []} onChange={(value) => setDraft({ ...draft, season: value })} />
-            <MultiSelectField
-              label="Sted"
-              value={draft.location ?? []}
-              options={locationOptions}
-              onChange={(value) => setDraft({ ...draft, location: value })}
-              hint={!locationOptions.length ? "Legg til steder først." : undefined}
-            />
-          </div>
-          <MultiSelectField
-            label="Konsepter"
-            value={draft.conceptIds ?? []}
-            options={conceptOptions}
-            onChange={(value) => setDraft({ ...draft, conceptIds: value })}
-            hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
-          />
-          <div className="admin-grid">
-            <InputField label="Booking lenke" value={draft.bookingLink ?? ""} onChange={(value) => setDraft({ ...draft, bookingLink: value })} />
-            <InputField label="Kapasitet" value={draft.capacity ?? ""} onChange={(value) => setDraft({ ...draft, capacity: value })} />
-          </div>
-          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
-          <MediaField
-            label="Hero-bilde"
-            currentUrl={draft.heroMediaUrl ?? ""}
-            onUpload={handleUpload}
-            disabled={!draft.id}
-            hint="Forslag: 1600x1000 px (JPG/WEBP)."
-          />
           <GalleryField
             label="Galleri"
             targetType="ACTIVITY"
@@ -1595,6 +1690,54 @@ const ActivitiesSection = ({
             onUpload={onUpload}
             excludeMediaIds={draft.heroMediaId ? [draft.heroMediaId] : []}
             hint="Forslag: 1600x1000 px. Flere bilder vises på aktivitetssiden."
+          />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+              <SelectField
+                label="Partner"
+                value={draft.partnerId ?? ""}
+                options={[{ value: "", label: "Ingen partner" }, ...partners.map((partner) => ({ value: partner.id, label: displayName(partner.name) }))]}
+                onChange={(value) => setDraft({ ...draft, partnerId: value || null })}
+              />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Klassifisering</p>
+            <div className="admin-grid">
+              <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
+              <ArrayField label="Sesong" value={draft.season ?? []} onChange={(value) => setDraft({ ...draft, season: value })} />
+              <MultiSelectField
+                label="Sted"
+                value={draft.location ?? []}
+                options={locationOptions}
+                onChange={(value) => setDraft({ ...draft, location: value })}
+                hint={!locationOptions.length ? "Legg til steder først." : undefined}
+              />
+              <MultiSelectField
+                label="Konsepter"
+                value={draft.conceptIds ?? []}
+                options={conceptOptions}
+                onChange={(value) => setDraft({ ...draft, conceptIds: value })}
+                hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
+              />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Booking</p>
+            <div className="admin-grid">
+              <InputField label="Booking lenke" value={draft.bookingLink ?? ""} onChange={(value) => setDraft({ ...draft, bookingLink: value })} />
+              <InputField label="Kapasitet" value={draft.capacity ?? ""} onChange={(value) => setDraft({ ...draft, capacity: value })} />
+            </div>
+          </div>
+          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
+          <SeoHints
+            name={pickLocalized(draft.name, localeMode)}
+            description={pickLocalized(draft.description, localeMode)}
+            slug={draft.slug}
+            hasImage={Boolean(draft.heroMediaUrl)}
           />
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
         </div>
@@ -1765,63 +1908,33 @@ const PartnersSection = ({
               onActionLabelChange={(next) =>
                 setDraft({ ...draft, buttonLabel: updateLocalizedValue(draft.buttonLabel, localeMode, next) })
               }
+              onImageUpload={handleUpload("heroMediaId")}
+              uploadDisabled={!draft.id}
             />
-            <PreviewCard
-              title={previewTitle}
-              description={previewShort}
-              imageUrl={previewImage}
-              badge={previewBadge}
-              logo={Boolean(draft.logoMediaUrl)}
-              onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
-              onDescriptionChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
-            />
-          </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
-            <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
-            <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
-            <InputField label="Telefon" value={draft.phone ?? ""} onChange={(value) => setDraft({ ...draft, phone: value })} />
-            <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
-          </div>
-          <div className="admin-grid">
-            <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
-            <MultiSelectField
-              label="Sted"
-              value={draft.location ?? []}
-              options={locationOptions}
-              onChange={(value) => setDraft({ ...draft, location: value })}
-              hint={!locationOptions.length ? "Legg til steder først." : undefined}
-            />
-            <ArrayField label="Målgruppe" value={draft.target ?? []} onChange={(value) => setDraft({ ...draft, target: value })} />
-          </div>
-          <MultiSelectField
-            label="Konsepter"
-            value={draft.conceptIds ?? []}
-            options={conceptOptions}
-            onChange={(value) => setDraft({ ...draft, conceptIds: value })}
-            hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
-          />
-          <div className="admin-grid">
-            <InputField label="Facebook" value={draft.facebook ?? ""} onChange={(value) => setDraft({ ...draft, facebook: value })} />
-            <InputField label="Instagram" value={draft.instagram ?? ""} onChange={(value) => setDraft({ ...draft, instagram: value })} />
-            <InputField label="YouTube" value={draft.youtube ?? ""} onChange={(value) => setDraft({ ...draft, youtube: value })} />
-          </div>
-          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
-          <div className="admin-grid">
-            <MediaField
-              label="Hero-bilde"
-              currentUrl={draft.heroMediaUrl ?? ""}
-              onUpload={handleUpload("heroMediaId")}
-              disabled={!draft.id}
-              hint="Forslag: 1600x1000 px (JPG/WEBP)."
-            />
-            <MediaField
-              label="Logo"
-              currentUrl={draft.logoMediaUrl ?? ""}
-              onUpload={handleUpload("logoMediaId")}
-              disabled={!draft.id}
-              hint="Forslag: 800x800 px (PNG med transparent bakgrunn)."
-            />
+            <div className="admin-preview-card-row">
+              <PreviewCard
+                title={previewTitle}
+                description={previewShort}
+                imageUrl={previewImage}
+                badge={previewBadge}
+                logo={Boolean(draft.logoMediaUrl)}
+                onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
+                onDescriptionChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
+                onImageUpload={handleUpload(draft.logoMediaUrl ? "logoMediaId" : "heroMediaId")}
+                uploadDisabled={!draft.id}
+              />
+              <div className="admin-logo-field">
+                <span className="admin-logo-label">Logo</span>
+                <ImageUploadZone
+                  className="admin-logo-preview"
+                  imageUrl={draft.logoMediaUrl ?? ""}
+                  onUpload={handleUpload("logoMediaId")}
+                  disabled={!draft.id}
+                  hint="800\u00d7800 px, PNG transparent"
+                  logo
+                />
+              </div>
+            </div>
           </div>
           <GalleryField
             label="Galleri"
@@ -1831,6 +1944,58 @@ const PartnersSection = ({
             onUpload={onUpload}
             excludeMediaIds={[draft.heroMediaId, draft.logoMediaId].filter(Boolean) as string[]}
             hint="Forslag: 1600x1000 px. Flere bilder vises på partnersiden."
+          />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Kontakt</p>
+            <div className="admin-grid">
+              <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
+              <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
+              <InputField label="Telefon" value={draft.phone ?? ""} onChange={(value) => setDraft({ ...draft, phone: value })} />
+              <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Klassifisering</p>
+            <div className="admin-grid">
+              <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
+              <ArrayField label="Målgruppe" value={draft.target ?? []} onChange={(value) => setDraft({ ...draft, target: value })} />
+              <MultiSelectField
+                label="Sted"
+                value={draft.location ?? []}
+                options={locationOptions}
+                onChange={(value) => setDraft({ ...draft, location: value })}
+                hint={!locationOptions.length ? "Legg til steder først." : undefined}
+              />
+              <MultiSelectField
+                label="Konsepter"
+                value={draft.conceptIds ?? []}
+                options={conceptOptions}
+                onChange={(value) => setDraft({ ...draft, conceptIds: value })}
+                hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
+              />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Sosiale medier</p>
+            <div className="admin-grid">
+              <InputField label="Facebook" value={draft.facebook ?? ""} onChange={(value) => setDraft({ ...draft, facebook: value })} />
+              <InputField label="Instagram" value={draft.instagram ?? ""} onChange={(value) => setDraft({ ...draft, instagram: value })} />
+              <InputField label="YouTube" value={draft.youtube ?? ""} onChange={(value) => setDraft({ ...draft, youtube: value })} />
+            </div>
+          </div>
+          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
+          <SeoHints
+            name={pickLocalized(draft.name, localeMode)}
+            description={pickLocalized(draft.description, localeMode)}
+            slug={draft.slug}
+            hasImage={Boolean(draft.heroMediaUrl)}
           />
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
         </div>
@@ -2003,63 +2168,32 @@ const StoresSection = ({
               onActionLabelChange={(next) =>
                 setDraft({ ...draft, buttonLabel: updateLocalizedValue(draft.buttonLabel, localeMode, next) })
               }
+              onImageUpload={handleUpload("heroMediaId")}
+              uploadDisabled={!draft.id}
             />
-            <PreviewCard
-              title={previewTitle}
-              description={previewShort}
-              imageUrl={draft.heroMediaUrl ?? ""}
-              badge={previewBadge}
-              onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
-              onDescriptionChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
-            />
-          </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
-            <SelectField
-              label="Partner"
-              value={draft.partnerId ?? ""}
-              options={[{ value: "", label: "Ingen partner" }, ...partners.map((partner) => ({ value: partner.id, label: displayName(partner.name) }))]}
-              onChange={(value) => setDraft({ ...draft, partnerId: value || null })}
-            />
-            <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
-            <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
-            <InputField label="Telefon" value={draft.phone ?? ""} onChange={(value) => setDraft({ ...draft, phone: value })} />
-            <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
-          </div>
-          <div className="admin-grid">
-            <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
-            <MultiSelectField
-              label="Sted"
-              value={draft.location ?? []}
-              options={locationOptions}
-              onChange={(value) => setDraft({ ...draft, location: value })}
-              hint={!locationOptions.length ? "Legg til steder først." : undefined}
-            />
-            <ArrayField label="Målgruppe" value={draft.target ?? []} onChange={(value) => setDraft({ ...draft, target: value })} />
-          </div>
-          <MultiSelectField
-            label="Konsepter"
-            value={draft.conceptIds ?? []}
-            options={conceptOptions}
-            onChange={(value) => setDraft({ ...draft, conceptIds: value })}
-            hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
-          />
-          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
-          <div className="admin-grid">
-            <MediaField
-              label="Hero-bilde"
-              currentUrl={draft.heroMediaUrl ?? ""}
-              onUpload={handleUpload("heroMediaId")}
-              disabled={!draft.id}
-              hint="Forslag: 1600x1000 px (JPG/WEBP)."
-            />
-            <MediaField
-              label="Logo"
-              currentUrl={draft.logoMediaUrl ?? ""}
-              onUpload={handleUpload("logoMediaId")}
-              disabled={!draft.id}
-              hint="Forslag: 800x800 px (PNG med transparent bakgrunn)."
-            />
+            <div className="admin-preview-card-row">
+              <PreviewCard
+                title={previewTitle}
+                description={previewShort}
+                imageUrl={draft.heroMediaUrl ?? ""}
+                badge={previewBadge}
+                onTitleChange={(next) => setDraft({ ...draft, name: updateLocalizedValue(draft.name, localeMode, next) })}
+                onDescriptionChange={(next) => setDraft({ ...draft, short: updateLocalizedValue(draft.short, localeMode, next) })}
+                onImageUpload={handleUpload(draft.logoMediaUrl ? "logoMediaId" : "heroMediaId")}
+                uploadDisabled={!draft.id}
+              />
+              <div className="admin-logo-field">
+                <span className="admin-logo-label">Logo</span>
+                <ImageUploadZone
+                  className="admin-logo-preview"
+                  imageUrl={draft.logoMediaUrl ?? ""}
+                  onUpload={handleUpload("logoMediaId")}
+                  disabled={!draft.id}
+                  hint="800\u00d7800 px, PNG transparent"
+                  logo
+                />
+              </div>
+            </div>
           </div>
           <GalleryField
             label="Galleri"
@@ -2069,6 +2203,56 @@ const StoresSection = ({
             onUpload={onUpload}
             excludeMediaIds={[draft.heroMediaId, draft.logoMediaId].filter(Boolean) as string[]}
             hint="Forslag: 1600x1000 px. Flere bilder vises på butikksiden."
+          />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+              <SelectField
+                label="Partner"
+                value={draft.partnerId ?? ""}
+                options={[{ value: "", label: "Ingen partner" }, ...partners.map((partner) => ({ value: partner.id, label: displayName(partner.name) }))]}
+                onChange={(value) => setDraft({ ...draft, partnerId: value || null })}
+              />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Kontakt</p>
+            <div className="admin-grid">
+              <InputField label="Adresse" value={draft.address ?? ""} onChange={(value) => setDraft({ ...draft, address: value })} />
+              <InputField label="E-post" value={draft.email ?? ""} onChange={(value) => setDraft({ ...draft, email: value })} />
+              <InputField label="Telefon" value={draft.phone ?? ""} onChange={(value) => setDraft({ ...draft, phone: value })} />
+              <InputField label="Nettside" value={draft.website ?? ""} onChange={(value) => setDraft({ ...draft, website: value })} />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Klassifisering</p>
+            <div className="admin-grid">
+              <ArrayField label="Kategori" value={draft.category ?? []} onChange={(value) => setDraft({ ...draft, category: value })} />
+              <ArrayField label="Målgruppe" value={draft.target ?? []} onChange={(value) => setDraft({ ...draft, target: value })} />
+              <MultiSelectField
+                label="Sted"
+                value={draft.location ?? []}
+                options={locationOptions}
+                onChange={(value) => setDraft({ ...draft, location: value })}
+                hint={!locationOptions.length ? "Legg til steder først." : undefined}
+              />
+              <MultiSelectField
+                label="Konsepter"
+                value={draft.conceptIds ?? []}
+                options={conceptOptions}
+                onChange={(value) => setDraft({ ...draft, conceptIds: value })}
+                hint={!conceptOptions.length ? "Legg til konsepter først." : undefined}
+              />
+            </div>
+          </div>
+          <InputField label="Map embed" value={draft.mapEmbed ?? ""} onChange={(value) => setDraft({ ...draft, mapEmbed: value })} multiline />
+          <SeoHints
+            name={pickLocalized(draft.name, localeMode)}
+            description={pickLocalized(draft.description, localeMode)}
+            slug={draft.slug}
+            hasImage={Boolean(draft.heroMediaUrl)}
           />
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
         </div>
@@ -2194,17 +2378,26 @@ const ConceptsSection = ({
               onDescriptionChange={(next) =>
                 setDraft({ ...draft, summary: updateLocalizedValue(draft.summary, localeMode, next) })
               }
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
             <article className="concept-card admin-preview-card">
-              <div className="concept-media" style={draft.heroMediaUrl ? { backgroundImage: `url(${draft.heroMediaUrl})` } : undefined}>
-                <EditableContent
-                  as="span"
-                  value={previewTag}
-                  onChange={(next) => setDraft({ ...draft, tag: updateLocalizedValue(draft.tag, localeMode, next) })}
-                  placeholder="Merkelapp"
-                  allowNewLines={false}
-                />
-              </div>
+              <ImageUploadZone
+                className="concept-media"
+                imageUrl={draft.heroMediaUrl ?? ""}
+                onUpload={handleUpload}
+                disabled={!draft.id}
+              >
+                <span className="concept-editable-wrapper" onClick={(e) => e.stopPropagation()}>
+                  <EditableContent
+                    as="span"
+                    value={previewTag}
+                    onChange={(next) => setDraft({ ...draft, tag: updateLocalizedValue(draft.tag, localeMode, next) })}
+                    placeholder="Merkelapp"
+                    allowNewLines={false}
+                  />
+                </span>
+              </ImageUploadZone>
               <div className="concept-body">
                 <EditableContent
                   as="h4"
@@ -2234,25 +2427,25 @@ const ConceptsSection = ({
               />
             </div>
           </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+            </div>
           </div>
-          <MediaField
-            label="Hero-bilde"
-            currentUrl={draft.heroMediaUrl ?? ""}
-            onUpload={handleUpload}
-            disabled={!draft.id}
-            hint="Forslag: 1600x1000 px (JPG/WEBP)."
-          />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Vis</p>
+            <label className="admin-field">
+              Vis på forsiden
+              <input
+                type="checkbox"
+                checked={draft.showOnHome ?? true}
+                onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
+              />
+            </label>
+          </div>
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
-          <label className="admin-field">
-            Vis på forsiden
-            <input
-              type="checkbox"
-              checked={draft.showOnHome ?? true}
-              onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
-            />
-          </label>
         </div>
       </div>
     </section>
@@ -2395,6 +2588,8 @@ const ArticlesSection = ({
               onActionLabelChange={(next) =>
                 setDraft({ ...draft, buttonLabel: updateLocalizedValue(draft.buttonLabel, localeMode, next) })
               }
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
             <PreviewCard
               title={previewTitle}
@@ -2403,6 +2598,8 @@ const ArticlesSection = ({
               variant="story"
               onTitleChange={(next) => setDraft({ ...draft, title: updateLocalizedValue(draft.title, localeMode, next) })}
               onDescriptionChange={(next) => setDraft({ ...draft, summary: updateLocalizedValue(draft.summary, localeMode, next) })}
+              onImageUpload={handleUpload}
+              uploadDisabled={!draft.id}
             />
             <div className="admin-preview">
               <p className="kicker">Innhold</p>
@@ -2416,32 +2613,6 @@ const ArticlesSection = ({
               />
             </div>
           </div>
-          <div className="admin-grid">
-            <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
-            <InputField label="Forfatter" value={draft.author ?? ""} onChange={(value) => setDraft({ ...draft, author: value })} />
-            <InputField
-              label="Prioritet"
-              value={draft.priority?.toString() ?? ""}
-              onChange={(value) => setDraft({ ...draft, priority: value ? Number(value) : null })}
-            />
-            <InputField label="Knappelenke" value={draft.buttonLink ?? ""} onChange={(value) => setDraft({ ...draft, buttonLink: value })} />
-            {type === "inspiration" && (
-              <MultiSelectField
-                label="Sted"
-                value={draft.location ?? []}
-                options={locationOptions}
-                onChange={(value) => setDraft({ ...draft, location: value })}
-                hint={!locationOptions.length ? "Legg til steder først." : undefined}
-              />
-            )}
-          </div>
-          <MediaField
-            label="Hero-bilde"
-            currentUrl={draft.heroMediaUrl ?? ""}
-            onUpload={handleUpload}
-            disabled={!draft.id}
-            hint="Forslag: 1600x1000 px (JPG/WEBP)."
-          />
           <GalleryField
             label="Galleri"
             targetType="ARTICLE"
@@ -2451,15 +2622,52 @@ const ArticlesSection = ({
             excludeMediaIds={draft.heroMediaId ? [draft.heroMediaId] : []}
             hint="Forslag: 1600x1000 px. Flere bilder vises på artikkelsiden."
           />
+          <hr className="admin-form-divider" />
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Grunnleggende</p>
+            <div className="admin-grid">
+              <InputField label="Slug" value={draft.slug ?? ""} onChange={(value) => setDraft({ ...draft, slug: value })} />
+              <InputField label="Forfatter" value={draft.author ?? ""} onChange={(value) => setDraft({ ...draft, author: value })} />
+              <InputField
+                label="Prioritet"
+                value={draft.priority?.toString() ?? ""}
+                onChange={(value) => setDraft({ ...draft, priority: value ? Number(value) : null })}
+              />
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Lenker</p>
+            <div className="admin-grid">
+              <InputField label="Knappelenke" value={draft.buttonLink ?? ""} onChange={(value) => setDraft({ ...draft, buttonLink: value })} />
+              {type === "inspiration" && (
+                <MultiSelectField
+                  label="Sted"
+                  value={draft.location ?? []}
+                  options={locationOptions}
+                  onChange={(value) => setDraft({ ...draft, location: value })}
+                  hint={!locationOptions.length ? "Legg til steder først." : undefined}
+                />
+              )}
+            </div>
+          </div>
+          <div className="admin-fieldset">
+            <p className="admin-fieldset-label">Vis</p>
+            <label className="admin-field">
+              Vis på forsiden
+              <input
+                type="checkbox"
+                checked={draft.showOnHome ?? false}
+                onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
+              />
+            </label>
+          </div>
+          <SeoHints
+            name={pickLocalized(draft.title, localeMode)}
+            description={pickLocalized(draft.summary, localeMode)}
+            slug={draft.slug}
+            hasImage={Boolean(draft.heroMediaUrl)}
+          />
           <StatusField value={draft.status} onChange={(value) => setDraft({ ...draft, status: value })} />
-          <label className="admin-field">
-            Vis på forsiden
-            <input
-              type="checkbox"
-              checked={draft.showOnHome ?? false}
-              onChange={(event) => setDraft({ ...draft, showOnHome: event.target.checked })}
-            />
-          </label>
         </div>
       </div>
     </section>
@@ -2920,6 +3128,51 @@ const LocalizedField = ({
   );
 };
 
+const SeoHints = ({
+  name,
+  description,
+  slug,
+  hasImage
+}: {
+  name?: string;
+  description?: string;
+  slug?: string | null;
+  hasImage?: boolean;
+}) => {
+  const hints = useMemo(() => {
+    const nameLen = stripHtml(name ?? "").length;
+    const descLen = stripHtml(description ?? "").length;
+    const checks: { label: string; level: "ok" | "warn" | "error"; detail: string }[] = [];
+
+    if (!nameLen) checks.push({ label: "Navn", level: "error", detail: "Navn mangler" });
+    else if (nameLen <= 40) checks.push({ label: "Navn", level: "ok", detail: `${nameLen} tegn (maks 40 anbefalt)` });
+    else checks.push({ label: "Navn", level: "warn", detail: `${nameLen} tegn \u2014 for langt, kan brekke layout (maks 40)` });
+
+    if (!descLen) checks.push({ label: "Beskrivelse", level: "error", detail: "Beskrivelse mangler" });
+    else if (descLen >= 120 && descLen <= 160) checks.push({ label: "Beskrivelse", level: "ok", detail: `${descLen} tegn (120\u2013160 anbefalt)` });
+    else checks.push({ label: "Beskrivelse", level: "warn", detail: `${descLen} tegn (120\u2013160 anbefalt)` });
+
+    if (slug) checks.push({ label: "Slug", level: "ok", detail: slug });
+    else checks.push({ label: "Slug", level: "error", detail: "Slug mangler" });
+
+    if (hasImage) checks.push({ label: "Bilde", level: "ok", detail: "Hovedbilde satt" });
+    else checks.push({ label: "Bilde", level: "warn", detail: "Hovedbilde mangler" });
+
+    return checks;
+  }, [name, description, slug, hasImage]);
+
+  return (
+    <div className="admin-seo-hints">
+      <span className="seo-label">SEO</span>
+      {hints.map((h) => (
+        <span key={h.label} className={`seo-chip seo-${h.level}`} title={h.detail}>
+          {h.label}
+        </span>
+      ))}
+    </div>
+  );
+};
+
 const StatusField = ({ value, onChange }: { value: ContentStatus; onChange: (value: ContentStatus) => void }) => (
   <SelectField
     label="Status"
@@ -2928,6 +3181,118 @@ const StatusField = ({ value, onChange }: { value: ContentStatus; onChange: (val
     onChange={(next) => onChange(next as ContentStatus)}
   />
 );
+
+const ImageUploadZone = ({
+  imageUrl,
+  className,
+  onUpload,
+  disabled,
+  hint,
+  logo,
+  children
+}: {
+  imageUrl: string;
+  className?: string;
+  onUpload?: (file: File) => Promise<void>;
+  disabled?: boolean;
+  hint?: string;
+  logo?: boolean;
+  children?: ReactNode;
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+
+  const handleFile = async (file: File) => {
+    if (!onUpload || disabled) return;
+    setUploading(true);
+    try {
+      await onUpload(file);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleClick = () => {
+    if (!disabled && !uploading && onUpload) inputRef.current?.click();
+  };
+
+  const handleDragOver = (e: DragEvent) => { e.preventDefault(); if (!disabled) setDragOver(true); };
+  const handleDragLeave = (e: DragEvent) => { e.preventDefault(); setDragOver(false); };
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) void handleFile(file);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) void handleFile(file);
+    e.target.value = "";
+  };
+
+  const zoneClasses = [
+    className,
+    "upload-zone",
+    dragOver && "drag-over",
+    uploading && "uploading",
+    !imageUrl && !children && "empty",
+    disabled && "upload-disabled"
+  ].filter(Boolean).join(" ");
+
+  const mediaStyle = !logo && imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined;
+
+  return (
+    <div
+      className={zoneClasses}
+      style={mediaStyle}
+      onClick={handleClick}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {logo && imageUrl && <img src={imageUrl} alt="" />}
+      {children}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleInputChange}
+      />
+      {uploading && (
+        <div className="upload-spinner-overlay">
+          <div className="upload-spinner" />
+        </div>
+      )}
+      {!uploading && !disabled && onUpload && imageUrl && (
+        <div className="upload-overlay">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+          <span>{hint || "Klikk for a laste opp bilde"}</span>
+        </div>
+      )}
+      {!uploading && !disabled && onUpload && !imageUrl && !children && (
+        <div className="upload-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+          <span>Dra bilde hit eller klikk</span>
+        </div>
+      )}
+      {disabled && !imageUrl && (
+        <div className="upload-placeholder">
+          <span>Lagre forst for a laste opp bilder</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MediaField = ({
   label,
@@ -2942,30 +3307,21 @@ const MediaField = ({
   disabled?: boolean;
   hint?: string;
 }) => {
-  const [uploading, setUploading] = useState(false);
-
-  const handleFile = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || disabled) return;
-    setUploading(true);
-    try {
-      await onUpload(file);
-    } finally {
-      setUploading(false);
-    }
+  const handleUpload = async (file: File) => {
+    await onUpload(file);
   };
 
   return (
     <div className="admin-field">
       <span>{label}</span>
-      <div className="admin-media">
-        <div
-          className="admin-media-preview"
-          style={currentUrl ? { backgroundImage: `url(${currentUrl})` } : undefined}
-        />
-        <input type="file" accept="image/*" disabled={disabled || uploading} onChange={handleFile} />
-      </div>
-      {hint && <p className="admin-hint">{hint}</p>}
+      <ImageUploadZone
+        className="admin-media-preview"
+        imageUrl={currentUrl}
+        onUpload={handleUpload}
+        disabled={disabled}
+        hint={hint}
+        logo={label.toLowerCase().includes("logo")}
+      />
     </div>
   );
 };
@@ -3013,12 +3369,20 @@ const GalleryField = ({
     void loadItems();
   }, [loadItems]);
 
-  const handleUpload = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !targetId) return;
-    event.target.value = "";
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [dragOver, setDragOver] = useState(false);
+
+  const handleFile = async (file: File) => {
+    if (!targetId) return;
     await onUpload(file, targetType, targetId, "gallery");
     await loadItems();
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    event.target.value = "";
+    void handleFile(file);
   };
 
   const handleRemove = async (linkId: string) => {
@@ -3041,8 +3405,25 @@ const GalleryField = ({
   return (
     <div className="admin-field">
       <span>{label}</span>
-      <div className="admin-media">
-        <input type="file" accept="image/*" disabled={!targetId} onChange={handleUpload} />
+      <div
+        className={`admin-gallery-upload${dragOver ? " drag-over" : ""}${!targetId ? " upload-disabled" : ""}`}
+        onClick={() => targetId && inputRef.current?.click()}
+        onDragOver={(e) => { e.preventDefault(); if (targetId) setDragOver(true); }}
+        onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
+        onDrop={(e) => {
+          e.preventDefault();
+          setDragOver(false);
+          const file = e.dataTransfer.files[0];
+          if (file) void handleFile(file);
+        }}
+      >
+        <input ref={inputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={handleInputChange} />
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
+        </svg>
+        <span>Dra bilder hit eller klikk for a laste opp</span>
       </div>
       {hint && <p className="admin-hint">{hint}</p>}
       {error && <p className="admin-error">{error}</p>}
@@ -3196,7 +3577,9 @@ const PreviewCard = ({
   variant = "feature",
   logo = false,
   onTitleChange,
-  onDescriptionChange
+  onDescriptionChange,
+  onImageUpload,
+  uploadDisabled
 }: {
   title: string;
   description: string;
@@ -3206,17 +3589,22 @@ const PreviewCard = ({
   logo?: boolean;
   onTitleChange?: (value: string) => void;
   onDescriptionChange?: (value: string) => void;
+  onImageUpload?: (file: File) => Promise<void>;
+  uploadDisabled?: boolean;
 }) => {
   const cardClass = variant === "story" ? "story-card" : "feature-card";
   const bodyClass = variant === "story" ? "" : "card-body";
   const mediaClass = `card-media${logo ? " logo-media" : ""}`;
-  const mediaStyle = !logo && imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined;
 
   return (
     <article className={`${cardClass} admin-preview-card`}>
-      <div className={mediaClass} style={mediaStyle}>
-        {logo && imageUrl && <img src={imageUrl} alt={title || "Logo"} />}
-      </div>
+      {onImageUpload ? (
+        <ImageUploadZone className={mediaClass} imageUrl={imageUrl} onUpload={onImageUpload} disabled={uploadDisabled} logo={logo} />
+      ) : (
+        <div className={mediaClass} style={!logo && imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined}>
+          {logo && imageUrl && <img src={imageUrl} alt={title || "Logo"} />}
+        </div>
+      )}
       <div className={bodyClass || undefined}>
         {badge && <span className="badge ghost badge-fixed">{badge}</span>}
         {onTitleChange ? (
@@ -3242,7 +3630,9 @@ const DetailPreview = ({
   actionLabel,
   onTitleChange,
   onDescriptionChange,
-  onActionLabelChange
+  onActionLabelChange,
+  onImageUpload,
+  uploadDisabled
 }: {
   label: string;
   title: string;
@@ -3252,11 +3642,17 @@ const DetailPreview = ({
   onTitleChange?: (value: string) => void;
   onDescriptionChange?: (value: string) => void;
   onActionLabelChange?: (value: string) => void;
+  onImageUpload?: (file: File) => Promise<void>;
+  uploadDisabled?: boolean;
 }) => (
   <div className="admin-preview">
     <p className="kicker">Forhåndsvisning</p>
     <section className="detail-hero admin-preview-hero">
-      <div className="detail-media" style={imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined} />
+      {onImageUpload ? (
+        <ImageUploadZone className="detail-media" imageUrl={imageUrl} onUpload={onImageUpload} disabled={uploadDisabled} />
+      ) : (
+        <div className="detail-media" style={imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined} />
+      )}
       <div className="detail-body">
         <p className="kicker">{label}</p>
         {onTitleChange ? (

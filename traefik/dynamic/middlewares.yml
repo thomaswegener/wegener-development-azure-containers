@@ -13,7 +13,7 @@ http:
 
     sledespesialisten-redirect:
       redirectRegex:
-        regex: "^https?://(www\.)?sledespesialisten\.no(/.*)?$"
+        regex: "^https?://(www\\.)?sledespesialisten\\.no(/.*)?$"
         replacement: "https://piratehusky.no/sledespesialisten"
         permanent: true
 
@@ -31,3 +31,17 @@ http:
       basicauth:
         users:
           - "wegener:$apr1$1Ci8y6KX$0lnVS7xDtGXVlrR2rfXN20"
+
+    bot-ratelimit:
+      rateLimit:
+        average: 20
+        burst: 200
+        sourceCriterion:
+          ipStrategy:
+            depth: 0
+
+    block-empty-ua:
+      plugin:
+        blockuseragent:
+          regex:
+            - "^$"

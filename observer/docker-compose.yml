@@ -77,6 +77,7 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /home/wegener/containers/traefik/traefik-access.log:/var/log/traefik/traefik-access.log:ro
+      - /var/log/auth.log:/var/log/auth.log:ro
       - ./promtail/promtail-config.yml:/etc/promtail/config.yml:ro
     depends_on:
       - loki

@@ -14,32 +14,134 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true },
-          "unit": "percent"
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "green", "value": 1 }
+            ]
+          }
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
-      "id": 1,
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 0 },
+      "id": 10,
       "options": {
-        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "colorMode": "background",
+        "graphMode": "none",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
       },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_cpu_usage_seconds_total{image!=\"\"}[5m])) * 100",
+          "expr": "count(container_memory_working_set_bytes{image!=\"\"})",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Running containers",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 70 },
+              { "color": "red", "value": 90 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 0 },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\"}[5m])) * 100",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total CPU",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 2147483648 },
+              { "color": "red", "value": 3221225472 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 0 },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(container_memory_working_set_bytes{image!=\"\"})",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Total memory",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "id": 1,
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"], "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum by (name) (rate(container_cpu_usage_seconds_total{image!=\"\",name=~\"$container\"}[5m])) * 100",
           "legendFormat": "{{name}}",
           "refId": "A"
         }
@@ -48,27 +150,24 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true },
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 },
           "unit": "bytes"
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
       "id": 2,
       "options": {
-        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"], "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "avg by (name) (container_memory_working_set_bytes{image!=\"\"})",
+          "expr": "avg by (name) (container_memory_working_set_bytes{image!=\"\",name=~\"$container\"})",
           "legendFormat": "{{name}}",
           "refId": "A"
         }
@@ -77,27 +176,24 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
-          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true },
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 },
           "unit": "bytes"
         },
         "overrides": []
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
       "id": 3,
       "options": {
-        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"], "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
       },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (container_fs_usage_bytes{image!=\"\"})",
+          "expr": "sum by (name) (container_fs_usage_bytes{image!=\"\",name=~\"$container\"})",
           "legendFormat": "{{name}}",
           "refId": "A"
         }
@@ -106,11 +202,40 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "loki"
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true, "fillOpacity": 15, "lineWidth": 2 },
+          "unit": "Bps"
+        },
+        "overrides": []
       },
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 24 },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "id": 7,
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"], "sortBy": "Last *", "sortDesc": true },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum by (name) (rate(container_network_receive_bytes_total{image!=\"\",name=~\"$container\",interface!~\"lo\"}[5m]))",
+          "legendFormat": "RX {{name}}",
+          "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum by (name) (rate(container_network_transmit_bytes_total{image!=\"\",name=~\"$container\",interface!~\"lo\"}[5m]))",
+          "legendFormat": "TX {{name}}",
+          "refId": "B"
+        }
+      ],
+      "title": "Container network I/O",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 20 },
       "id": 4,
       "options": {
         "dedupStrategy": "none",
@@ -122,81 +247,37 @@
       "targets": [
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "expr": "{job=\"docker\"}",
+          "expr": "{job=\"docker\",container=~\"$container\"}",
           "refId": "A"
         }
       ],
       "title": "Container logs",
       "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true },
-          "unit": "Bps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
-      "id": 5,
-      "options": {
-        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_network_transmit_bytes_total{image!=\"\",interface!~\"lo\"}[5m]))",
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Container network TX (bytes/sec)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "spanNulls": true },
-          "unit": "Bps"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
-      "id": 6,
-      "options": {
-        "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_network_receive_bytes_total{image!=\"\",interface!~\"lo\"}[5m]))",
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Container network RX (bytes/sec)",
-      "type": "timeseries"
     }
   ],
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": ["docker", "observer"],
-  "templating": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "container",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "query": "label_values(container_memory_working_set_bytes{image!=\"\"}, name)",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 2,
+        "sort": 1
+      }
+    ]
+  },
   "time": { "from": "now-6h", "to": "now" },
   "timezone": "browser",
   "title": "Observer - Containers",
   "uid": "observer-docker",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

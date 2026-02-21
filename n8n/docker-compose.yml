@@ -1,0 +1,22 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n.wegener.no
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=n8n.wegener.no
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://n8n.wegener.no/
+      - GENERIC_TIMEZONE=Europe/Oslo
+      - TZ=Europe/Oslo
+      - N8N_TRUST_PROXY=true
+      - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+    volumes:
+      - ./data:/home/node/.n8n
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

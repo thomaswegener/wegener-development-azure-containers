@@ -22,6 +22,8 @@
 - Use concise, present-tense commits; Conventional Commit prefixes (`feat:`, `fix:`, `chore:`) are preferred. Group related changes (frontend vs. server) and include brief rationales in the body.
 - Pull requests should state purpose, affected areas (`src/components`, `server`), and manual test notes. Include screenshots/GIFs for UI changes and note any env vars touched (`ADMIN_USERNAME`, `ADMIN_PASSWORD`, `JWT_SECRET`, `PORT`).
 
+**Monorepo note:** This project lives inside the `containers` monorepo. Always commit and push from the monorepo root (`/home/wegener/containers`), not from within this subdirectory.
+
 ## Security & Configuration Tips
 - Do not commit credentials; configure `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `JWT_SECRET`, and `PORT` via environment variables. Avoid exposing JWT secrets client-side.
 - The API writes to `server/data/dogs.json`; ensure local writes are acceptable before running in restricted environments, and add backups or mounts in containerized setups if persistence matters.

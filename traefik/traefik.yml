@@ -12,6 +12,15 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
+    http:
+      middlewares:
+        - bot-ratelimit@file
+
+experimental:
+  plugins:
+    blockuseragent:
+      moduleName: github.com/agence-gaya/traefik-plugin-blockuseragent
+      version: v0.1.7
 
 providers:
   file:
@@ -25,6 +34,10 @@ accessLog:
   filePath: /var/log/traefik/traefik-access.log
   bufferingSize: 0
   format: json
+  fields:
+    headers:
+      names:
+        User-Agent: keep
 
 metrics:
   prometheus:

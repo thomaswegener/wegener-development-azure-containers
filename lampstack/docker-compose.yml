@@ -12,6 +12,7 @@ services:
       - ./apache/www:/var/www
       - ./apache/vhosts:/etc/apache2/sites-available
       - ./apache/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./apache/security.conf:/etc/apache2/conf-enabled/security-bot-block.conf
     restart: unless-stopped
     command: bash -c "a2ensite *.conf && apache2-foreground"
     networks:

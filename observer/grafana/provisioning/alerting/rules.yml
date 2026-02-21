@@ -71,3 +71,54 @@ groups:
         noDataState: OK
         execErrState: Error
         for: 2m
+
+  - orgId: 1
+    name: Security
+    folder: Security
+    interval: 1m
+    rules:
+      - uid: ssh-successful-login
+        title: SSH successful login detected
+        condition: A
+        data:
+          - refId: A
+            datasourceUid: loki
+            relativeTimeRange:
+              from: 120
+              to: 0
+            model:
+              datasource:
+                type: loki
+                uid: loki
+              expr: 'sum(count_over_time({job="auth"} |~ "Accepted (password|publickey)" [2m]))'
+              interval: ""
+              refId: A
+            queryType: instant
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+        annotations:
+          summary: "Successful SSH login detected. Check Observer - Security dashboard for details."
+
+      - uid: ssh-brute-force
+        title: SSH brute force attack (>30 attempts/2m)
+        condition: A
+        data:
+          - refId: A
+            datasourceUid: loki
+            relativeTimeRange:
+              from: 120
+              to: 0
+            model:
+              datasource:
+                type: loki
+                uid: loki
+              expr: 'sum(count_over_time({job="auth"} |~ "Invalid user|Failed password" [2m])) > 30'
+              interval: ""
+              refId: A
+            queryType: instant
+        noDataState: OK
+        execErrState: Error
+        for: 0s
+        annotations:
+          summary: "High rate of failed SSH login attempts detected (>30 in 2 minutes)."

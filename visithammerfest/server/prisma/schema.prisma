@@ -215,27 +215,33 @@ model Article {
 }
 
 model SiteInfo {
-  id            String        @id @default(uuid())
-  status        ContentStatus @default(PENDING)
-  name          Json
-  short         Json?
-  description   Json?
-  buttonLabel   Json?
-  buttonLink    String?
-  facebook      String?
-  twitter       String?
-  instagram     String?
-  youtube       String?
-  address       String?
-  email         String?
-  website       String?
-  mapEmbed      String?
-  logoMediaId   String?
-  heroMediaId   String?
-  publishedAt   DateTime?
-  publishedById String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                String        @id @default(uuid())
+  status            ContentStatus @default(PENDING)
+  name              Json
+  short             Json?
+  description       Json?
+  buttonLabel       Json?
+  buttonLink        String?
+  facebook          String?
+  twitter           String?
+  instagram         String?
+  youtube           String?
+  address           String?
+  email             String?
+  website           String?
+  mapEmbed          String?
+  logoMediaId       String?
+  heroMediaId       String?
+  openingHours      Json?
+  heroSpringMediaId String?
+  heroSummerMediaId String?
+  heroAutumnMediaId String?
+  heroWinterMediaId String?
+  footerLinks       Json?
+  publishedAt       DateTime?
+  publishedById     String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 }
 
 model Concept {

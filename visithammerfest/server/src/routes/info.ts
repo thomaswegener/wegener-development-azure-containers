@@ -22,7 +22,14 @@ const infoRoutes: FastifyPluginAsync = async (app) => {
       return { error: 'Not found' };
     }
 
-    const mediaIds = [info.heroMediaId, info.logoMediaId].filter(Boolean) as string[];
+    const mediaIds = [
+      info.heroMediaId,
+      info.logoMediaId,
+      info.heroSpringMediaId,
+      info.heroSummerMediaId,
+      info.heroAutumnMediaId,
+      info.heroWinterMediaId
+    ].filter(Boolean) as string[];
     if (!mediaIds.length) return info;
 
     const assets = await prisma.mediaAsset.findMany({ where: { id: { in: mediaIds } } });
@@ -31,7 +38,11 @@ const infoRoutes: FastifyPluginAsync = async (app) => {
     return {
       ...info,
       heroMediaUrl: info.heroMediaId ? urlMap.get(info.heroMediaId) : null,
-      logoMediaUrl: info.logoMediaId ? urlMap.get(info.logoMediaId) : null
+      logoMediaUrl: info.logoMediaId ? urlMap.get(info.logoMediaId) : null,
+      heroSpringMediaUrl: info.heroSpringMediaId ? urlMap.get(info.heroSpringMediaId) : null,
+      heroSummerMediaUrl: info.heroSummerMediaId ? urlMap.get(info.heroSummerMediaId) : null,
+      heroAutumnMediaUrl: info.heroAutumnMediaId ? urlMap.get(info.heroAutumnMediaId) : null,
+      heroWinterMediaUrl: info.heroWinterMediaId ? urlMap.get(info.heroWinterMediaId) : null
     };
   });
 
@@ -54,6 +65,12 @@ const infoRoutes: FastifyPluginAsync = async (app) => {
       mapEmbed?: string;
       heroMediaId?: string;
       logoMediaId?: string;
+      openingHours?: Record<string, string>;
+      heroSpringMediaId?: string;
+      heroSummerMediaId?: string;
+      heroAutumnMediaId?: string;
+      heroWinterMediaId?: string;
+      footerLinks?: Array<{ label: string; url: string }>;
       status?: 'DRAFT' | 'PENDING' | 'PUBLISHED' | 'ARCHIVED';
     };
 
@@ -78,6 +95,12 @@ const infoRoutes: FastifyPluginAsync = async (app) => {
           mapEmbed: body.mapEmbed ?? null,
           heroMediaId: body.heroMediaId ?? undefined,
           logoMediaId: body.logoMediaId ?? undefined,
+          openingHours: body.openingHours ?? undefined,
+          heroSpringMediaId: body.heroSpringMediaId ?? undefined,
+          heroSummerMediaId: body.heroSummerMediaId ?? undefined,
+          heroAutumnMediaId: body.heroAutumnMediaId ?? undefined,
+          heroWinterMediaId: body.heroWinterMediaId ?? undefined,
+          footerLinks: body.footerLinks ?? undefined,
           status,
           ...publishMetadata(session.user, status)
         }
@@ -105,6 +128,12 @@ const infoRoutes: FastifyPluginAsync = async (app) => {
         mapEmbed: body.mapEmbed ?? null,
         heroMediaId: body.heroMediaId ?? undefined,
         logoMediaId: body.logoMediaId ?? undefined,
+        openingHours: body.openingHours ?? undefined,
+        heroSpringMediaId: body.heroSpringMediaId ?? undefined,
+        heroSummerMediaId: body.heroSummerMediaId ?? undefined,
+        heroAutumnMediaId: body.heroAutumnMediaId ?? undefined,
+        heroWinterMediaId: body.heroWinterMediaId ?? undefined,
+        footerLinks: body.footerLinks ?? undefined,
         status,
         ...publishMetadata(session.user, status)
       }

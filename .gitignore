@@ -37,6 +37,9 @@ Thumbs.db
 # Traefik certificates (contains sensitive data)
 traefik/acme.json
 
+# n8n runtime data (database with credentials, node_modules, logs)
+n8n/data/
+
 # Observer data (large, regeneratable)
 observer/prometheus_data/
 observer/grafana_data/

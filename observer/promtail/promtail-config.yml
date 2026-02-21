@@ -65,3 +65,20 @@ scrape_configs:
           status: ""
           client_ip: ""
           host: ""
+
+  - job_name: auth
+    static_configs:
+      - targets: [localhost]
+        labels:
+          __path__: /var/log/auth.log
+          job: auth
+    pipeline_stages:
+      - match:
+          selector: '{job="auth"}'
+          stages:
+            - regex:
+                expression: 'sshd\[\d+\]: (?P<event>Failed password|Accepted password|Accepted publickey|Invalid user|Connection closed by authenticating user|Connection closed by invalid user) (?:for )?(?:invalid user )?(?P<username>\S+) (?:from )?(?P<src_ip>\d+\.\d+\.\d+\.\d+)'
+            - labels:
+                event: ""
+                username: ""
+                src_ip: ""
