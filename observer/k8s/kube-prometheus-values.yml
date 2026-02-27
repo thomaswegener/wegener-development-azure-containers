@@ -3,6 +3,9 @@ grafana:
   service:
     type: NodePort
     nodePort: 30090
+  persistence:
+    enabled: true
+    size: 1Gi
   # Sidecar disabled — dashboards imported manually via Grafana UI
   # (sidecar fails on MicroK8s self-signed cert without key usage extension)
   sidecar:
