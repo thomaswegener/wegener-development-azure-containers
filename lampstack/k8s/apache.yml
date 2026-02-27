@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lamp-apache
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lamp-apache
+  template:
+    metadata:
+      labels:
+        app: lamp-apache
+    spec:
+      containers:
+        - name: apache
+          image: localhost:32000/lamp-apache:latest
+          # Replicates: command: bash -c "a2ensite *.conf && apache2-foreground"
+          command: ["bash", "-c", "a2ensite *.conf && apache2-foreground"]
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: lampstack-secret
+          volumeMounts:
+            - name: www
+              mountPath: /var/www
+            - name: vhosts
+              mountPath: /etc/apache2/sites-available
+            - name: php-ini
+              mountPath: /usr/local/etc/php/conf.d/custom.ini
+            - name: security-conf
+              mountPath: /etc/apache2/conf-enabled/security-bot-block.conf
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "20m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: www
+          hostPath:
+            path: /home/wegener/containers/lampstack/apache/www
+            type: Directory
+        - name: vhosts
+          hostPath:
+            path: /home/wegener/containers/lampstack/apache/vhosts
+            type: Directory
+        - name: php-ini
+          hostPath:
+            path: /home/wegener/containers/lampstack/apache/php.ini
+            type: File
+        - name: security-conf
+          hostPath:
+            path: /home/wegener/containers/lampstack/apache/security.conf
+            type: File
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lamp-apache
+  namespace: prod
+spec:
+  type: NodePort
+  selector:
+    app: lamp-apache
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30087

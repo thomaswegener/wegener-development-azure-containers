@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-web
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-web
+  template:
+    metadata:
+      labels:
+        app: chat-web
+    spec:
+      containers:
+        - name: web
+          image: localhost:32000/chat-web:latest
+          ports:
+            - containerPort: 5173
+          env:
+            - name: VITE_API_URL
+              value: "/api"
+            - name: VITE_SAFE_RUNNER_URL
+              value: "/runner"
+            - name: HMR_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: HMR_HOST
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "20m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-web
+  namespace: prod
+spec:
+  type: NodePort
+  selector:
+    app: chat-web
+  ports:
+    - port: 5173
+      targetPort: 5173
+      nodePort: 30091

@@ -59,7 +59,7 @@ http:
     grafana-observer:
       rule: "Host(`grafana.observer.wegener.no`)"
       entryPoints: [web, websecure]
-      middlewares: [grafana-auth]
+      middlewares: [wgn-forwardauth]
       service: grafana-observer
       tls:
         certResolver: letsencrypt
@@ -153,36 +153,52 @@ http:
       tls:
         certResolver: letsencrypt
 
+    auth-wegener:
+      rule: "Host(`auth.wegener.no`)"
+      entryPoints: [web, websecure]
+      service: auth-wegener
+      tls:
+        certResolver: letsencrypt
+
+    wegener-api:
+      rule: "Host(`wegener.no`) && PathPrefix(`/api`)"
+      entryPoints: [web, websecure]
+      middlewares: [wwwtohttps]
+      priority: 100
+      service: wegener-api-svc
+      tls:
+        certResolver: letsencrypt
+
   services:
     lamp:
       loadBalancer:
         servers:
-          - url: "http://lamp-apache:80"
+          - url: "http://172.20.0.1:30087"
 
     go-north:
       loadBalancer:
         servers:
-          - url: "http://go-north.no:80"
+          - url: "http://172.20.0.1:30081"
 
     piratehusky:
       loadBalancer:
         servers:
-          - url: "http://piratehusky.no:4173"
+          - url: "http://172.20.0.1:30082"
 
     grafana-observer:
       loadBalancer:
         servers:
-          - url: "http://grafana.observer.wegener.no:3000"
+          - url: "http://172.20.0.1:30090"
 
     kongsbergvitensenter:
       loadBalancer:
         servers:
-          - url: "http://kongsbergvitensenter.no:4173"
+          - url: "http://172.20.0.1:30083"
 
     wegener:
       loadBalancer:
         servers:
-          - url: "http://wegener.no:80"
+          - url: "http://172.20.0.1:30080"
 
     n8n-remote:
       loadBalancer:
@@ -210,22 +226,32 @@ http:
     visithammerfest-web:
       loadBalancer:
         servers:
-          - url: "http://visithammerfest-web:4179"
+          - url: "http://172.20.0.1:30086"
 
     visithammerfest-api:
       loadBalancer:
         servers:
-          - url: "http://visithammerfest-api:5170"
+          - url: "http://172.20.0.1:30085"
 
     n8n:
       loadBalancer:
         servers:
-          - url: "http://n8n.wegener.no:5678"
+          - url: "http://172.20.0.1:30084"
 
     homeassistant:
       loadBalancer:
         servers:
           - url: "http://tortilla.local:8123"
+
+    auth-wegener:
+      loadBalancer:
+        servers:
+          - url: "http://172.20.0.1:30089"
+
+    wegener-api-svc:
+      loadBalancer:
+        servers:
+          - url: "http://172.20.0.1:30088"
 
   serversTransports:
     n8n-insecure:

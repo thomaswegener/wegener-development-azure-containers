@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kongsbergvitensenter
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kongsbergvitensenter
+  template:
+    metadata:
+      labels:
+        app: kongsbergvitensenter
+    spec:
+      containers:
+        - name: app
+          image: localhost:32000/kongsbergvitensenter:latest
+          ports:
+            - containerPort: 4173
+          envFrom:
+            - secretRef:
+                name: kongsbergvitensenter-secret
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "20m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

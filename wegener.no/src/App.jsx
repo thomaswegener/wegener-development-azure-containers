@@ -16,6 +16,58 @@ const translations = {
       lede: "",
       actions: { primary: "See the packages", secondary: "Get an estimate" },
     },
+    rootHero: {
+      title: ["Custom websites and portals", "— built to last."],
+      tagline: "Web development, AI tools, and IT services for businesses that want to grow.",
+      actions: { primary: "See the packages", secondary: "Get an estimate" },
+    },
+    about: {
+      eyebrow: "About",
+      initials: "TW",
+      label: "Founder & developer",
+      bio: "My name is Thomas Wegener. I design and build websites, portals, and internal tools — from the first meeting to launch and beyond. I work personally with every customer to make sure the result fits the business, not just a template.",
+      email: "thomas@wegener.no",
+    },
+    portfolio: {
+      eyebrow: "Previous projects",
+      title: "Real projects, delivered.",
+      comingSoon: "example coming soon",
+      inDevelopment: "in development",
+      tierLinks: {
+        tier1: "See wegener.no →",
+        tier2: "See piratehusky.no →",
+        tier3: "See visithammerfest.no →",
+      },
+      items: [
+        {
+          tier: "Tier 1",
+          title: "Wegener Development — This site",
+          description: "Single-page presentation with contact form, package overview, SEO, and analytics.",
+          link: "https://wegener.no",
+          linkLabel: "See wegener.no →",
+        },
+        {
+          tier: "Tier 2",
+          title: "Pirate Husky — Dog adoption platform",
+          description: "React, Express, SSR, admin panel, multi-language support.",
+          link: "https://piratehusky.no",
+          linkLabel: "See piratehusky.no →",
+        },
+        {
+          tier: "Tier 3",
+          title: "Visit Hammerfest — Event and content portal",
+          description: "React, Fastify, Prisma, file uploads, admin CMS, multilingual.",
+          link: "https://visithammerfest.no",
+          linkLabel: "See visithammerfest.no →",
+        },
+        {
+          tier: "Tier 4",
+          title: "Internal portal",
+          description: "Employee tools: timesheets, HSE, documents, and approvals.",
+          status: "in-development",
+        },
+      ],
+    },
     tiers: {
       eyebrow: "Web packages",
       title: "Choose the solution that fits you",
@@ -343,6 +395,8 @@ const translations = {
       hosting: "Hosting",
       contact: "Contact",
       demo: "Example",
+      about: "About",
+      portfolio: "Projects",
     },
   },
   no: {
@@ -355,6 +409,58 @@ const translations = {
       title: ["Vi hjelper deg bli synlig"],
       lede: "",
       actions: { primary: "Se pakkene", secondary: "Få et estimat" },
+    },
+    rootHero: {
+      title: ["Nettsider og portaler", "laget for å vare."],
+      tagline: "Webutvikling, AI-verktøy og IT-tjenester for bedrifter som vil vokse.",
+      actions: { primary: "Se pakkene", secondary: "Få et estimat" },
+    },
+    about: {
+      eyebrow: "Om",
+      initials: "TW",
+      label: "Gründer & utvikler",
+      bio: "Jeg heter Thomas Wegener. Jeg designer og bygger nettsider, portaler og interne verktøy — fra første møte til lansering og videre. Jeg jobber personlig med hver kunde slik at resultatet passer bedriften, ikke bare en mal.",
+      email: "thomas@wegener.no",
+    },
+    portfolio: {
+      eyebrow: "Tidligere prosjekter",
+      title: "Ekte prosjekter, levert.",
+      comingSoon: "eksempel kommer snart",
+      inDevelopment: "under utvikling",
+      tierLinks: {
+        tier1: "Se wegener.no →",
+        tier2: "Se piratehusky.no →",
+        tier3: "Se visithammerfest.no →",
+      },
+      items: [
+        {
+          tier: "Nivå 1",
+          title: "Wegener Development — Denne siden",
+          description: "Onepager med kontaktskjema, pakkeoversikt, SEO og analyse.",
+          link: "https://wegener.no",
+          linkLabel: "Se wegener.no →",
+        },
+        {
+          tier: "Nivå 2",
+          title: "Pirate Husky — Hundeadopsjonsplattform",
+          description: "React, Express, SSR, administrasjonspanel, flerspråklig.",
+          link: "https://piratehusky.no",
+          linkLabel: "Se piratehusky.no →",
+        },
+        {
+          tier: "Nivå 3",
+          title: "Visit Hammerfest — Event- og innholdsportal",
+          description: "React, Fastify, Prisma, filopplasting, admin-CMS, flerspråklig.",
+          link: "https://visithammerfest.no",
+          linkLabel: "Se visithammerfest.no →",
+        },
+        {
+          tier: "Nivå 4",
+          title: "Internportal",
+          description: "Ansattverktøy: timeføring, HMS, dokumenter og godkjenninger.",
+          status: "in-development",
+        },
+      ],
     },
     tiers: {
       eyebrow: "Webpakker",
@@ -683,6 +789,8 @@ const translations = {
       hosting: "Hosting",
       contact: "Kontakt",
       demo: "Eksempel",
+      about: "Om",
+      portfolio: "Prosjekter",
     },
   },
 };
@@ -840,42 +948,46 @@ const DemoNav = ({ t, lang, onChangeLanguage, onOpenContact }) => (
   </nav>
 );
 
-const Hero = ({ t, lang, onChangeLanguage }) => (
-  <header className="hero" id="top" data-section={t.sections.hero} style={{ "--hero-image": `url('${heroImage}')` }}>
-    <div className="container">
-      <TopNav t={t} lang={lang} onChangeLanguage={onChangeLanguage} />
-      <div className="hero-content">
-        <div className="hero-copy">
-          <p className="eyebrow">{t.meta.eyebrow}</p>
-          <h1 className="hero-title">
-            {(Array.isArray(t.hero.title) ? t.hero.title : [t.hero.title]).map((line, index) => (
-              <span key={`${line}-${index}`} className="hero-title-line">
-                {line}
-              </span>
-            ))}
-          </h1>
-          <p className="lede">{t.hero.lede}</p>
-          <div className="hero-actions">
-            <a href="#tiers" className="cta">
-              {t.hero.actions.primary}
-            </a>
-            <a href="#contact" className="ghost">
-              {t.hero.actions.secondary}
-            </a>
+const Hero = ({ t, lang, onChangeLanguage, heroSection }) => {
+  const hero = heroSection || t.hero;
+  const lede = hero.tagline || hero.lede || "";
+  return (
+    <header className="hero" id="top" data-section={t.sections.hero} style={{ "--hero-image": `url('${heroImage}')` }}>
+      <div className="container">
+        <TopNav t={t} lang={lang} onChangeLanguage={onChangeLanguage} />
+        <div className="hero-content">
+          <div className="hero-copy">
+            <p className="eyebrow">{t.meta.eyebrow}</p>
+            <h1 className="hero-title">
+              {(Array.isArray(hero.title) ? hero.title : [hero.title]).map((line, index) => (
+                <span key={`${line}-${index}`} className="hero-title-line">
+                  {line}
+                </span>
+              ))}
+            </h1>
+            {lede && <p className="lede">{lede}</p>}
+            <div className="hero-actions">
+              <a href="#tiers" className="cta">
+                {hero.actions.primary}
+              </a>
+              <a href="#contact" className="ghost">
+                {hero.actions.secondary}
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </header>
-);
+    </header>
+  );
+};
 
-const TierPanels = ({ t, onSelectTier }) => (
+const TierPanels = ({ t, onSelectTier, portfolioLinks, showLead = true }) => (
   <section id="tiers" className="tiers" data-section={t.sections.tiers}>
     <div className="container">
       <div className="section-head">
         <p className="eyebrow">{t.tiers.eyebrow}</p>
         <h2>{t.tiers.title}</h2>
-        {t.tiers.lead && <p className="muted section-lead">{t.tiers.lead}</p>}
+        {showLead && t.tiers.lead && <p className="muted section-lead">{t.tiers.lead}</p>}
         <p className="muted section-intro">{t.tiers.intro}</p>
       </div>
     </div>
@@ -905,6 +1017,16 @@ const TierPanels = ({ t, onSelectTier }) => (
               <button className="cta" type="button" onClick={() => onSelectTier(tier.value)}>
                 {tier.cta}
               </button>
+              {portfolioLinks?.[tier.value] && (
+                <a
+                  href={portfolioLinks[tier.value].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tier-portfolio-link"
+                >
+                  {portfolioLinks[tier.value].label}
+                </a>
+              )}
             </div>
           </div>
         </article>
@@ -1047,6 +1169,120 @@ const Hosting = ({ t }) => (
     </div>
   </section>
 );
+
+const About = ({ t }) => (
+  <section className="section about" data-section={t.sections.about}>
+    <div className="container">
+      <div className="about-inner">
+        <div className="avatar-circle" aria-hidden="true">
+          {t.about.initials}
+        </div>
+        <div className="about-copy">
+          <p className="eyebrow">{t.about.label}</p>
+          <p className="about-bio">{t.about.bio}</p>
+          <a href={`mailto:${t.about.email}`} className="ghost small-btn">
+            {t.about.email}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const Portfolio = ({ t }) => (
+  <section className="section portfolio" data-section={t.sections.portfolio}>
+    <div className="container">
+      <div className="section-head">
+        <p className="eyebrow">{t.portfolio.eyebrow}</p>
+        <h2>{t.portfolio.title}</h2>
+      </div>
+      <div className="portfolio-grid">
+        {t.portfolio.items.map((item) => (
+          <article
+            key={item.title}
+            className={`portfolio-card${item.status ? ' portfolio-card--muted' : ''}`}
+          >
+            <p className="eyebrow">{item.tier}</p>
+            <h3>{item.title}</h3>
+            <p className="muted">{item.description}</p>
+            {item.link && (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="portfolio-link"
+              >
+                {item.linkLabel}
+              </a>
+            )}
+            {item.status === 'coming-soon' && (
+              <p className="muted small portfolio-status"><em>{t.portfolio.comingSoon}</em></p>
+            )}
+            {item.status === 'in-development' && (
+              <p className="muted small portfolio-status"><em>{t.portfolio.inDevelopment}</em></p>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const ContactSection = ({ t, onOpenContact }) => (
+  <section id="contact" className="section contact" data-section={t.sections.contact}>
+    <div className="container contact-inner">
+      <div>
+        <p className="eyebrow">{t.contact.eyebrow}</p>
+        <h2>{t.contact.title}</h2>
+        <p className="muted">{t.contact.intro}</p>
+      </div>
+      <div className="contact-actions">
+        <a className="cta" href="mailto:thomas@wegener.no">
+          thomas@wegener.no
+        </a>
+        <button className="ghost" type="button" onClick={() => onOpenContact()}>
+          {t.contact.openForm}
+        </button>
+        <a className="ghost" href="#top">
+          {t.contact.back}
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+const HammerfestPage = ({ t, lang, onChangeLanguage, onSelectTier }) => (
+  <>
+    <Hero t={t} lang={lang} onChangeLanguage={onChangeLanguage} />
+    <main>
+      <TierPanels t={t} onSelectTier={onSelectTier} />
+      <Includes t={t} />
+      <Hosting t={t} />
+      <ContactSection t={t} onOpenContact={onSelectTier} />
+    </main>
+  </>
+);
+
+const RootPage = ({ t, lang, onChangeLanguage, onSelectTier }) => {
+  const portfolioLinks = {
+    tier1: { url: 'https://wegener.no', label: t.portfolio.tierLinks.tier1 },
+    tier2: { url: 'https://piratehusky.no', label: t.portfolio.tierLinks.tier2 },
+    tier3: { url: 'https://visithammerfest.no', label: t.portfolio.tierLinks.tier3 },
+  };
+  return (
+    <>
+      <Hero t={t} lang={lang} onChangeLanguage={onChangeLanguage} heroSection={t.rootHero} />
+      <main>
+        <About t={t} />
+        <Portfolio t={t} />
+        <TierPanels t={t} onSelectTier={onSelectTier} portfolioLinks={portfolioLinks} showLead={false} />
+        <Includes t={t} />
+        <Hosting t={t} />
+        <ContactSection t={t} onOpenContact={onSelectTier} />
+      </main>
+    </>
+  );
+};
 
 const ContactModal = ({ open, onClose, t, onSubmit, status, initialTier }) => {
   const [formState, setFormState] = useState({
@@ -1215,8 +1451,7 @@ const App = () => {
     };
   }, [lang, isHammerfest]);
 
-  const webhookUrl =
-    "https://discord.com/api/webhooks/1434519484458074165/YpW07SjEvZHylDGqGX8NDeZ0Y6E4YTFk4_Kf8iU5Wphgpdgylb5qJfdR_Sre72sbZlky";
+  const contactApiUrl = "/api/contact";
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1242,24 +1477,20 @@ const App = () => {
 
     setSubmitStatus(t.contact.status.sending);
     try {
-      await fetch(webhookUrl, {
+      await fetch(contactApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          content: [
-            `New contact request from wegener.no (${lang.toUpperCase()})`,
-            `Name: ${payload.name}`,
-            `Email: ${payload.email}`,
-            payload.company ? `Company: ${payload.company}` : null,
-            payload.phone ? `Phone: ${payload.phone}` : null,
-            `Tier: ${tierLabel}`,
-            `Add-ons: ${addonLabels || "None"}`,
-            payload.budget ? `Budget: ${payload.budget}` : null,
-            payload.timeline ? `Timeline: ${payload.timeline}` : null,
-            `Message: ${payload.message}`,
-          ]
-            .filter(Boolean)
-            .join("\n"),
+          name: payload.name,
+          email: payload.email,
+          company: payload.company,
+          phone: payload.phone,
+          tier: tierLabel,
+          addons: addonLabels || "None",
+          budget: payload.budget,
+          timeline: payload.timeline,
+          message: payload.message,
+          lang,
         }),
       });
       setSubmitStatus(t.contact.status.success);
@@ -1330,68 +1561,8 @@ const App = () => {
     setConsentChoice(consent);
   }, [consent]);
 
-  if (demo && tierKey) {
-    return (
-      <div className="page">
-        <DemoPage
-          t={t}
-          demo={demo}
-          tierKey={tierKey}
-          lang={lang}
-          onChangeLanguage={setLang}
-          onOpenContact={() => openContact(tierKey)}
-        />
-        <ContactModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          t={t}
-          onSubmit={handleContactSubmit}
-          status={submitStatus}
-          initialTier={selectedTier}
-        />
-        {consent === "unset" && (
-          <CookieBanner
-            t={t}
-            value={consentChoice}
-            onChange={setConsentChoice}
-            onSubmit={(event) => {
-              event.preventDefault();
-              setConsent(consentChoice);
-            }}
-          />
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div className="page">
-      <Hero t={t} lang={lang} onChangeLanguage={setLang} />
-      <main>
-        <TierPanels t={t} onSelectTier={openContact} />
-        <Includes t={t} />
-        <Hosting t={t} />
-        <section id="contact" className="section contact" data-section={t.sections.contact}>
-          <div className="container contact-inner">
-            <div>
-              <p className="eyebrow">{t.contact.eyebrow}</p>
-              <h2>{t.contact.title}</h2>
-              <p className="muted">{t.contact.intro}</p>
-            </div>
-            <div className="contact-actions">
-              <a className="cta" href="mailto:thomas@wegener.no">
-                thomas@wegener.no
-              </a>
-              <button className="ghost" type="button" onClick={() => openContact()}>
-                {t.contact.openForm}
-              </button>
-              <a className="ghost" href="#top">
-                {t.contact.back}
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
+  const sharedModalAndBanner = (
+    <>
       <ContactModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -1411,6 +1582,38 @@ const App = () => {
           }}
         />
       )}
+    </>
+  );
+
+  if (demo && tierKey) {
+    return (
+      <div className="page">
+        <DemoPage
+          t={t}
+          demo={demo}
+          tierKey={tierKey}
+          lang={lang}
+          onChangeLanguage={setLang}
+          onOpenContact={() => openContact(tierKey)}
+        />
+        {sharedModalAndBanner}
+      </div>
+    );
+  }
+
+  if (isHammerfest) {
+    return (
+      <div className="page">
+        <HammerfestPage t={t} lang={lang} onChangeLanguage={setLang} onSelectTier={openContact} />
+        {sharedModalAndBanner}
+      </div>
+    );
+  }
+
+  return (
+    <div className="page">
+      <RootPage t={t} lang={lang} onChangeLanguage={setLang} onSelectTier={openContact} />
+      {sharedModalAndBanner}
     </div>
   );
 };

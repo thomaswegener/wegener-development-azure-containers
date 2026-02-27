@@ -1,0 +1,82 @@
+# Auto-updater for Twingate connectors.
+#
+# How it works:
+#   - CronJob runs nightly at 03:00
+#   - Does `kubectl rollout restart` on both connector deployments
+#   - Because imagePullPolicy: Always is set, k8s pulls twingate/connector:1 fresh each time
+#   - Twingate's floating :1 tag always points to the latest 1.x release
+#   - Net result: connectors are automatically on the latest version within 24h of release
+#
+# RBAC: ServiceAccount scoped to the prod namespace with only patch on deployments
+# (the minimum needed for rollout restart).
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: twingate-updater
+  namespace: prod
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: twingate-updater
+  namespace: prod
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    resourceNames: ["twingate-birria-one", "twingate-birria-two"]
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: twingate-updater
+  namespace: prod
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: twingate-updater
+subjects:
+  - kind: ServiceAccount
+    name: twingate-updater
+    namespace: prod
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: twingate-auto-update
+  namespace: prod
+spec:
+  schedule: "0 3 * * *"   # 03:00 every night
+  timeZone: "Europe/Oslo"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: twingate-updater
+          restartPolicy: OnFailure
+          containers:
+            - name: updater
+              image: bitnami/kubectl:latest
+              imagePullPolicy: Always
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  echo "Rolling restart of twingate connectors..."
+                  kubectl rollout restart deployment/twingate-birria-one -n prod
+                  kubectl rollout restart deployment/twingate-birria-two -n prod
+                  kubectl rollout status deployment/twingate-birria-one -n prod --timeout=120s
+                  kubectl rollout status deployment/twingate-birria-two -n prod --timeout=120s
+                  echo "Done. Connectors are on the latest twingate/connector:1 image."
+              resources:
+                requests:
+                  memory: "32Mi"
+                  cpu: "10m"
+                limits:
+                  memory: "64Mi"
+                  cpu: "100m"

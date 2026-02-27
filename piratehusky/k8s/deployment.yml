@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piratehusky
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: piratehusky
+  template:
+    metadata:
+      labels:
+        app: piratehusky
+    spec:
+      containers:
+        - name: app
+          image: localhost:32000/piratehusky:latest
+          ports:
+            - containerPort: 4173
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4173"
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: piratehusky-secret
+                  key: ADMIN_USERNAME
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: piratehusky-secret
+                  key: ADMIN_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: piratehusky-secret
+                  key: JWT_SECRET
+          volumeMounts:
+            - name: data
+              mountPath: /app/server/data
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "20m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      volumes:
+        - name: data
+          hostPath:
+            path: /home/wegener/containers/piratehusky/server/data
+            type: DirectoryOrCreate

@@ -1,0 +1,63 @@
+
+# IMPORTANT: Stop the Docker postgres container FIRST before applying this.
+#   docker compose stop db   (in containers/visithammerfest/)
+# Data stays in place — k8s just re-mounts the same host directory.
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: visithammerfest-db
+  namespace: prod
+spec:
+  serviceName: visithammerfest-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visithammerfest-db
+  template:
+    metadata:
+      labels:
+        app: visithammerfest-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: "visithammerfest"
+            - name: POSTGRES_USER
+              value: "visithammerfest"
+            - name: POSTGRES_PASSWORD
+              value: "visithammerfest"
+            - name: POSTGRES_INITDB_ARGS
+              value: "--encoding=UTF8 --locale-provider=icu --icu-locale=nb"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: pgdata
+          hostPath:
+            path: /home/wegener/containers/visithammerfest/server/data/postgres
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visithammerfest-db
+  namespace: prod
+spec:
+  type: ClusterIP
+  selector:
+    app: visithammerfest-db
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -1,0 +1,74 @@
+
+# IMPORTANT: Stop the Docker postgres container FIRST before applying this.
+#   docker compose stop postgres   (in containers/chat/)
+#
+# chat uses a named Docker volume (pgdata) — locate it first:
+#   docker volume inspect chat_pgdata
+# Then update the hostPath below to the actual mountpoint path shown.
+# Typically: /var/lib/docker/volumes/chat_pgdata/_data
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: chat-postgres
+  namespace: prod
+spec:
+  serviceName: chat-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-postgres
+  template:
+    metadata:
+      labels:
+        app: chat-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg16
+          env:
+            - name: POSTGRES_USER
+              value: "chat"
+            - name: POSTGRES_PASSWORD
+              value: "chat"
+            - name: POSTGRES_DB
+              value: "chat"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+            - name: init-sql
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "50m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      volumes:
+        - name: pgdata
+          hostPath:
+            # Run: docker volume inspect chat_pgdata | grep Mountpoint
+            # Replace this path with the actual mountpoint:
+            path: /var/lib/docker/volumes/chat_pgdata/_data
+            type: Directory
+        - name: init-sql
+          hostPath:
+            path: /home/wegener/containers/chat/infra/postgres/init.sql
+            type: File
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-postgres
+  namespace: prod
+spec:
+  type: ClusterIP
+  selector:
+    app: chat-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

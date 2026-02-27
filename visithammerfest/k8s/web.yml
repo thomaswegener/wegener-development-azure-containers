@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: visithammerfest-web
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: visithammerfest-web
+  template:
+    metadata:
+      labels:
+        app: visithammerfest-web
+    spec:
+      containers:
+        - name: web
+          # Build with: docker build -f Dockerfile.web --build-arg VITE_API_BASE_URL=/api -t localhost:32000/visithammerfest-web:latest .
+          image: localhost:32000/visithammerfest-web:latest
+          ports:
+            - containerPort: 4179
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: visithammerfest-web
+  namespace: prod
+spec:
+  type: NodePort
+  selector:
+    app: visithammerfest-web
+  ports:
+    - port: 4179
+      targetPort: 4179
+      nodePort: 30086

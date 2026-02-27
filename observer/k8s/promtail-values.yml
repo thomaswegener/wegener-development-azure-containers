@@ -1,0 +1,64 @@
+# Helm values override for Promtail — replicate current scrape config
+# Use with: microk8s helm3 upgrade loki grafana/loki-stack --namespace prod --reuse-values -f promtail-values.yml
+
+promtail:
+  config:
+    snippets:
+      # Appended to the default kubernetes-pods scrape config
+      extraScrapeConfigs: |
+        - job_name: traefik
+          static_configs:
+            - targets: [localhost]
+              labels:
+                job: traefik-file
+                __path__: /var/log/traefik/traefik-access.log
+          pipeline_stages:
+            - json:
+                expressions:
+                  router: RouterName
+                  status: DownstreamStatus
+                  host: RequestHost
+            # Drop entire log line if host header is malformed or too long (scan probes)
+            - drop:
+                source: host
+                expression: '.{101,}'
+            - labels:
+                router:
+                status:
+                host:
+
+        - job_name: auth
+          static_configs:
+            - targets: [localhost]
+              labels:
+                job: auth
+                __path__: /var/log/auth.log
+          pipeline_stages:
+            - regex:
+                expression: 'sshd\[\d+\]: (?P<event>Failed password|Accepted password|Accepted publickey|Invalid user|Connection closed by authenticating user|Connection closed by invalid user) (?:for )?(?:invalid user )?(?P<username>\S+) (?:from )?(?P<src_ip>\d+\.\d+\.\d+\.\d+)'
+            - labels:
+                event:
+                username:
+                src_ip:
+
+  # adm group (GID 4) needed to read /var/log/auth.log (which is 640 syslog:adm)
+  podSecurityContext:
+    supplementalGroups: [4]
+
+  extraVolumes:
+    - name: traefik-access-log
+      hostPath:
+        path: /home/wegener/containers/traefik/traefik-access.log
+        type: File
+    - name: auth-log
+      hostPath:
+        path: /var/log/auth.log
+        type: File
+
+  extraVolumeMounts:
+    - name: traefik-access-log
+      mountPath: /var/log/traefik/traefik-access.log
+      readOnly: true
+    - name: auth-log
+      mountPath: /var/log/auth.log
+      readOnly: true

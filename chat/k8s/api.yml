@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-api
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-api
+  template:
+    metadata:
+      labels:
+        app: chat-api
+    spec:
+      containers:
+        - name: api
+          image: localhost:32000/chat-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: BASE_PATH
+              value: "/api"
+            - name: DATABASE_URL
+              value: "postgres://chat:chat@chat-postgres:5432/chat"
+            - name: NOTES_SERVICE_URL
+              value: "http://chat-notes:8081"
+            - name: JOB_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: JOB_SIGNING_SECRET
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: OPENAI_API_KEY
+            - name: OPENAI_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: OPENAI_BASE_URL
+            - name: OPENAI_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: OPENAI_MODEL
+            - name: EMBEDDING_MODEL
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: EMBEDDING_MODEL
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-api
+  namespace: prod
+spec:
+  type: NodePort
+  selector:
+    app: chat-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30088

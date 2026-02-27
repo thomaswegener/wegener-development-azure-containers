@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-safe-runner
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-safe-runner
+  template:
+    metadata:
+      labels:
+        app: chat-safe-runner
+    spec:
+      containers:
+        - name: safe-runner
+          image: localhost:32000/chat-safe-runner:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: PORT
+              value: "8082"
+            - name: BASE_PATH
+              value: "/runner"
+            - name: CORE_API_URL
+              value: "http://chat-api:8080"
+            - name: JOB_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: chat-secret
+                  key: JOB_SIGNING_SECRET
+            - name: SAFE_ALLOWLIST
+              value: "codex,rg,cat,ls,node,npm,pnpm,vite,tsc,git"
+            - name: WORKDIR_ROOT
+              value: "/workspace"
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+              readOnly: true
+          workingDir: /workspace
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "20m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      volumes:
+        - name: workspace
+          hostPath:
+            path: /home/wegener/containers/chat
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-safe-runner
+  namespace: prod
+spec:
+  type: NodePort
+  selector:
+    app: chat-safe-runner
+  ports:
+    - port: 8082
+      targetPort: 8082
+      nodePort: 30089

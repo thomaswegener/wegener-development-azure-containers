@@ -1,0 +1,40 @@
+grafana:
+  adminPassword: "7JGX4JfzkEPP3hPVyGK7"
+  service:
+    type: NodePort
+    nodePort: 30090
+  # Sidecar disabled — dashboards imported manually via Grafana UI
+  # (sidecar fails on MicroK8s self-signed cert without key usage extension)
+  sidecar:
+    dashboards:
+      enabled: false
+    datasources:
+      enabled: false
+  grafana.ini:
+    auth.proxy:
+      enabled: true
+      header_name: X-WEBAUTH-USER
+      header_property: email
+      auto_sign_up: true
+      headers: "Name:X-Display-Name Role:X-WEBAUTH-ROLE"
+    auth:
+      disable_login_form: true
+
+prometheus:
+  prometheusSpec:
+    retention: 30d
+    # Also scrape pods outside kube-system so our prod namespace is covered
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+alertmanager:
+  alertmanagerSpec:
+    # Mount existing alertmanager config
+    configSecret: ""
+
+# node-exporter and kube-state-metrics are enabled by default — keep them
+nodeExporter:
+  enabled: true
+
+kubeStateMetrics:
+  enabled: true

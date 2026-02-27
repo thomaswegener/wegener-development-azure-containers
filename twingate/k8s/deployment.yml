@@ -1,0 +1,112 @@
+
+# NOTE: The net.ipv4.ping_group_range sysctl required by Twingate connectors is an
+# "unsafe" sysctl in Kubernetes. To enable it, MicroK8s must be configured with:
+#
+#   microk8s kubectl edit configmap -n kube-system kube-apiserver-arg
+#   # Add: --allowed-unsafe-sysctls=net.ipv4.ping_group_range
+#   # Then restart: sudo snap restart microk8s.daemon-apiserver
+#
+# Alternatively, keep the Twingate connectors in Docker (acceptable tradeoff).
+# The connectors are outbound-only — no ServicePort is needed.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twingate-birria-one
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twingate-birria-one
+  template:
+    metadata:
+      labels:
+        app: twingate-birria-one
+    spec:
+      securityContext:
+        sysctls:
+          - name: net.ipv4.ping_group_range
+            value: "0 2147483647"
+      containers:
+        - name: connector
+          image: twingate/connector:1
+          imagePullPolicy: Always
+          env:
+            - name: TWINGATE_NETWORK
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-one-secret
+                  key: TWINGATE_NETWORK
+            - name: TWINGATE_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-one-secret
+                  key: TWINGATE_ACCESS_TOKEN
+            - name: TWINGATE_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-one-secret
+                  key: TWINGATE_REFRESH_TOKEN
+            - name: TWINGATE_LABEL_HOSTNAME
+              value: "birria"
+            - name: TWINGATE_LABEL_DEPLOYED_BY
+              value: "kubernetes"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twingate-birria-two
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twingate-birria-two
+  template:
+    metadata:
+      labels:
+        app: twingate-birria-two
+    spec:
+      securityContext:
+        sysctls:
+          - name: net.ipv4.ping_group_range
+            value: "0 2147483647"
+      containers:
+        - name: connector
+          image: twingate/connector:1
+          imagePullPolicy: Always
+          env:
+            - name: TWINGATE_NETWORK
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-two-secret
+                  key: TWINGATE_NETWORK
+            - name: TWINGATE_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-two-secret
+                  key: TWINGATE_ACCESS_TOKEN
+            - name: TWINGATE_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twingate-birria-two-secret
+                  key: TWINGATE_REFRESH_TOKEN
+            - name: TWINGATE_LABEL_HOSTNAME
+              value: "birria"
+            - name: TWINGATE_LABEL_DEPLOYED_BY
+              value: "kubernetes"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"

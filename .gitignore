@@ -37,6 +37,9 @@ Thumbs.db
 # Traefik certificates (contains sensitive data)
 traefik/acme.json
 
+# K8s secrets (contain real credentials — apply manually, never commit)
+**/k8s/secret.yml
+
 # n8n runtime data (database with credentials, node_modules, logs)
 n8n/data/
 

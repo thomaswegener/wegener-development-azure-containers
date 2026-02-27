@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wegener-no
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wegener-no
+  template:
+    metadata:
+      labels:
+        app: wegener-no
+    spec:
+      containers:
+        - name: app
+          image: localhost:32000/wegener-no:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"

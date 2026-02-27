@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth Admin — Wegener Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --panel: rgba(255,255,255,0.88);
+      --text: #1f2a1f;
+      --muted: #5f6a5f;
+      --primary: #2a93c9;
+      --primary-dark: #1a6f9a;
+      --border: rgba(28,40,28,0.14);
+      --shadow: 0 4px 16px rgba(20,40,22,0.1);
+      --danger: #dc3545;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Sora", sans-serif;
+      background: linear-gradient(130deg, #f6fcff 0%, #f2f8fc 40%, #fbfdff 100%);
+      min-height: 100vh; color: var(--text); font-size: 14px;
+    }
+    header {
+      background: var(--panel); border-bottom: 1px solid var(--border);
+      padding: 14px 28px; display: flex; align-items: center; gap: 16px;
+    }
+    .logo-badge {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 14px;
+    }
+    .logo-text { font-weight: 700; font-size: 15px; }
+    .logo-sub { font-size: 12px; color: var(--muted); }
+    header .spacer { flex: 1; }
+    #logoutBtn {
+      padding: 7px 16px; border: 1px solid var(--border); border-radius: 8px;
+      background: #fff; cursor: pointer; font-family: inherit; font-size: 13px;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    h2 { font-size: 20px; margin-bottom: 20px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: var(--shadow); overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); background: rgba(0,0,0,0.02); text-transform: uppercase; letter-spacing: 0.04em; }
+    td { padding: 12px 16px; border-top: 1px solid var(--border); vertical-align: top; }
+    .badge {
+      display: inline-block; padding: 3px 9px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge.admin { background: rgba(42,147,201,0.12); color: var(--primary-dark); }
+    .badge.user { background: rgba(0,0,0,0.06); color: var(--muted); }
+    .app-pill {
+      display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; margin: 2px;
+      background: rgba(42,147,201,0.1); color: var(--primary-dark); border: 1px solid rgba(42,147,201,0.2);
+    }
+    .btn-sm {
+      padding: 5px 12px; border-radius: 7px; border: 1px solid var(--border);
+      font-family: inherit; font-size: 12px; cursor: pointer; background: #fff;
+    }
+    .btn-sm.danger { border-color: var(--danger); color: var(--danger); }
+    .btn-sm.primary { border-color: var(--primary); color: var(--primary); }
+    .loading { text-align: center; padding: 48px; color: var(--muted); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+      display: none; align-items: center; justify-content: center; z-index: 100;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px; padding: 28px 32px;
+      width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h3 { font-size: 17px; margin-bottom: 16px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .field input, .field select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 14px; color: var(--text); background: #fff;
+    }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .modal-actions button {
+      padding: 9px 20px; border-radius: 8px; border: 1px solid var(--border);
+      font-family: inherit; font-size: 13px; cursor: pointer; background: #fff;
+    }
+    .modal-actions .save {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; border-color: transparent;
+    }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; object-fit: cover; vertical-align: middle;
+    }
+    .avatar-placeholder {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 700; font-size: 12px; vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-badge">W</div>
+    <div>
+      <div class="logo-text">Wegener Development</div>
+      <div class="logo-sub">Auth Admin</div>
+    </div>
+    <div class="spacer"></div>
+    <button id="logoutBtn">Sign out</button>
+  </header>
+
+  <main>
+    <h2>Users</h2>
+    <div class="card" id="tableWrap">
+      <div class="loading">Loading…</div>
+    </div>
+  </main>
+
+  <!-- Access modal -->
+  <div class="modal-overlay" id="accessModal">
+    <div class="modal">
+      <h3>Manage App Access</h3>
+      <div class="field">
+        <label>App ID</label>
+        <input type="text" id="modalAppId" placeholder="portal, visithammerfest, …" />
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <select id="modalRole">
+          <option value="customer">customer</option>
+          <option value="admin">admin</option>
+          <option value="partner">partner</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Metadata (JSON, optional)</label>
+        <input type="text" id="modalMeta" placeholder='{"customerId":"..."}' />
+      </div>
+      <div class="modal-actions">
+        <button id="modalCancel">Cancel</button>
+        <button class="save" id="modalSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let users = [];
+    let selectedUserId = null;
+
+    async function loadUsers() {
+      const res = await fetch('/api/users');
+      if (res.status === 403) {
+        document.getElementById('tableWrap').innerHTML = '<div class="loading">Access denied. Admin only.</div>';
+        return;
+      }
+      if (res.status === 401) {
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.href);
+        return;
+      }
+      users = await res.json();
+      renderTable();
+    }
+
+    function renderTable() {
+      const wrap = document.getElementById('tableWrap');
+      if (!users.length) {
+        wrap.innerHTML = '<div class="loading">No users yet.</div>';
+        return;
+      }
+      wrap.innerHTML = `
+        <table>
+          <thead><tr>
+            <th>User</th><th>Role</th><th>Providers</th><th>App Access</th><th>Sessions</th><th>Actions</th>
+          </tr></thead>
+          <tbody>
+            ${users.map(u => `
+              <tr>
+                <td>
+                  ${u.avatarUrl
+                    ? `<img src="${u.avatarUrl}" class="avatar" alt="" />`
+                    : `<span class="avatar-placeholder">${(u.displayName || u.email)[0].toUpperCase()}</span>`
+                  }
+                  <span style="margin-left:8px;">
+                    <strong>${escHtml(u.displayName || u.email)}</strong><br>
+                    <span style="color:var(--muted);font-size:12px;">${escHtml(u.email)}</span>
+                  </span>
+                </td>
+                <td><span class="badge ${u.role.toLowerCase()}">${u.role}</span></td>
+                <td>${u.providers.map(p => `<span class="app-pill">${p}</span>`).join('') || '<span style="color:var(--muted)">magic link</span>'}</td>
+                <td>${u.appAccess.map(a => `<span class="app-pill" title="${a.role}">${a.appId}:${a.role}</span>`).join('') || '—'}</td>
+                <td>${u.activeSessions}</td>
+                <td>
+                  <button class="btn-sm primary" onclick="openAccessModal('${u.id}')">+ Access</button>
+                  <button class="btn-sm" onclick="revokeAllSessions('${u.id}')" style="margin-left:4px">Revoke sessions</button>
+                  <button class="btn-sm danger" onclick="deleteUser('${u.id}','${escHtml(u.email)}')" style="margin-left:4px">Delete</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function openAccessModal(userId) {
+      selectedUserId = userId;
+      document.getElementById('modalAppId').value = '';
+      document.getElementById('modalRole').value = 'customer';
+      document.getElementById('modalMeta').value = '';
+      document.getElementById('accessModal').classList.add('open');
+    }
+
+    document.getElementById('modalCancel').onclick = () => {
+      document.getElementById('accessModal').classList.remove('open');
+    };
+
+    document.getElementById('modalSave').onclick = async () => {
+      const appId = document.getElementById('modalAppId').value.trim();
+      const role = document.getElementById('modalRole').value;
+      const metaStr = document.getElementById('modalMeta').value.trim();
+      if (!appId) return;
+
+      let metadata;
+      if (metaStr) {
+        try { metadata = JSON.parse(metaStr); } catch { alert('Invalid JSON in metadata'); return; }
+      }
+
+      await fetch(`/api/users/${selectedUserId}/access`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ appId, role, metadata })
+      });
+
+      document.getElementById('accessModal').classList.remove('open');
+      loadUsers();
+    };
+
+    async function revokeAllSessions(userId) {
+      if (!confirm('Revoke all sessions for this user?')) return;
+      await fetch(`/api/users/${userId}/sessions`, { method: 'DELETE' });
+      loadUsers();
+    }
+
+    async function deleteUser(userId, email) {
+      if (!confirm(`Delete user ${email}? This cannot be undone.`)) return;
+      await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+      loadUsers();
+    }
+
+    document.getElementById('logoutBtn').onclick = async () => {
+      await fetch('/auth/logout', { method: 'POST' });
+      window.location.href = '/login';
+    };
+
+    loadUsers();
+  </script>
+</body>
+</html>

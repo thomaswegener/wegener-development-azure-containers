@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  namespace: prod
+spec:
+  # SQLite cannot have two writers — keep replicas: 1 always
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  strategy:
+    type: Recreate  # Ensures old pod stops before new one starts (critical for SQLite)
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      # Run as node user (uid 1000) to match n8n image expectations
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: n8n
+          image: n8nio/n8n:latest
+          ports:
+            - containerPort: 5678
+          envFrom:
+            - secretRef:
+                name: n8n-secret
+          volumeMounts:
+            - name: data
+              mountPath: /home/node/.n8n
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "50m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      volumes:
+        - name: data
+          hostPath:
+            path: /home/wegener/containers/n8n/data
+            type: Directory

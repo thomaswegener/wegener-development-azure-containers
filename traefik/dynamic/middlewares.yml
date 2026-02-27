@@ -17,6 +17,14 @@ http:
         replacement: "https://piratehusky.no/sledespesialisten"
         permanent: true
 
+    wgn-forwardauth:
+      forwardAuth:
+        address: "http://172.20.0.1:30089/auth/forward"
+        authResponseHeaders:
+          - "X-WEBAUTH-USER"
+          - "X-WEBAUTH-ROLE"
+          - "X-Display-Name"
+
     grafana-auth:
       basicauth:
         users:

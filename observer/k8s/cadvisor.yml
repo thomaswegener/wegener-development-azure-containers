@@ -1,0 +1,79 @@
+# cAdvisor DaemonSet — deploy if kube-prometheus-stack's built-in cAdvisor
+# doesn't expose the Docker-specific metrics you need.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: prod
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+    spec:
+      hostPID: true
+      containers:
+        - name: cadvisor
+          image: gcr.io/cadvisor/cadvisor:v0.50.0
+          args:
+            - --docker_only=true
+            - --store_container_labels=true
+          securityContext:
+            privileged: true
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: rootfs
+              mountPath: /rootfs
+              readOnly: true
+            - name: varrun
+              mountPath: /var/run
+              readOnly: true
+            - name: dockersock
+              mountPath: /var/run/docker.sock
+              readOnly: true
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+            - name: dockerlib
+              mountPath: /var/lib/docker
+              readOnly: true
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+        - name: varrun
+          hostPath:
+            path: /var/run
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: dockerlib
+          hostPath:
+            path: /var/lib/docker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadvisor
+  namespace: prod
+spec:
+  type: ClusterIP
+  selector:
+    app: cadvisor
+  ports:
+    - port: 8080
+      targetPort: 8080

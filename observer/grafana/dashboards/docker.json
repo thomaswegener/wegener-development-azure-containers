@@ -43,12 +43,12 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "count(container_memory_working_set_bytes{image!=\"\"})",
+          "expr": "count(kube_pod_status_phase{namespace=\"prod\",phase=\"Running\"} == 1)",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Running containers",
+      "title": "Running pods",
       "type": "stat"
     },
     {
@@ -80,7 +80,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum(rate(container_cpu_usage_seconds_total{image!=\"\"}[5m])) * 100",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"prod\",container!=\"\",container!=\"POD\"}[5m])) * 100",
           "legendFormat": "",
           "refId": "A"
         }
@@ -115,7 +115,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum(container_memory_working_set_bytes{image!=\"\"})",
+          "expr": "sum(container_memory_working_set_bytes{namespace=\"prod\",container!=\"\",container!=\"POD\"})",
           "legendFormat": "",
           "refId": "A"
         }
@@ -141,12 +141,12 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_cpu_usage_seconds_total{image!=\"\",name=~\"$container\"}[5m])) * 100",
-          "legendFormat": "{{name}}",
+          "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"prod\",container!=\"\",container!=\"POD\",pod=~\"$pod\"}[5m])) * 100",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
-      "title": "Container CPU (%)",
+      "title": "Pod CPU (%)",
       "type": "timeseries"
     },
     {
@@ -167,12 +167,12 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "avg by (name) (container_memory_working_set_bytes{image!=\"\",name=~\"$container\"})",
-          "legendFormat": "{{name}}",
+          "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"prod\",container!=\"\",container!=\"POD\",pod=~\"$pod\"})",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
-      "title": "Container memory (working set)",
+      "title": "Pod memory (working set)",
       "type": "timeseries"
     },
     {
@@ -193,12 +193,12 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (container_fs_usage_bytes{image!=\"\",name=~\"$container\"})",
-          "legendFormat": "{{name}}",
+          "expr": "sum by (pod) (container_fs_usage_bytes{namespace=\"prod\",container!=\"\",container!=\"POD\",pod=~\"$pod\"})",
+          "legendFormat": "{{pod}}",
           "refId": "A"
         }
       ],
-      "title": "Container FS usage",
+      "title": "Pod FS usage",
       "type": "timeseries"
     },
     {
@@ -219,18 +219,18 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_network_receive_bytes_total{image!=\"\",name=~\"$container\",interface!~\"lo\"}[5m]))",
-          "legendFormat": "RX {{name}}",
+          "expr": "sum by (pod) (rate(container_network_receive_bytes_total{namespace=\"prod\",pod=~\"$pod\",interface!~\"lo\"}[5m]))",
+          "legendFormat": "RX {{pod}}",
           "refId": "A"
         },
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (name) (rate(container_network_transmit_bytes_total{image!=\"\",name=~\"$container\",interface!~\"lo\"}[5m]))",
-          "legendFormat": "TX {{name}}",
+          "expr": "sum by (pod) (rate(container_network_transmit_bytes_total{namespace=\"prod\",pod=~\"$pod\",interface!~\"lo\"}[5m]))",
+          "legendFormat": "TX {{pod}}",
           "refId": "B"
         }
       ],
-      "title": "Container network I/O",
+      "title": "Pod network I/O",
       "type": "timeseries"
     },
     {
@@ -247,25 +247,25 @@
       "targets": [
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "expr": "{job=\"docker\",container=~\"$container\"}",
+          "expr": "{namespace=\"prod\", pod=~\"$pod\"}",
           "refId": "A"
         }
       ],
-      "title": "Container logs",
+      "title": "Pod logs",
       "type": "logs"
     }
   ],
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["docker", "observer"],
+  "tags": ["kubernetes", "observer"],
   "templating": {
     "list": [
       {
-        "name": "container",
+        "name": "pod",
         "type": "query",
         "datasource": { "type": "prometheus", "uid": "prometheus" },
-        "query": "label_values(container_memory_working_set_bytes{image!=\"\"}, name)",
+        "query": "label_values(kube_pod_info{namespace=\"prod\"}, pod)",
         "includeAll": true,
         "allValue": ".*",
         "multi": true,
@@ -276,8 +276,8 @@
   },
   "time": { "from": "now-6h", "to": "now" },
   "timezone": "browser",
-  "title": "Observer - Containers",
+  "title": "Observer - Pods",
   "uid": "observer-docker",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
