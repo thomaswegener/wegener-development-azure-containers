@@ -159,7 +159,17 @@ http:
     homeassistant:
       rule: "Host(`homeassistant.wegener.no`)"
       entryPoints: [web, websecure]
+      middlewares: [wgn-forwardauth]
       service: homeassistant
+      priority: 1
+      tls:
+        certResolver: letsencrypt
+
+    homeassistant-api:
+      rule: "Host(`homeassistant.wegener.no`) && PathPrefix(`/api`)"
+      entryPoints: [web, websecure]
+      service: homeassistant
+      priority: 10
       tls:
         certResolver: letsencrypt
 
