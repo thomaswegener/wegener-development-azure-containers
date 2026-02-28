@@ -6,6 +6,8 @@ grafana:
   persistence:
     enabled: true
     size: 1Gi
+  initChownData:
+    enabled: false
   # Sidecar disabled — dashboards imported manually via Grafana UI
   # (sidecar fails on MicroK8s self-signed cert without key usage extension)
   sidecar:
@@ -13,6 +15,23 @@ grafana:
       enabled: false
     datasources:
       enabled: false
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          uid: prometheus
+          url: http://kube-prometheus-kube-prome-prometheus:9090
+          access: proxy
+          isDefault: true
+        - name: Loki
+          type: loki
+          uid: loki
+          url: http://loki:3100
+          access: proxy
+          isDefault: false
+
   grafana.ini:
     auth.proxy:
       enabled: true
