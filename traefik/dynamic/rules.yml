@@ -142,7 +142,17 @@ http:
     n8n:
       rule: "Host(`n8n.wegener.no`)"
       entryPoints: [web, websecure]
+      middlewares: [wgn-forwardauth]
       service: n8n
+      priority: 1
+      tls:
+        certResolver: letsencrypt
+
+    n8n-webhooks:
+      rule: "Host(`n8n.wegener.no`) && PathPrefix(`/webhook`)"
+      entryPoints: [web, websecure]
+      service: n8n
+      priority: 10
       tls:
         certResolver: letsencrypt
 
