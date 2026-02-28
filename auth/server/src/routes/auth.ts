@@ -109,7 +109,7 @@ const authRoutes: FastifyPluginAsync = async (app) => {
       }
 
       const user = await upsertUser('google', profile.sub, profile.email, profile.name, profile.picture);
-      const session = await createSession(user.id, request.ip, request.headers['user-agent']);
+      const session = await createSession(user.id, request.ip, request.headers['user-agent'], true);
       setSessionCookie(reply, session.token, session.expiresAt);
 
       const redirectTo = isAllowedRedirect(stateData.redirect)
@@ -154,7 +154,7 @@ const authRoutes: FastifyPluginAsync = async (app) => {
       }
 
       const user = await upsertUser('microsoft', profile.id, profile.email, profile.displayName);
-      const session = await createSession(user.id, request.ip, request.headers['user-agent']);
+      const session = await createSession(user.id, request.ip, request.headers['user-agent'], true);
       setSessionCookie(reply, session.token, session.expiresAt);
 
       const redirectTo = isAllowedRedirect(stateData.redirect)
@@ -170,23 +170,33 @@ const authRoutes: FastifyPluginAsync = async (app) => {
 
   // --- Magic Link ---
   app.post('/auth/magic/request', async (request, reply) => {
-    const body = request.body as { email?: string; redirect?: string };
+    const body = request.body as { email?: string; redirect?: string; rememberMe?: boolean };
     const email = body.email?.trim().toLowerCase() ?? '';
     const redirect = body.redirect ?? env.allowedRedirectOrigins[0];
+    const rememberMe = body.rememberMe ?? false;
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       reply.code(400);
       return { error: 'Invalid email address' };
     }
 
-    try {
-      const token = await createMagicLink(email, redirect);
-      await sendMagicLinkEmail(email, token);
-    } catch (err) {
-      app.log.error(err);
-      // Don't reveal whether email exists — always return success
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const oneDayAgo  = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const [hourCount, dayCount] = await Promise.all([
+      prisma.magicLink.count({ where: { email, createdAt: { gt: oneHourAgo } } }),
+      prisma.magicLink.count({ where: { email, createdAt: { gt: oneDayAgo } } }),
+    ]);
+
+    if (hourCount < 3 && dayCount < 10) {
+      try {
+        const token = await createMagicLink(email, redirect, rememberMe);
+        await sendMagicLinkEmail(email, token);
+      } catch (err) {
+        app.log.error(err);
+      }
     }
 
+    // Always return the same response to avoid email enumeration
     return { ok: true, message: 'If an account exists, a login link was sent.' };
   });
 
@@ -219,7 +229,7 @@ const authRoutes: FastifyPluginAsync = async (app) => {
       });
     }
 
-    const session = await createSession(user.id, request.ip, request.headers['user-agent']);
+    const session = await createSession(user.id, request.ip, request.headers['user-agent'], link.rememberMe);
     setSessionCookie(reply, session.token, session.expiresAt);
 
     const redirectTo = isAllowedRedirect(link.redirect)

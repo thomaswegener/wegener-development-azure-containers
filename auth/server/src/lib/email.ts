@@ -17,7 +17,7 @@ const MAGIC_LINK_TTL_MINUTES = 15;
 
 const hashToken = (token: string) => crypto.createHash('sha256').update(token).digest('hex');
 
-export const createMagicLink = async (email: string, redirect: string) => {
+export const createMagicLink = async (email: string, redirect: string, rememberMe = false) => {
   const token = crypto.randomBytes(32).toString('hex');
   const tokenHash = hashToken(token);
   const expiresAt = new Date(Date.now() + MAGIC_LINK_TTL_MINUTES * 60 * 1000);
@@ -30,6 +30,7 @@ export const createMagicLink = async (email: string, redirect: string) => {
       tokenHash,
       redirect,
       expiresAt,
+      rememberMe,
       userId: existing?.id ?? null
     }
   });

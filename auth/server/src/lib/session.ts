@@ -7,12 +7,13 @@ export const COOKIE_NAME = 'wgn_auth';
 
 const hashToken = (token: string) => crypto.createHash('sha256').update(token).digest('hex');
 const generateToken = () => crypto.randomBytes(32).toString('hex');
-const sessionExpiry = () => new Date(Date.now() + env.sessionTtlDays * 24 * 60 * 60 * 1000);
+const sessionExpiry = (rememberMe: boolean) =>
+  new Date(Date.now() + (rememberMe ? env.sessionTtlLongDays : env.sessionTtlDays) * 24 * 60 * 60 * 1000);
 
-export const createSession = async (userId: string, ip?: string, userAgent?: string) => {
+export const createSession = async (userId: string, ip?: string, userAgent?: string, rememberMe = false) => {
   const token = generateToken();
   const tokenHash = hashToken(token);
-  const expiresAt = sessionExpiry();
+  const expiresAt = sessionExpiry(rememberMe);
 
   await prisma.session.create({
     data: { userId, tokenHash, expiresAt, ip, userAgent }

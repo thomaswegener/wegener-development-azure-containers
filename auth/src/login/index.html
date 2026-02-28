@@ -146,6 +146,10 @@
 
     <div class="magic-form" id="magicForm">
       <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="email" />
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px;cursor:pointer;">
+        <input type="checkbox" id="rememberMe" checked style="width:15px;height:15px;accent-color:var(--primary);" />
+        Remember me for 90 days
+      </label>
       <button class="btn primary" id="sendMagicBtn" type="button">Send login link</button>
     </div>
 
@@ -204,7 +208,7 @@
         const res = await fetch('/auth/magic/request', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, redirect })
+          body: JSON.stringify({ email, redirect, rememberMe: document.getElementById('rememberMe').checked })
         });
         const data = await res.json();
         notice.className = 'notice success';

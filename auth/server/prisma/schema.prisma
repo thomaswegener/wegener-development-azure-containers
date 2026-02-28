@@ -65,7 +65,8 @@ model MagicLink {
   email     String
   tokenHash String    @unique
   redirect  String
-  expiresAt DateTime
-  usedAt    DateTime?
-  createdAt DateTime  @default(now())
+  expiresAt  DateTime
+  usedAt     DateTime?
+  rememberMe Boolean   @default(false)
+  createdAt  DateTime  @default(now())
 }
