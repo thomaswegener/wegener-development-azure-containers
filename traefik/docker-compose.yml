@@ -15,7 +15,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:8081:8080"
+      - "0.0.0.0:8081:8080"
     volumes:
       - ./traefik-access.log:/var/log/traefik/traefik-access.log
       - /var/run/docker.sock:/var/run/docker.sock:ro

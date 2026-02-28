@@ -67,7 +67,7 @@ http:
     traefik-dashboard:
       rule: "Host(`traefik.observer.wegener.no`)"
       entryPoints: [web, websecure]
-      middlewares: [traefik-auth]
+      middlewares: [wgn-forwardauth]
       service: api@internal
       tls:
         certResolver: letsencrypt
